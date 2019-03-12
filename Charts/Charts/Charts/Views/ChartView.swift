@@ -11,7 +11,7 @@ import UIKit
 final class ChartView: UIView {
 
   private let titleLabel = UILabel()
-  private let verticalAxeView = VerticalAxeView(
+  let verticalAxeView = VerticalAxeView(
     width: UIScreen.main.bounds.width - 2 * Constants.padding
   )
   private let controlPanelPlotView = ControlPanelPlotView()
