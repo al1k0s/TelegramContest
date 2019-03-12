@@ -18,6 +18,8 @@
 		02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D42236F29D00D28977 /* ChartsSource.swift */; };
 		02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */; };
 		02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */; };
+		02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2B2238454700317602 /* UIColorExtension.swift */; };
+		02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2D2238468400317602 /* RendererProtocol.swift */; };
 		44C562992237A75300EE4F78 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C562982237A75300EE4F78 /* Charts.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,8 @@
 		02AC85D42236F29D00D28977 /* ChartsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsSource.swift; sourceTree = "<group>"; };
 		02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalStripView.swift; sourceTree = "<group>"; };
 		02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelPlotView.swift; sourceTree = "<group>"; };
+		02B2BE2B2238454700317602 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		02B2BE2D2238468400317602 /* RendererProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererProtocol.swift; sourceTree = "<group>"; };
 		44C562982237A75300EE4F78 /* Charts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				02AC85AC2235993A00D28977 /* UIViewExtension.swift */,
+				02B2BE2B2238454700317602 /* UIColorExtension.swift */,
+				02B2BE2D2238468400317602 /* RendererProtocol.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -249,8 +255,10 @@
 				02AC85D32236F27500D28977 /* Presenter.swift in Sources */,
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
+				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
 				02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
+				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
 				02AC85B022359B7900D28977 /* ChartView.swift in Sources */,
 			);

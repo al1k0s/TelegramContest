@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     presenter.viewWillAppear()
   }
 
-  func updateValues(_ values: [Double], max: Double) {
-    contentView.updateValues(values, max: max)
+  func updateBottomPanel(yAxes: [YAxis]) {
+    contentView.updateBottomPanel(yAxes: yAxes)
   }
 }
