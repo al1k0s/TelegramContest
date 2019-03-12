@@ -13,7 +13,7 @@ final class VerticalAxeView: UIView {
   private var stripViews: [HorizontalStripView] = []
   private let viewWidth: CGFloat
 
-  private var maxValue = 100.0 {
+  private var maxValue = 250.0 {
     didSet {
       updateMaxValue(from: oldValue, newValue: maxValue)
     }
@@ -34,7 +34,7 @@ final class VerticalAxeView: UIView {
   }
 
   func updateMaxValue(from previousValue: Double, newValue: Double) {
-    let diff = newValue - previousValue
+    let diff = previousValue - newValue
 
     let animatableStripViews = self.stripViews.dropLast()
 
@@ -48,6 +48,30 @@ final class VerticalAxeView: UIView {
       }, completion: { _ in
         animatableStripViews.forEach { $0.removeFromSuperview() }
         self.stripViews = Array(self.stripViews.prefix(1))
+      })
+
+      var newStripViews: [HorizontalStripView] = []
+      let stripHeight = Constants.stripHeight
+      for index in 0..<Constants.numberOfStrips {
+        let frame = CGRect(x: 0,
+                           y: CGFloat(Constants.numberOfStrips + 1) * stripHeight,
+                           width: self.viewWidth,
+                           height: 18.5)
+        let number = String(step * Double(Constants.numberOfStrips - index))
+        let stripView = HorizontalStripView(frame: frame,
+                                            number: number)
+        stripView.alpha = 0.2
+        self.stripViews.append(stripView)
+        newStripViews.append(stripView)
+        self.addSubview(stripView)
+      }
+
+      UIView.animate(withDuration: 0.5,
+                     animations: {
+                      for (index, view) in newStripViews.enumerated() {
+                        view.frame.origin.y = CGFloat(index) * stripHeight
+                        view.alpha = 1
+                      }
       })
     } else {
       UIView.animate(withDuration: 0.5, animations: {
@@ -84,9 +108,7 @@ final class VerticalAxeView: UIView {
                         view.frame.origin.y = CGFloat(index) * stripHeight
                         view.alpha = 1
                       }
-      }) { _ in
-
-      }
+      })
     }
   }
 
@@ -100,7 +122,7 @@ final class VerticalAxeView: UIView {
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-      self.maxValue = 50
+      self.maxValue = 90
     }
   }
 
