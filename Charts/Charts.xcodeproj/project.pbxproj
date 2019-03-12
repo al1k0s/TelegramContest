@@ -20,6 +20,7 @@
 		02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */; };
 		02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2B2238454700317602 /* UIColorExtension.swift */; };
 		02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2D2238468400317602 /* RendererProtocol.swift */; };
+		02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2F2238489F00317602 /* ControlPanelView.swift */; };
 		44C562992237A75300EE4F78 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C562982237A75300EE4F78 /* Charts.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelPlotView.swift; sourceTree = "<group>"; };
 		02B2BE2B2238454700317602 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		02B2BE2D2238468400317602 /* RendererProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererProtocol.swift; sourceTree = "<group>"; };
+		02B2BE2F2238489F00317602 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
 		44C562982237A75300EE4F78 /* Charts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */,
+				02B2BE2F2238489F00317602 /* ControlPanelView.swift */,
 			);
 			path = ControlPanel;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
 				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
+				02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */,
 				02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
