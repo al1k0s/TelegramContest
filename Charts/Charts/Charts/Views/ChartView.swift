@@ -63,8 +63,8 @@ final class ChartView: UIView {
     ])
   }
 
-  func updateValues(_ values: [Double], max: Double) {
-    controlPanelPlotView.updateValues(values, max: max)
+  func updateBottomPanel(yAxes: [YAxis]) {
+    controlPanelPlotView.updateValues(yAxes: yAxes)
   }
 
   enum Constants {

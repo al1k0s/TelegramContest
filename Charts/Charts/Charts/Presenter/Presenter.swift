@@ -20,7 +20,6 @@ final class Presenter {
   }
 
   func viewWillAppear() {
-    viewController?.updateValues(charts[0].yAxes[0].coordinates,
-                                 max: charts[0].yAxes[0].coordinates.max()!)
+    viewController?.updateBottomPanel(yAxes: charts[0].yAxes)
   }
 }
