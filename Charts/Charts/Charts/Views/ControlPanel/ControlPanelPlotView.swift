@@ -10,8 +10,8 @@ import UIKit
 
 final class ControlPanelPlotView: UIView {
 
-  private var max: Int = 0
-  private var values: [Int] = []
+  private var max: Double = 0
+  private var values: [Double] = []
   private var shapeLayer: CAShapeLayer?
 
   override init(frame: CGRect) {
@@ -22,7 +22,7 @@ final class ControlPanelPlotView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func updateValues(_ values: [Int], max: Int) {
+  func updateValues(_ values: [Double], max: Double) {
     self.max = max
     self.values = values
     setupLayer()

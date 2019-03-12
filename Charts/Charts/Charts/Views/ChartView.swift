@@ -63,7 +63,7 @@ final class ChartView: UIView {
     ])
   }
 
-  func updateValues(_ values: [Int], max: Int) {
+  func updateValues(_ values: [Double], max: Double) {
     controlPanelPlotView.updateValues(values, max: max)
   }
 
