@@ -8,12 +8,7 @@
 
 import CoreGraphics
 
-protocol Renderer {
-  func drawLine(from startingPoint: CGPoint, to endPoint: CGPoint, color: CGColor, lineWidth: CGFloat)
-  func drawCircle(at point: CGPoint, radius: CGFloat, color: CGColor)
-}
-
-extension CGContext: Renderer {
+extension CGContext {
   func drawLine(from startingPoint: CGPoint, to endPoint: CGPoint, color: CGColor, lineWidth: CGFloat) {
     setLineWidth(lineWidth)
     setStrokeColor(color)
@@ -28,7 +23,7 @@ extension CGContext: Renderer {
     move(to: point)
     addArc(center: point,
            radius: radius,
-           startAngle: .zero,
+           startAngle: 0,
            endAngle: .pi,
            clockwise: true)
     strokePath()

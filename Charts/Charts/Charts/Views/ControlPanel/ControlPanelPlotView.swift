@@ -36,6 +36,7 @@ final class ControlPanelPlotView: UIView {
     self.max = max
     self.min = min
     self.yAxes = yAxes
+    layoutIfNeeded()
   }
 
   override func draw(_ rect: CGRect) {
