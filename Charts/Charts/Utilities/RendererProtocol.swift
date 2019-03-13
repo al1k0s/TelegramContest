@@ -23,7 +23,7 @@ extension CGContext {
     move(to: point)
     addArc(center: point,
            radius: radius,
-           startAngle: .zero,
+           startAngle: 0,
            endAngle: .pi,
            clockwise: true)
     strokePath()

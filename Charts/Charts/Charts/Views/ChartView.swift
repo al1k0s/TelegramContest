@@ -14,7 +14,7 @@ final class ChartView: UIView {
   let verticalAxeView = VerticalAxeView(
     width: UIScreen.main.bounds.width - 2 * Constants.padding
   )
-  private let controlPanelPlotView = ControlPanelPlotView()
+  private let controlPanelView = ControlPanelView()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -46,17 +46,17 @@ final class ChartView: UIView {
     ])
 
     // configure control panel plot view
-    addSubview(controlPanelPlotView, constraints: [
-      controlPanelPlotView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
-      controlPanelPlotView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      controlPanelPlotView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-      controlPanelPlotView.heightAnchor.constraint(equalToConstant: 40)
+    addSubview(controlPanelView, constraints: [
+      controlPanelView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
+      controlPanelView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+      controlPanelView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      controlPanelView.heightAnchor.constraint(equalToConstant: 40)
     ])
 
     let emptyView = UIView()
     emptyView.backgroundColor = .red
     addSubview(emptyView, constraints: [
-      emptyView.topAnchor.constraint(equalTo: controlPanelPlotView.bottomAnchor, constant: 8),
+      emptyView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor, constant: 8),
       emptyView.leadingAnchor.constraint(equalTo: leadingAnchor),
       emptyView.trailingAnchor.constraint(equalTo: trailingAnchor),
       emptyView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -64,7 +64,7 @@ final class ChartView: UIView {
   }
 
   func updateBottomPanel(yAxes: [YAxis]) {
-    controlPanelPlotView.updateValues(yAxes: yAxes)
+    controlPanelView.updateValues(yAxes: yAxes)
   }
 
   enum Constants {
