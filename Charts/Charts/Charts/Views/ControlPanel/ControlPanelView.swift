@@ -10,7 +10,7 @@ import UIKit
 
 final class ControlPanelView: UIView {
 
-  private let plotView = ControlPanelPlotView()
+  private let plotView = PlotView()
   private let leftShadowView = UIView()
   private let leftControlView = UIView()
   private let centerView = UIView()
@@ -19,7 +19,7 @@ final class ControlPanelView: UIView {
   private var leftControlLeadingConstraint: NSLayoutConstraint!
   private var rightControlLeadingConstraint: NSLayoutConstraint!
 
-  var rangeChanged: ((ClosedRange<Date>) -> ())?
+  var rangeChanged: ((ClosedRange<Float>) -> ())?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -95,8 +95,8 @@ final class ControlPanelView: UIView {
     ])
   }
 
-  func updateValues(yAxes: [YAxis]) {
-    plotView.updateValues(yAxes: yAxes)
+  func updateChartRange(_ chartRange: ChartRange) {
+    plotView.updateChart(chartRange)
   }
 
   @objc func handleLeftPanGesture(_ event: UIPanGestureRecognizer) {
@@ -106,7 +106,7 @@ final class ControlPanelView: UIView {
       let boundedCoordinate = min(max(xCoordinate, 0), rightControlLeadingConstraint.constant - 12)
       leftControlLeadingConstraint.constant = boundedCoordinate
 
-      #warning("call rangeChanged with new range")
+      updateRange()
     default:
       break
     }
@@ -120,9 +120,16 @@ final class ControlPanelView: UIView {
       let boundedCoordinate = min(max(xCoordinate, leftControlLeadingConstraint.constant + 12), width - 12)
       rightControlLeadingConstraint.constant = boundedCoordinate
 
-      #warning("call rangeChanged with new range")
+      updateRange()
     default:
       break
     }
+  }
+
+  private func updateRange() {
+    let width = self.frame.width
+    let leftPoint = Float(leftControlView.frame.minX / width)
+    let rightPoint = Float(rightControlView.frame.maxX / width)
+    rangeChanged?(leftPoint...rightPoint)
   }
 }

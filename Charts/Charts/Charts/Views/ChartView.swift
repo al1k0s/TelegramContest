@@ -24,7 +24,7 @@ final class ChartView: UIView {
   )
   private let controlPanelView = ControlPanelView()
 
-  var rangeChanged: ((ClosedRange<Date>) -> ())? {
+  var rangeChanged: ((ClosedRange<Float>) -> ())? {
     get {
       return controlPanelView.rangeChanged
     } set {
@@ -89,12 +89,9 @@ final class ChartView: UIView {
     ])
   }
 
-  func updateBottomPanel(yAxes: [YAxis]) {
-    controlPanelView.updateValues(yAxes: yAxes)
-  }
-
-  func showChart(_ normalizedChart: ChartRange) {
-    dateAxeView.updateDateAxe(chartRange: normalizedChart)
+  func updateupdateChartRange(_ chartRange: ChartRange) {
+    dateAxeView.updateDateAxe(chartRange: chartRange)
+    controlPanelView.updateChartRange(chartRange)
   }
 
   enum Constants {

@@ -11,7 +11,7 @@ import UIKit
 final class DateAxeView: UIView {
 
   private var labels: [UILabel] = []
-  private var date: [Date] = []
+  private var dates: [Date] = []
 
   override init(frame: CGRect) {
     super.init(frame: frame)

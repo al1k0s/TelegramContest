@@ -18,7 +18,7 @@
 		02AC85D32236F27500D28977 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D22236F27500D28977 /* Presenter.swift */; };
 		02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D42236F29D00D28977 /* ChartsSource.swift */; };
 		02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */; };
-		02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */; };
+		02B2BE1D223702B400317602 /* PlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* PlotView.swift */; };
 		02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2B2238454700317602 /* UIColorExtension.swift */; };
 		02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2D2238468400317602 /* RendererProtocol.swift */; };
 		02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2F2238489F00317602 /* ControlPanelView.swift */; };
@@ -40,7 +40,7 @@
 		02AC85D22236F27500D28977 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		02AC85D42236F29D00D28977 /* ChartsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsSource.swift; sourceTree = "<group>"; };
 		02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalStripView.swift; sourceTree = "<group>"; };
-		02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelPlotView.swift; sourceTree = "<group>"; };
+		02B2BE1C223702B400317602 /* PlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotView.swift; sourceTree = "<group>"; };
 		02B2BE2B2238454700317602 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		02B2BE2D2238468400317602 /* RendererProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererProtocol.swift; sourceTree = "<group>"; };
 		02B2BE2F2238489F00317602 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 		02AC85B422359EB200D28977 /* ControlPanel */ = {
 			isa = PBXGroup;
 			children = (
-				02B2BE1C223702B400317602 /* ControlPanelPlotView.swift */,
+				02B2BE1C223702B400317602 /* PlotView.swift */,
 				02B2BE2F2238489F00317602 /* ControlPanelView.swift */,
 			);
 			path = ControlPanel;
@@ -268,7 +268,7 @@
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
 				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
 				02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */,
-				02B2BE1D223702B400317602 /* ControlPanelPlotView.swift in Sources */,
+				02B2BE1D223702B400317602 /* PlotView.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
