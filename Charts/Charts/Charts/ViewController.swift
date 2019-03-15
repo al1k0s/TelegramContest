@@ -40,10 +40,6 @@ class ViewController: UIViewController {
   }
 
   func updateChart(_ chartRange: ChartRange) {
-
-  }
-
-  func updateBottomPanel(yAxes: [YAxis]) {
-    contentView.updateBottomPanel(yAxes: yAxes)
+    contentView.updateupdateChartRange(chartRange)
   }
 }

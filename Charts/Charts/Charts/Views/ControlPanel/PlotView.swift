@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ControlPanelPlotView: UIView {
+final class PlotView: UIView {
 
   private var max: Double = 0
   private var min: Double = 0
@@ -24,12 +24,17 @@ final class ControlPanelPlotView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func updateValues(yAxes: [YAxis]) {
-    let maxValues = yAxes.map { $0.coordinates }.map { $0.max() }.compactMap { $0 }
+  func updateChart(_ chartRange: ChartRange) {
+    let yAxes = chartRange.chart.yAxes
+    let maxValues = yAxes
+      .map { $0.coordinates }
+      .compactMap { $0.max() }
     guard let max = maxValues.max() else {
       return
     }
-    let minValues = yAxes.map { $0.coordinates }.map { $0.min() }.compactMap { $0 }
+    let minValues = yAxes
+      .map { $0.coordinates }
+      .compactMap { $0.min() }
     guard let min = minValues.min() else {
       return
     }
@@ -46,7 +51,7 @@ final class ControlPanelPlotView: UIView {
 
     for axe in yAxes {
       guard axe.coordinates.count > 0 else { break }
-      let (width, height) = (UIScreen.main.bounds.width - CGFloat(32), CGFloat(40))
+      let (width, height) = (UIScreen.main.bounds.width - 32, 40.0)
       let count = axe.coordinates.count
       // normalize values to view coordinates
       let newValues = axe.coordinates.enumerated().map { (arg) -> (CGPoint) in
@@ -55,7 +60,7 @@ final class ControlPanelPlotView: UIView {
         let x = (Double(index) / Double(count - 1) * Double(width - 4)) + 2
         let difference = Double(max - min)
         // get y value from 0 to view.height
-        let y = (1.0 - Double(value - min) / difference) * Double(height)
+        let y = (1 - Double(value - min) / difference) * height
         return CGPoint(x: x, y: y)
       }
 
