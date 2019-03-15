@@ -12,14 +12,35 @@ final class Presenter {
 
   private let chartsSource = ChartsSource()
   private let charts: [Chart]
-  private weak var viewController: ViewController?
+  private var range: ClosedRange<Date> {
+    didSet {
+      viewController?.updateChart(chartRange)
+    }
+  }
 
-  init(viewController: ViewController) {
+  weak var viewController: ViewController?
+
+  private var currentChart: Chart {
+    return charts[0]
+  }
+
+  private var chartRange: ChartRange {
+    return ChartRange(chart: currentChart,
+                      range: range)
+  }
+
+  init() {
     charts = chartsSource.getCharts()
-    self.viewController = viewController
+    let coordinates = charts[0].x.coordinates
+    range = coordinates.first!...coordinates.last!
+  }
+
+  func rangeChanged(_ change: ClosedRange<Date>) {
+    self.range = change
   }
 
   func viewWillAppear() {
-    viewController?.updateBottomPanel(yAxes: charts[0].yAxes)
+    viewController?.updateChart(chartRange)
+    viewController?.updateBottomPanel(yAxes: currentChart.yAxes)
   }
 }

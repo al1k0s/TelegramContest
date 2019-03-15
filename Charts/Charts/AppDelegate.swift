@@ -25,7 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window.rootViewController = navController
     window.makeKeyAndVisible()
 
-    navController.setViewControllers([ViewController()], animated: false)
+    let presenter = Presenter()
+    let viewController = ViewController(presenter: presenter)
+    presenter.viewController = viewController
+
+    navController.setViewControllers([viewController], animated: false)
     return true
   }
 }

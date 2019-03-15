@@ -10,10 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
-  private lazy var presenter = Presenter(viewController: self)
+  private let presenter: Presenter
   private let contentView = ChartView()
 
-  init() {
+  init(presenter: Presenter) {
+    self.presenter = presenter
+
+    contentView.rangeChanged = presenter.rangeChanged
+    
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -33,6 +37,10 @@ class ViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     presenter.viewWillAppear()
+  }
+
+  func updateChart(_ chartRange: ChartRange) {
+
   }
 
   func updateBottomPanel(yAxes: [YAxis]) {

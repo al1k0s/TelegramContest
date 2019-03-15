@@ -19,6 +19,8 @@ final class ControlPanelView: UIView {
   private var leftControlLeadingConstraint: NSLayoutConstraint!
   private var rightControlLeadingConstraint: NSLayoutConstraint!
 
+  var rangeChanged: ((ClosedRange<Date>) -> ())?
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
@@ -104,6 +106,7 @@ final class ControlPanelView: UIView {
       let boundedCoordinate = min(max(xCoordinate, 0), rightControlLeadingConstraint.constant - 12)
       leftControlLeadingConstraint.constant = boundedCoordinate
 
+      #warning("call rangeChanged with new range")
     default:
       break
     }
@@ -117,6 +120,7 @@ final class ControlPanelView: UIView {
       let boundedCoordinate = min(max(xCoordinate, leftControlLeadingConstraint.constant + 12), width - 12)
       rightControlLeadingConstraint.constant = boundedCoordinate
 
+      #warning("call rangeChanged with new range")
     default:
       break
     }

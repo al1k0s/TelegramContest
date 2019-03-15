@@ -16,13 +16,22 @@ final class ChartView: UIView {
   )
   private let controlPanelView = ControlPanelView()
 
+  var rangeChanged: ((ClosedRange<Date>) -> ())? {
+    get {
+      return controlPanelView.rangeChanged
+    } set {
+      controlPanelView.rangeChanged = newValue
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
   }
 
   required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: aDecoder)
+    setup()
   }
 
   private func setup() {
@@ -65,6 +74,10 @@ final class ChartView: UIView {
 
   func updateBottomPanel(yAxes: [YAxis]) {
     controlPanelView.updateValues(yAxes: yAxes)
+  }
+
+  func showChart(_ normalizedChart: ChartRange) {
+    
   }
 
   enum Constants {
