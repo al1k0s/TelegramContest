@@ -13,16 +13,6 @@ final class Presenter {
   private let chartsSource = ChartsSource()
   private let charts: [Chart]
 
-  private var range: ClosedRange<Float> {
-    get {
-      return chartRange.chosenRange
-    } set {
-      chartRange.chosenRange = newValue
-      print("new range: \(range)")
-      print("new dates: \(chartRange.range)")
-    }
-  }
-
   weak var viewController: ViewController?
 
   private var currentChartIndex: Int
@@ -37,7 +27,8 @@ final class Presenter {
   }
 
   func rangeChanged(_ change: ClosedRange<Float>) {
-    self.range = change
+    chartRange.chosenRange = change
+    viewController?.updateChart(chartRange)
   }
 
   func viewWillAppear() {
