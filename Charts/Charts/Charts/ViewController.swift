@@ -39,7 +39,11 @@ class ViewController: UIViewController {
     presenter.viewWillAppear()
   }
 
-  func updateChart(_ chartRange: ChartRange) {
+  func updateRange(_ chartRange: ChartRange) {
     contentView.rangeUpdated(chartRange)
+  }
+
+  func updateYAxes(_ chartRange: ChartRange) {
+    contentView.yAxesUpdated(chartRange)
   }
 }
