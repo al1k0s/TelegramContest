@@ -12,17 +12,18 @@ struct InfoViewModel {
   struct Chart {
     var color: UIColor
     var value: String
+    var location: CGPoint
   }
 
   var dayMonth: String
   var year: String
   var charts: [Chart]
 
-  init(date: Date, charts: [(color: UIColor, value: Int)]) {
+  init(date: Date, charts: [(color: UIColor, value: Int, location: CGPoint)]) {
     #warning("not implemented")
     self.dayMonth = "23 Fabruary"
     self.year = "2019"
-    self.charts = charts.map { .init(color: $0.color, value: String($0.value)) }
+    self.charts = charts.map { .init(color: $0.color, value: String($0.value), location: $0.location) }
   }
 }
 
@@ -67,10 +68,12 @@ class InfoView: UIView {
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
     return InfoViewModel(date: .init(), charts: [
-      (color: .red, value: 123),
-      (color: .green, value: 12)
+      (color: .red, value: 123, location: CGPoint(x: 200, y: 200)),
+      (color: .green, value: 12, location: CGPoint(x: 100, y: 100))
     ])
   }
+
+  var circles: [UIView] = []
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -112,7 +115,7 @@ class InfoView: UIView {
 
   @objc private func tapOccured(sender: UITapGestureRecognizer) {
     let location = sender.location(ofTouch: 0, in: self)
-    let relative = self.bounds.width / location.x
+    let relative = location.x / bounds.width
     let data = tapOccured(relative)
     self.render(the: data)
   }
@@ -127,12 +130,24 @@ class InfoView: UIView {
         label.text = chart.value
         label.font = UIFont.systemFont(ofSize: 12)
       })
+
+      let circle = with(UIView(frame: CGRect(origin: chart.location,
+                                             size: CGSize(width: 10, height: 10)))) {
+                                              $0.layer.cornerRadius = 5
+                                              $0.layer.borderWidth = 2
+                                              $0.layer.borderColor = chart.color.cgColor
+                                              $0.backgroundColor = .white
+      }
+      self.addSubview(circle)
+      circles.append(circle)
     }
 
     subviews.forEach({ $0.alpha = 1 })
   }
 
   func rangeChanged() {
-    self.subviews.forEach({ $0.alpha = 0 })
+    subviews.forEach({ $0.alpha = 0 })
+    circles.forEach({ $0.removeFromSuperview() })
+    circles = []
   }
 }
