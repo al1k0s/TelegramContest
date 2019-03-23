@@ -82,19 +82,7 @@ class InfoView: UIView {
 
   var isLight = true {
     didSet {
-      circles.forEach { circle in
-        circle.backgroundColor = isLight ? .white : UIColor(red: 34 / 255,
-                                                            green: 47 / 255,
-                                                            blue: 62 / 255,
-                                                            alpha: 1.0)
-        let color = isLight ? UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
-          UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
-        container.backgroundColor = color
-        line.backgroundColor = color
-        [dayMonthLabel, yearLabel].forEach {
-          $0.textColor = isLight ? .black : .white
-        }
-      }
+      drawTheme()
     }
   }
 
@@ -130,7 +118,6 @@ class InfoView: UIView {
       line.widthAnchor.constraint(equalToConstant: 1),
       line.topAnchor.constraint(equalTo: container.bottomAnchor),
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-      line.centerXAnchor.constraint(equalTo: container.centerXAnchor)
     ])
   }
 
@@ -178,7 +165,24 @@ class InfoView: UIView {
       circles.append(circle)
     }
 
+    drawTheme()
     subviews.forEach({ $0.alpha = 1 })
+  }
+
+  private func drawTheme() {
+    circles.forEach { circle in
+      circle.backgroundColor = isLight ? .white : UIColor(red: 34 / 255,
+                                                          green: 47 / 255,
+                                                          blue: 62 / 255,
+                                                          alpha: 1.0)
+      let color = isLight ? UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
+        UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
+      container.backgroundColor = color
+      line.backgroundColor = color
+      [dayMonthLabel, yearLabel].forEach {
+        $0.textColor = isLight ? .black : .white
+      }
+    }
   }
 
   private func resetCircles() {
