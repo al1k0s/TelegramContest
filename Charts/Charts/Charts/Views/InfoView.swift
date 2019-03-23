@@ -21,7 +21,7 @@ struct InfoViewModel {
 
   init(date: Date, charts: [(color: UIColor, value: Int, location: CGPoint)]) {
     self.dayMonth = with(DateFormatter()) {
-      $0.dateFormat = "dd MMM"
+      $0.dateFormat = "MMM dd"
     }.string(from: date)
     self.year = with(DateFormatter()) {
       $0.dateFormat = "yyyy"
