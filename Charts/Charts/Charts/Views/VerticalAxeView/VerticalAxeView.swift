@@ -38,6 +38,9 @@ final class VerticalAxeView: UIView {
 
   func updateMaxValue(from previousValue: Double, newValue: Double) {
     guard previousValue != newValue else { return }
+    newStripViews.forEach { $0.layer.removeAllAnimations() }
+    hiddenStripViews.forEach { $0.layer.removeAllAnimations() }
+
     let diff = previousValue - newValue
 
     let animatableStripViews = Array(stripViews.dropLast())

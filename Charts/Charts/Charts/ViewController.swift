@@ -40,6 +40,6 @@ class ViewController: UIViewController {
   }
 
   func updateChart(_ chartRange: ChartRange) {
-    contentView.updateupdateChartRange(chartRange)
+    contentView.rangeUpdated(chartRange)
   }
 }
