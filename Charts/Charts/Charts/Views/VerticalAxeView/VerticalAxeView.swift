@@ -11,14 +11,11 @@ import UIKit
 final class VerticalAxeView: UIView {
 
   private var stripViews: [HorizontalStripView] = []
-  private var hiddenStripViews = (0...Constants.numberOfStrips)
-    .map { _ in HorizontalStripView(frame: .zero, number: "") }
-  private var newStripViews: [HorizontalStripView] = []
   private let viewWidth: CGFloat
 
   var maxValue = 200.0 {
     didSet {
-      updateMaxValue(from: oldValue, newValue: maxValue)
+      update(from: oldValue, newValue: maxValue)
     }
   }
 
@@ -36,17 +33,19 @@ final class VerticalAxeView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func updateMaxValue(from previousValue: Double, newValue: Double) {
+  func update(from previousValue: Double, newValue: Double) {
     guard previousValue != newValue else { return }
-    newStripViews.forEach { $0.layer.removeAllAnimations() }
-    hiddenStripViews.forEach { $0.layer.removeAllAnimations() }
 
     let diff = previousValue - newValue
 
-    let animatableStripViews = Array(stripViews.dropLast())
     let distanceToMove: (Int) -> CGFloat
     let newY: (Int) -> CGFloat
     let newViewsMove: (Int) -> CGFloat
+
+    var hiddenStripViews = (0...(Constants.numberOfStrips))
+      .map { _ in HorizontalStripView(frame: .zero, number: "") }
+    let animatableStripViews = stripViews
+    self.stripViews = hiddenStripViews
 
     if diff > 0 {
       distanceToMove = { index in
@@ -77,28 +76,23 @@ final class VerticalAxeView: UIView {
       }
     }, completion: { _ in
       animatableStripViews.forEach { $0.removeFromSuperview() }
-      self.hiddenStripViews = animatableStripViews
-      self.stripViews = Array(self.stripViews.suffix(1)) + self.newStripViews
-      self.newStripViews = []
+      hiddenStripViews = animatableStripViews
     })
 
-    for (index, stripView) in hiddenStripViews.enumerated() {
+    for (index, stripView) in stripViews.enumerated() {
       let frame = CGRect(x: 0,
                          y: newY(index),
                          width: self.viewWidth,
                          height: 18.5)
+      addSubview(stripView)
       stripView.frame = frame
       stripView.alpha = 0.2
       stripView.number = lineNumber(index)
-      stripViews.append(stripView)
-      newStripViews.append(stripView)
-      hiddenStripViews = []
-      addSubview(stripView)
     }
 
     UIView.animate(withDuration: 0.5,
                    animations: {
-                    for (index, view) in self.newStripViews.enumerated() {
+                    for (index, view) in self.stripViews.enumerated() {
                       view.frame.origin.y = newViewsMove(index)
                       view.alpha = 1
                     }
@@ -110,14 +104,20 @@ final class VerticalAxeView: UIView {
   }
 
   private func setup() {
-    let stripHeight = Constants.stripHeight
-    for index in 0..<Constants.numberOfStrips + 1 {
-      let frame = CGRect(x: 0, y: CGFloat(index) * stripHeight, width: viewWidth, height: 18.5)
-      let stripView = HorizontalStripView(frame: frame,
-                                          number: lineNumber(index))
-      stripViews.append(stripView)
-      addSubview(stripView)
+    for index in 0..<Constants.numberOfStrips - 1 {
+      let stripView = createStrips(index: index)
+      self.stripViews.append(stripView)
     }
+    _ = createStrips(index: Constants.numberOfStrips)
+  }
+
+  private func createStrips(index: Int) -> HorizontalStripView {
+    let stripHeight = Constants.stripHeight
+    let frame = CGRect(x: 0, y: CGFloat(index) * stripHeight, width: viewWidth, height: 18.5)
+    let stripView = HorizontalStripView(frame: frame,
+                                        number: lineNumber(index))
+    addSubview(stripView)
+    return stripView
   }
 
   enum Constants {
