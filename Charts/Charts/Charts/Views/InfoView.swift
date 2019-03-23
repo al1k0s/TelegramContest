@@ -131,8 +131,8 @@ class InfoView: UIView {
         label.font = UIFont.systemFont(ofSize: 12)
       })
 
-      let locationInBounds = CGPoint(x: chart.location.x * self.bounds.width,
-                                     y: chart.location.y * self.bounds.height)
+      let locationInBounds = CGPoint(x: (1 - chart.location.x) * self.bounds.width,
+                                     y: (1 - chart.location.y) * self.bounds.height)
       let circle = with(UIView(frame: CGRect(origin: locationInBounds,
                                              size: CGSize(width: 10, height: 10)))) {
                                               $0.layer.cornerRadius = 5
