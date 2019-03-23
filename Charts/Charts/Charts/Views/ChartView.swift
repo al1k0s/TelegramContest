@@ -12,7 +12,7 @@ final class ChartView: UIView {
 
   private let titleLabel = with(UILabel()) { titleLabel in
     titleLabel.font = UIFont.systemFont(ofSize: 17)
-    titleLabel.textColor = UIColor.gray
+    titleLabel.textColor = UIColor.white
     titleLabel.text = "FOLLOWERS"
   }
 
@@ -29,8 +29,9 @@ final class ChartView: UIView {
   )
   private let controlPanelView = ControlPanelView()
   private let buttonsView = ButtonsView()
+  private let switchButton = UIButton()
 
-  private let plotView = PlotView()
+  private let plotView = PlotView(isMainPlot: true)
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
     get {
@@ -59,7 +60,7 @@ final class ChartView: UIView {
   }
 
   private func setup() {
-    backgroundColor = .white
+    backgroundColor = .gray
 
     // configure title label
     addSubview(titleLabel, constraints: [
@@ -67,14 +68,22 @@ final class ChartView: UIView {
       titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
     ])
 
+    let contentContainer = UIView()
+    contentContainer.backgroundColor = .white
+    addSubview(contentContainer, constraints: [
+      contentContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+      contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+      contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
+    ])
+
     plotView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(plotView)
+    contentContainer.addSubview(plotView)
 
     // configure vertical axes view
-    addSubview(verticalAxeView, constraints: [
-      verticalAxeView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-      verticalAxeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      verticalAxeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+    contentContainer.addSubview(verticalAxeView, constraints: [
+      verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+      verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
+      verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
     ])
 
@@ -86,35 +95,42 @@ final class ChartView: UIView {
     ])
 
     // configure date axe view
-    addSubview(dateAxeView, constraints: [
+    contentContainer.addSubview(dateAxeView, constraints: [
       dateAxeView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
-      dateAxeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      dateAxeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      dateAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
+      dateAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
       dateAxeView.heightAnchor.constraint(equalToConstant: 30)
     ])
 
     // configure control panel plot view
-    addSubview(controlPanelView, constraints: [
+    contentContainer.addSubview(controlPanelView, constraints: [
       controlPanelView.topAnchor.constraint(equalTo: dateAxeView.bottomAnchor),
-      controlPanelView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      controlPanelView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      controlPanelView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
+      controlPanelView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
       controlPanelView.heightAnchor.constraint(equalToConstant: 40)
     ])
 
     // configure buttons view
-    addSubview(buttonsView, constraints: [
+    contentContainer.addSubview(buttonsView, constraints: [
       buttonsView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor),
-      buttonsView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      buttonsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      buttonsView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
+      buttonsView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
+      buttonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor)
     ])
 
-    let emptyView = UIView()
-    emptyView.backgroundColor = .red
-    addSubview(emptyView, constraints: [
-      emptyView.topAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: 8),
-      emptyView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      emptyView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      emptyView.bottomAnchor.constraint(equalTo: bottomAnchor)
+    // configure button
+    let containerView = UIView()
+    containerView.backgroundColor = .white
+    switchButton.setTitle("Switch to Night Mode", for: .normal)
+    addSubview(containerView, constraints: [
+      containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: 16),
+      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      containerView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -16)
+    ])
+    containerView.addSubview(switchButton, constraints: [
+      switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      switchButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
     ])
   }
 

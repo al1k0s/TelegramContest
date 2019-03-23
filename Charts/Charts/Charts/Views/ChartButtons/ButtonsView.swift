@@ -29,6 +29,7 @@ final class ButtonsView: UIView {
     tableView.register(ButtonCell.self, forCellReuseIdentifier: "ButtonCell")
     tableView.delegate = self
     tableView.dataSource = self
+    tableView.isScrollEnabled = false
     addSubview(tableView, constraints: [
       tableView.topAnchor.constraint(equalTo: topAnchor),
       tableView.leadingAnchor.constraint(equalTo: leadingAnchor),

@@ -76,15 +76,15 @@ final class BottomPlotView: UIView {
     guard let chartRange = chartRange else {
       return
     }
-    let startDate = chartRange.range.lowerBound.timeIntervalSince1970
-    let endDate = chartRange.range.upperBound.timeIntervalSince1970
+    let startDate = chartRange.xCoordinates.first!.timeIntervalSince1970
+    let endDate = chartRange.xCoordinates.last!.timeIntervalSince1970
     let timeFrame = endDate - startDate
 
     for axe in chartRange.activeYAxes {
       let (width, height) = (UIScreen.main.bounds.width - 32, bounds.height)
       // normalize values to view coordinates
-      let min = Swift.max(0, chartRange.indicies.lowerBound - 1)
-      let max = Swift.min(chartRange.xCoordinates.count - 1, chartRange.indicies.upperBound + 1)
+      let min = 0
+      let max = chartRange.xCoordinates.count - 1
       let newValues = zip(
         chartRange.xCoordinates[min...max],
         axe.coordinates[min...max]
