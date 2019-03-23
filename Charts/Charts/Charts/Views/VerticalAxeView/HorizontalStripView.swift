@@ -13,6 +13,14 @@ final class HorizontalStripView: UIView {
   private let numberLabel = UILabel()
   private let lineView = UIView()
 
+  var number: String {
+    get {
+      return numberLabel.text ?? ""
+    } set {
+      numberLabel.text = newValue
+    }
+  }
+
   init(frame: CGRect, number: String) {
     super.init(frame: frame)
     setup(number: number)

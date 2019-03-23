@@ -11,9 +11,12 @@ import UIKit
 final class VerticalAxeView: UIView {
 
   private var stripViews: [HorizontalStripView] = []
+  private var hiddenStripViews = (0...Constants.numberOfStrips)
+    .map { _ in HorizontalStripView(frame: .zero, number: "") }
+  private var newStripViews: [HorizontalStripView] = []
   private let viewWidth: CGFloat
 
-  private var maxValue = 250.0 {
+  var maxValue = 250.0 {
     didSet {
       updateMaxValue(from: oldValue, newValue: maxValue)
     }
@@ -36,99 +39,90 @@ final class VerticalAxeView: UIView {
   func updateMaxValue(from previousValue: Double, newValue: Double) {
     let diff = previousValue - newValue
 
-    let animatableStripViews = self.stripViews.dropLast()
+    let animatableStripViews = Array(stripViews.dropLast())
+    let distanceToMove: (Int) -> CGFloat
+    let newY: (Int) -> CGFloat
+    let newViewsMove: (Int) -> CGFloat
 
     if diff > 0 {
-      UIView.animate(withDuration: 0.5, animations: {
-        for (index, view) in animatableStripViews.enumerated() {
-          let distanceToMove = Constants.stripHeight * CGFloat(Constants.numberOfStrips - index + 1)
-          view.frame.origin.y -= distanceToMove
-          view.alpha = 0
-        }
-      }, completion: { _ in
-        animatableStripViews.forEach { $0.removeFromSuperview() }
-        self.stripViews = Array(self.stripViews.prefix(1))
-      })
-
-      var newStripViews: [HorizontalStripView] = []
-      let stripHeight = Constants.stripHeight
-      for index in 0..<Constants.numberOfStrips {
-        let frame = CGRect(x: 0,
-                           y: CGFloat(Constants.numberOfStrips + 1) * stripHeight,
-                           width: self.viewWidth,
-                           height: 18.5)
-        let number = String(step * Double(Constants.numberOfStrips - index))
-        let stripView = HorizontalStripView(frame: frame,
-                                            number: number)
-        stripView.alpha = 0.2
-        self.stripViews.append(stripView)
-        newStripViews.append(stripView)
-        self.addSubview(stripView)
+      distanceToMove = { index in
+        Constants.stripHeight * CGFloat(Constants.numberOfStrips - index + 1)
       }
-
-      UIView.animate(withDuration: 0.5,
-                     animations: {
-                      for (index, view) in newStripViews.enumerated() {
-                        view.frame.origin.y = CGFloat(index) * stripHeight
-                        view.alpha = 1
-                      }
-      })
+      newY = { _ in
+        Constants.stripHeight * CGFloat(Constants.numberOfStrips)
+      }
+      newViewsMove = { index in
+        CGFloat(index) * Constants.stripHeight
+      }
     } else {
-      UIView.animate(withDuration: 0.5, animations: {
-        for (index, view) in animatableStripViews.enumerated() {
-          let distanceToMove = Constants.stripHeight * CGFloat(Constants.numberOfStrips - index) / 2
-          view.frame.origin.y += distanceToMove
-          view.alpha = 0
-        }
-      }, completion: { _ in
-        animatableStripViews.forEach { $0.removeFromSuperview() }
-        self.stripViews = Array(self.stripViews.prefix(1))
-      })
-
-
-      var newStripViews: [HorizontalStripView] = []
-      let stripHeight = Constants.stripHeight
-      for index in 0..<Constants.numberOfStrips {
-        let frame = CGRect(x: 0,
-                           y: Constants.stripHeight * -CGFloat(Constants.numberOfStrips - index + 1),
-                           width: self.viewWidth,
-                           height: 18.5)
-        let number = String(step * Double(Constants.numberOfStrips - index))
-        let stripView = HorizontalStripView(frame: frame,
-                                            number: number)
-        stripView.alpha = 0.2
-        self.stripViews.append(stripView)
-        newStripViews.append(stripView)
-        self.addSubview(stripView)
+      distanceToMove = { index in
+        return Constants.stripHeight * -CGFloat(Constants.numberOfStrips - index)
       }
-
-      UIView.animate(withDuration: 0.5,
-                     animations: {
-                      for (index, view) in newStripViews.enumerated() {
-                        view.frame.origin.y = CGFloat(index) * stripHeight
-                        view.alpha = 1
-                      }
-      })
+      newY = { _ in
+        -Constants.stripHeight
+      }
+      newViewsMove = { index in
+        CGFloat(index) * Constants.stripHeight
+      }
     }
+
+    UIView.animate(withDuration: 0.5, animations: {
+      for (index, view) in animatableStripViews.enumerated() {
+        view.frame.origin.y -= distanceToMove(index)
+        view.alpha = 0
+      }
+    }, completion: { _ in
+      animatableStripViews.forEach { $0.removeFromSuperview() }
+      self.hiddenStripViews = animatableStripViews
+      self.stripViews = Array(self.stripViews.suffix(1)) + self.newStripViews
+      self.newStripViews = []
+    })
+
+    for (index, stripView) in hiddenStripViews.enumerated() {
+      let frame = CGRect(x: 0,
+                         y: newY(index),
+                         width: self.viewWidth,
+                         height: 18.5)
+      stripView.frame = frame
+      stripView.alpha = 0.2
+      stripView.number = lineNumber(index)
+      stripViews.append(stripView)
+      newStripViews.append(stripView)
+      hiddenStripViews = []
+      addSubview(stripView)
+    }
+
+    UIView.animate(withDuration: 0.5,
+                   animations: {
+                    for (index, view) in self.newStripViews.enumerated() {
+                      view.frame.origin.y = newViewsMove(index)
+                      view.alpha = 1
+                    }
+    })
+  }
+
+  private func lineNumber(_ index: Int) -> String {
+    return String(Int(step * Double(Constants.numberOfStrips - index)))
   }
 
   private func setup() {
     let stripHeight = Constants.stripHeight
-    for iter in 0..<Constants.numberOfStrips + 1 {
-      let frame = CGRect(x: 0, y: CGFloat(iter) * stripHeight, width: viewWidth, height: 18.5)
-      let stripView = HorizontalStripView(frame: frame, number: String(step * Double(Constants.numberOfStrips - iter)))
+    for index in 0..<Constants.numberOfStrips + 1 {
+      let frame = CGRect(x: 0, y: CGFloat(index) * stripHeight, width: viewWidth, height: 18.5)
+      let stripView = HorizontalStripView(frame: frame,
+                                          number: lineNumber(index))
       stripViews.append(stripView)
       addSubview(stripView)
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-      self.maxValue = 90
-    }
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { _ in
+      self.maxValue = self.maxValue == 100 ? 200 : 100
+    })
   }
 
   enum Constants {
     static let numberOfStrips = 5
     static let topPadding: CGFloat = 25
-    static let stripHeight: CGFloat = 40
+    static let stripHeight: CGFloat = 44
   }
 }
