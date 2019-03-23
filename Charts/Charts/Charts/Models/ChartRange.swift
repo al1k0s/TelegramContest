@@ -56,4 +56,8 @@ class ChartRange {
   var max: Double {
     return chart.yAxes.map({ $0.coordinates[indicies].max()! }).max()!
   }
+
+  var min: Double {
+    return chart.yAxes.map({ $0.coordinates[indicies].min()! }).min()!
+  }
 }
