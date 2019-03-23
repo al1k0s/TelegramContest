@@ -35,8 +35,8 @@ final class ChartView: UIView {
   private let buttonsView = ButtonsView()
   private var buttonsHeightConstraint: NSLayoutConstraint!
   private let containerView = UIView()
+  private let infoView = InfoView()
   private let switchButton = UIButton()
-
   private let plotView = PlotView(isMainPlot: true)
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
@@ -101,6 +101,13 @@ final class ChartView: UIView {
       plotView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
       plotView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       plotView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
+    ])
+
+    addSubview(infoView, constraints: [
+      infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
+      infoView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
+      infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
+      infoView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
 
     // configure date axe view
