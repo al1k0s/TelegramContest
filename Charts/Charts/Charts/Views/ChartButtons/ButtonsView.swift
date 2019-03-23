@@ -27,9 +27,11 @@ final class ButtonsView: UIView {
 
   private func setup() {
     tableView.register(ButtonCell.self, forCellReuseIdentifier: "ButtonCell")
+    tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
     tableView.isScrollEnabled = false
+    tableView.backgroundColor = .clear
     addSubview(tableView, constraints: [
       tableView.topAnchor.constraint(equalTo: topAnchor),
       tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -42,11 +44,19 @@ final class ButtonsView: UIView {
     self.props = props
     tableView.reloadData()
   }
+
+  func reload() {
+    tableView.reloadData()
+  }
 }
 
 extension ButtonsView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     yAxesChanged?(indexPath.row)
+  }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 40.0
   }
 }
 

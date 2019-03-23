@@ -10,9 +10,13 @@ import UIKit
 
 final class ChartView: UIView {
 
+  private var isLight: Bool = true
+
+  private var chartRange: ChartRange!
+  private let contentContainer = UIView()
   private let titleLabel = with(UILabel()) { titleLabel in
     titleLabel.font = UIFont.systemFont(ofSize: 17)
-    titleLabel.textColor = UIColor.white
+    titleLabel.textColor = UIColor(red: 137.0 / 255, green: 137.0 / 255, blue: 142.0 / 255, alpha: 1.0)
     titleLabel.text = "FOLLOWERS"
   }
 
@@ -29,6 +33,8 @@ final class ChartView: UIView {
   )
   private let controlPanelView = ControlPanelView()
   private let buttonsView = ButtonsView()
+  private var buttonsHeightConstraint: NSLayoutConstraint!
+  private let containerView = UIView()
   private let switchButton = UIButton()
 
   private let plotView = PlotView(isMainPlot: true)
@@ -49,6 +55,8 @@ final class ChartView: UIView {
     }
   }
 
+  var changeBackground: ((Bool) -> ())?
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
@@ -60,7 +68,7 @@ final class ChartView: UIView {
   }
 
   private func setup() {
-    backgroundColor = .gray
+    backgroundColor = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
 
     // configure title label
     addSubview(titleLabel, constraints: [
@@ -68,7 +76,6 @@ final class ChartView: UIView {
       titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
     ])
 
-    let contentContainer = UIView()
     contentContainer.backgroundColor = .white
     addSubview(contentContainer, constraints: [
       contentContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
@@ -76,16 +83,18 @@ final class ChartView: UIView {
       contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
 
-    plotView.translatesAutoresizingMaskIntoConstraints = false
-    contentContainer.addSubview(plotView)
 
     // configure vertical axes view
+    verticalAxeView.clipsToBounds = true
     contentContainer.addSubview(verticalAxeView, constraints: [
       verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
       verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
       verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
     ])
+
+    plotView.translatesAutoresizingMaskIntoConstraints = false
+    contentContainer.addSubview(plotView)
 
     NSLayoutConstraint.activate([
       plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
@@ -111,24 +120,29 @@ final class ChartView: UIView {
     ])
 
     // configure buttons view
+    buttonsHeightConstraint = buttonsView.heightAnchor.constraint(equalToConstant: 0)
     contentContainer.addSubview(buttonsView, constraints: [
       buttonsView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor),
       buttonsView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
       buttonsView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
-      buttonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor)
+      buttonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor),
+      buttonsHeightConstraint
     ])
 
     // configure button
-    let containerView = UIView()
     containerView.backgroundColor = .white
     switchButton.setTitle("Switch to Night Mode", for: .normal)
+    switchButton.setTitleColor(UIColor(red: 36.0 / 255, green: 134.0 / 255, blue: 227.0 / 255, alpha: 1.0), for: .normal)
+    switchButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
     addSubview(containerView, constraints: [
       containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: 16),
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      containerView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -16)
+      containerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -16)
     ])
     containerView.addSubview(switchButton, constraints: [
+      switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+      switchButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
       switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
       switchButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
     ])
@@ -148,10 +162,43 @@ final class ChartView: UIView {
       return ButtonCell.Props.init(
         title: axe.name,
         color: UIColor(hexString: axe.color),
-        isChecked: chartRange.activeYAxes.contains(axe)
+        isChecked: chartRange.activeYAxes.contains(axe),
+        isLight: isLight,
+        isLast: chartRange.allYAxes.last == axe
       )
     }
+    buttonsHeightConstraint.constant = CGFloat(props.count * 40)
     buttonsView.render(props: props)
+    self.chartRange = chartRange
+  }
+
+  @objc
+  private func handleTap(_ button: UIButton) {
+    isLight.toggle()
+    if isLight {
+      backgroundColor = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
+      titleLabel.textColor = UIColor(red: 137.0 / 255, green: 137.0 / 255, blue: 142.0 / 255, alpha: 1.0)
+      contentContainer.backgroundColor = .white
+      containerView.backgroundColor = .white
+    } else {
+      backgroundColor = UIColor(red: 24.0 / 255, green: 34.0 / 255, blue: 44.0 / 255, alpha: 1.0)
+      titleLabel.textColor = UIColor(red: 91.0 / 255, green: 106.0 / 255, blue: 125.0 / 255, alpha: 1.0)
+      contentContainer.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
+      containerView.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
+    }
+    let props = chartRange!.allYAxes.map { axe in
+      return ButtonCell.Props.init(
+        title: axe.name,
+        color: UIColor(hexString: axe.color),
+        isChecked: chartRange.activeYAxes.contains(axe),
+        isLight: isLight,
+        isLast: chartRange!.allYAxes.last == axe
+      )
+    }
+    buttonsHeightConstraint.constant = CGFloat(props.count * 40)
+    buttonsView.render(props: props)
+    verticalAxeView.toggleMode(isLight: isLight)
+    changeBackground?(isLight)
   }
 
   enum Constants {

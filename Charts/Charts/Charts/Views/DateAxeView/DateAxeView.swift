@@ -187,7 +187,7 @@ final class DateAxeView: UIView {
   private func createLabel(xCoord: Double, date: Date) -> UILabel {
     let label = UILabel(frame: CGRect(x: xCoord - 23.0, y: 0.0, width: 46.0, height: Double(bounds.height)))
     label.font = UIFont.systemFont(ofSize: 13)
-    label.textColor = .gray
+    label.textColor = UIColor(red: 156.0 / 255, green: 162.0 / 255, blue: 166.0 / 255, alpha: 1.0)
     label.text = makeText(from: date)
     label.alpha = 0.0
     addSubview(label)

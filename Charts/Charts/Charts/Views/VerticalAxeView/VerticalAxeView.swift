@@ -10,6 +10,7 @@ import UIKit
 
 final class VerticalAxeView: UIView {
 
+  private var isLight: Bool = false
   private var stripViews: [HorizontalStripView] = []
   private var currentAnimated: [HorizontalStripView] = []
   private let viewWidth: CGFloat
@@ -38,6 +39,12 @@ final class VerticalAxeView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  func toggleMode(isLight: Bool) {
+    stripViews.forEach { $0.toggleMode(isLight: isLight) }
+    //currentAnimated.forEach { $0.toggleMode(isLight: isLight) }
+    self.isLight = isLight
+  }
+
   func update(from previousValue: Double, newValue: Double) {
     guard previousValue != newValue else { return }
 
@@ -55,8 +62,8 @@ final class VerticalAxeView: UIView {
 
     var hiddenStripViews = (0...(Constants.numberOfStrips))
       .map { _ -> HorizontalStripView in
-        let stripView = HorizontalStripView(frame: .zero, number: "")
-        stripView.alpha = 0.3
+        let stripView = HorizontalStripView(frame: .zero, number: "", isLight: isLight)
+        stripView.alpha = 1.0
         return stripView
     }
     let animatableStripViews = stripViews
@@ -103,7 +110,7 @@ final class VerticalAxeView: UIView {
                          height: 18.5)
       addSubview(stripView)
       stripView.frame = frame
-      stripView.alpha = 0.2
+      stripView.alpha = 1.0
       stripView.number = lineNumber(index)
     }
 
@@ -111,7 +118,7 @@ final class VerticalAxeView: UIView {
                    animations: {
                     for (index, view) in self.stripViews.enumerated() {
                       view.frame.origin.y = newViewsMove(index)
-                      view.alpha = 0.3
+                      view.alpha = 1.0
                     }
     })
   }
@@ -132,8 +139,9 @@ final class VerticalAxeView: UIView {
     let stripHeight = Constants.stripHeight
     let frame = CGRect(x: 0, y: CGFloat(index) * stripHeight, width: viewWidth, height: 18.5)
     let stripView = HorizontalStripView(frame: frame,
-                                        number: lineNumber(index))
-    stripView.alpha = 0.3
+                                        number: lineNumber(index),
+                                        isLight: isLight)
+    stripView.alpha = 1.0
     addSubview(stripView)
     return stripView
   }

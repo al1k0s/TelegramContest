@@ -21,19 +21,30 @@ final class HorizontalStripView: UIView {
     }
   }
 
-  init(frame: CGRect, number: String) {
+  init(frame: CGRect, number: String, isLight: Bool) {
     super.init(frame: frame)
-    setup(number: number)
+    setup(number: number, isLight: isLight)
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  private func setup(number: String) {
+  func toggleMode(isLight: Bool) {
+    let lightNumber = UIColor(red: 173.0 / 255, green: 178.0 / 255, blue: 182.0 / 255, alpha: 1.0)
+    let darkNumber = UIColor(red: 80.0 / 255, green: 95.0 / 255, blue: 111.0 / 255, alpha: 1.0)
+    numberLabel.textColor = isLight ? lightNumber : darkNumber
+    let lightLine = UIColor(red: 248.0 / 255, green: 248.0 / 255, blue: 248.0 / 255, alpha: 1.0)
+    let darkLine = UIColor(red: 30.0 / 255, green: 42.0 / 255, blue: 55.0 / 255, alpha: 1.0)
+    lineView.backgroundColor = isLight ? lightLine : darkLine
+  }
+
+  private func setup(number: String, isLight: Bool) {
     // configure number label
     numberLabel.font = UIFont.systemFont(ofSize: 11)
-    numberLabel.textColor = .gray
+    let lightNumber = UIColor(red: 173.0 / 255, green: 178.0 / 255, blue: 182.0 / 255, alpha: 1.0)
+    let darkNumber = UIColor(red: 80.0 / 255, green: 95.0 / 255, blue: 111.0 / 255, alpha: 1.0)
+    numberLabel.textColor = isLight ? lightNumber : darkNumber
     numberLabel.text = number
     addSubview(numberLabel, constraints: [
       numberLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -41,7 +52,9 @@ final class HorizontalStripView: UIView {
     ])
 
     // configure line view
-    lineView.backgroundColor = .gray
+    let lightLine = UIColor(red: 248.0 / 255, green: 248.0 / 255, blue: 248.0 / 255, alpha: 1.0)
+    let darkLine = UIColor(red: 30.0 / 255, green: 42.0 / 255, blue: 55.0 / 255, alpha: 1.0)
+    lineView.backgroundColor = isLight ? lightLine : darkLine
     addSubview(lineView, constraints: [
       lineView.topAnchor.constraint(equalTo: numberLabel.bottomAnchor, constant: 4),
       lineView.leadingAnchor.constraint(equalTo: leadingAnchor),
