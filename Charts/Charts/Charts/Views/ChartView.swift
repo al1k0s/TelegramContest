@@ -102,10 +102,15 @@ final class ChartView: UIView {
     ])
   }
 
-  func updateupdateChartRange(_ chartRange: ChartRange) {
+  func rangeUpdated(_ chartRange: ChartRange) {
     verticalAxeView.maxValue = chartRange.max
     plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
+  }
+
+  func yAxesUpdated(_ chartRange: ChartRange) {
+    verticalAxeView.maxValue = chartRange.max
+    plotView.updateChart(chartRange)
     controlPanelView.updateChartRange(chartRange)
   }
 
