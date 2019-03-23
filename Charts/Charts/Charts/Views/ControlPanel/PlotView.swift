@@ -11,6 +11,12 @@ import UIKit
 final class PlotView: UIView {
 
   private var chartRange: ChartRange?
+  private var boundForChange: (Double, Double) = (-1, -1)
+  private var boundForCheck: (Double, Double) = (-1, -1)
+  private var isChanging: Bool = false
+  private var numberOfIterations: Int = 0
+  private let maxNumber = 10
+  private var displayLink: CADisplayLink?
   private var shapeLayers: [CAShapeLayer] = []
 
   override init(frame: CGRect) {
@@ -24,7 +30,43 @@ final class PlotView: UIView {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
+    if chartRange.min != boundForCheck.0 || chartRange.max != boundForCheck.1 {
+      updateMinMax(chartRange)
+      boundForCheck = (chartRange.min, chartRange.max)
+    } else if !isChanging {
+      setNeedsDisplay()
+    }
+  }
+
+  private func updateMinMax(_ chartRange: ChartRange) {
+    guard boundForCheck.0 != -1 else {
+      boundForChange = (chartRange.min, chartRange.max)
+      return
+    }
+    isChanging = true
+    if displayLink != nil {
+      removeLink()
+    }
+    displayLink = CADisplayLink(target: self, selector: #selector(update))
+    displayLink?.add(to: .main, forMode: .common)
+  }
+
+  @objc func update() {
+    numberOfIterations += 1
     setNeedsDisplay()
+    if numberOfIterations >= maxNumber {
+      removeLink()
+    }
+  }
+
+  private func removeLink() {
+    isChanging = numberOfIterations != maxNumber
+    displayLink?.invalidate()
+    displayLink = nil
+    let newMin = boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumber))
+    let newMax = boundForChange.1 + (boundForCheck.1 - boundForChange.1) * (Double(numberOfIterations) / Double(maxNumber))
+    numberOfIterations = 0
+    boundForChange = (newMin, newMax)
   }
 
   override func draw(_ rect: CGRect) {
@@ -52,9 +94,17 @@ final class PlotView: UIView {
           let (date, value) = arg
           // get x value from 2 to view.width - 2
           let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width - 4)) + 2
-          let difference = Double(chartRange.max - 0)//chartRange.min)
+          let difference = Double(chartRange.max - chartRange.min)
           // get y value from 0 to view.height
-          let y = (1 - Double(value - 0/*chartRange.min*/) / difference) * Double(height)
+          let y: Double
+          if isChanging { //numberOfIterations > 0 {
+            let oldDiff = boundForChange.1 - boundForChange.0
+            let oldY = (1 - Double(value - boundForChange.0) / oldDiff) * Double(height)
+            let newY = (1 - Double(value - chartRange.min) / difference) * Double(height)
+            y = oldY + (newY - oldY) * (Double(numberOfIterations) / Double(maxNumber))
+          } else {
+            y = (1 - Double(value - chartRange.min) / difference) * Double(height)
+          }
           return CGPoint(x: x, y: y)
         }
       

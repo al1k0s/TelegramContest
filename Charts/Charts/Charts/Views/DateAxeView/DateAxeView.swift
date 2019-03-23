@@ -170,7 +170,6 @@ final class DateAxeView: UIView {
     guard labels.count > 1 else { return }
     let difference = labels[1].frame.minX - labels[0].frame.minX
     if difference < 50 {
-      print("Increase")
       interval *= 2
       let needToRemove = labels.enumerated().filter { $0.0 % 2 == 1 }.map { $0.1 }
       let datesForRemoved = dates.enumerated().filter { $0.0 % 2 == 1 }.map { $0.1 }
