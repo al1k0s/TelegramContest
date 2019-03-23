@@ -68,7 +68,6 @@ final class ChartView: UIView {
       verticalAxeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
     ])
-    verticalAxeView.isHidden = true
 
     NSLayoutConstraint.activate([
       plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
