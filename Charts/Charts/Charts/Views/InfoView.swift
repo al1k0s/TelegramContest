@@ -39,6 +39,7 @@ class InfoView: UIView {
     $0.font = UIFont.systemFont(ofSize: 12, weight: .light)
   }
 
+  var containerLeftConstraint: NSLayoutConstraint?
   let container = with(UIView()) {
     $0.layer.cornerRadius = 4
     $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
@@ -65,6 +66,7 @@ class InfoView: UIView {
     $0.spacing = 4
   }
 
+  var lineLeftConstraint: NSLayoutConstraint?
   let line = with(UIView()) {
     $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
   }
@@ -96,9 +98,10 @@ class InfoView: UIView {
     self.addGestureRecognizer(panRecognizer)
     tapRecognizer.require(toFail: panRecognizer)
 
+    containerLeftConstraint = container.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     self.addSubview(container, constraints: [
       container.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-      container.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+      containerLeftConstraint!
     ])
 
     dateStackView.addArrangedSubview(dayMonthLabel)
@@ -114,10 +117,12 @@ class InfoView: UIView {
       stackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
     ])
 
+    lineLeftConstraint = line.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     self.addSubview(line, constraints: [
       line.widthAnchor.constraint(equalToConstant: 1),
       line.topAnchor.constraint(equalTo: container.bottomAnchor),
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+      lineLeftConstraint!
     ])
   }
 
@@ -139,6 +144,8 @@ class InfoView: UIView {
   }
 
   private func render(the data: InfoViewModel) {
+    containerLeftConstraint?.constant = min(max((data.charts[0].location.x * self.bounds.width) - container.bounds.width / 2, 0), self.bounds.width - container.bounds.width)
+    lineLeftConstraint?.constant = data.charts[0].location.x * self.bounds.width
     resetCircles()
     dayMonthLabel.text = data.dayMonth
     yearLabel.text = data.year
