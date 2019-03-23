@@ -46,9 +46,12 @@ class ChartRange {
 
   var indicies: ClosedRange<Int> {
     let coordinates = chart.x.coordinates
-    let lowerBound = coordinates.indices.first(where: { Float($0) / Float(coordinates.count) > chosenRange.lowerBound })!
-    let upperBound = coordinates.indices.last(where: { Float($0) / Float(coordinates.count) < chosenRange.upperBound })!
-    return lowerBound...upperBound
+    let difference = coordinates.last!.timeIntervalSince1970 - coordinates.first!.timeIntervalSince1970
+    let lowerBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.lowerBound)
+    let upperBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.upperBound)
+    let lowerIndex = coordinates.firstIndex(where: { $0.timeIntervalSince1970 > lowerBound })!
+    let upperIndex = coordinates.lastIndex(where: { $0.timeIntervalSince1970 < upperBound })!
+    return lowerIndex...upperIndex
   }
 
   var max: Double {

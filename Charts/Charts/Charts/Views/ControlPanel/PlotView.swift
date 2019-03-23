@@ -32,7 +32,7 @@ final class PlotView: UIView {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
-    if minFromChart() != boundForCheck.0 || maxFromChart() != boundForCheck.1 {
+    if /*minFromChart() != boundForCheck.0 ||*/ maxFromChart() != boundForCheck.1 {
       updateMinMax(chartRange)
       boundForCheck = (minFromChart(), maxFromChart())
     } else if !isChanging {
@@ -41,7 +41,7 @@ final class PlotView: UIView {
   }
 
   private func minFromChart() -> Double {
-    return isMainPlot ? chartRange!.min : chartRange!.allMin
+    return 0.0//isMainPlot ? chartRange!.min : chartRange!.allMin
   }
 
   private func maxFromChart() -> Double {
@@ -49,7 +49,7 @@ final class PlotView: UIView {
   }
 
   private func updateMinMax(_ chartRange: ChartRange) {
-    guard boundForCheck.0 != -1 else {
+    guard boundForCheck.1 != -1 else {
       boundForChange = (minFromChart(), maxFromChart())
       return
     }
@@ -73,7 +73,7 @@ final class PlotView: UIView {
     isChanging = numberOfIterations != maxNumber
     displayLink?.invalidate()
     displayLink = nil
-    let newMin = boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumber))
+    let newMin = 0.0//boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumber))
     let newMax = boundForChange.1 + (boundForCheck.1 - boundForChange.1) * (Double(numberOfIterations) / Double(maxNumber))
     numberOfIterations = 0
     boundForChange = (newMin, newMax)
@@ -107,8 +107,8 @@ final class PlotView: UIView {
           // get y value from 0 to view.height
           let y: Double
           if isChanging { //numberOfIterations > 0 {
-            let oldDiff = boundForChange.1 - boundForChange.0
-            let oldY = (1 - Double(value - boundForChange.0) / oldDiff) * Double(height)
+            let oldDiff = boundForChange.1 - 0/*boundForChange.0*/
+            let oldY = (1 - Double(value - 0/*boundForChange.0*/) / oldDiff) * Double(height)
             let newY = (1 - Double(value - minFromChart()) / difference) * Double(height)
             y = oldY + (newY - oldY) * (Double(numberOfIterations) / Double(maxNumber))
           } else {
