@@ -41,7 +41,7 @@ class InfoView: UIView {
 
   let container = with(UIView()) {
     $0.layer.cornerRadius = 4
-    $0.backgroundColor = .gray
+    $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
   }
 
   let dateStackView = with(UIStackView()) {
@@ -66,7 +66,7 @@ class InfoView: UIView {
   }
 
   let line = with(UIView()) {
-    $0.backgroundColor = .gray
+    $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
   }
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
@@ -82,7 +82,19 @@ class InfoView: UIView {
 
   var isLight = true {
     didSet {
-      lastViewModel.map(render)
+      circles.forEach { circle in
+        circle.backgroundColor = isLight ? .white : UIColor(red: 34 / 255,
+                                                            green: 47 / 255,
+                                                            blue: 62 / 255,
+                                                            alpha: 1.0)
+        let color = isLight ? UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
+          UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
+        container.backgroundColor = color
+        line.backgroundColor = color
+        [dayMonthLabel, yearLabel].forEach {
+          $0.textColor = isLight ? .black : .white
+        }
+      }
     }
   }
 
@@ -158,10 +170,9 @@ class InfoView: UIView {
                                               $0.layer.cornerRadius = 5
                                               $0.layer.borderWidth = 2
                                               $0.layer.borderColor = chart.color.cgColor
-                                              $0.backgroundColor = isLight ? .white : UIColor(red: 239.0 / 255,
-                                                                                              green: 239.0 / 255,
-                                                                                              blue: 244.0 / 255,
-                                                                                              alpha: 1.0)
+                                              $0.backgroundColor = isLight ?
+                                                UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
+                                               UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
       }
       self.addSubview(circle)
       circles.append(circle)
