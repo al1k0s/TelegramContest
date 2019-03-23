@@ -58,12 +58,8 @@ final class ChartView: UIView {
       titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
     ])
 
-    addSubview(plotView, constraints: [
-      plotView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-      plotView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      plotView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-      plotView.heightAnchor.constraint(equalToConstant: 240)
-    ])
+    plotView.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(plotView)
 
     // configure vertical axes view
     addSubview(verticalAxeView, constraints: [
@@ -71,6 +67,13 @@ final class ChartView: UIView {
       verticalAxeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
       verticalAxeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
+    ])
+
+    NSLayoutConstraint.activate([
+      plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
+      plotView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
+      plotView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
+      plotView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
 
     // configure date axe view
