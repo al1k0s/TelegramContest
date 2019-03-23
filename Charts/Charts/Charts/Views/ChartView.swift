@@ -180,6 +180,7 @@ final class ChartView: UIView {
     verticalAxeView.maxValue = chartRange.max
     plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
+    infoView.rangeChanged()
   }
 
   func yAxesUpdated(_ chartRange: ChartRange) {
@@ -197,6 +198,7 @@ final class ChartView: UIView {
     }
     buttonsHeightConstraint.constant = CGFloat(props.count * 40)
     buttonsView.render(props: props)
+    infoView.rangeChanged()
     self.chartRange = chartRange
   }
 
