@@ -11,6 +11,7 @@ import UIKit
 final class VerticalAxeView: UIView {
 
   private var stripViews: [HorizontalStripView] = []
+  private var currentAnimated: [HorizontalStripView] = []
   private let viewWidth: CGFloat
 
   var maxValue = 200.0 {
@@ -21,6 +22,10 @@ final class VerticalAxeView: UIView {
 
   private var step: Double {
     return maxValue / Double(Constants.numberOfStrips)
+  }
+
+  private var isAnimating: Bool {
+    return !currentAnimated.isEmpty
   }
 
   init(width: CGFloat) {
@@ -36,6 +41,12 @@ final class VerticalAxeView: UIView {
   func update(from previousValue: Double, newValue: Double) {
     guard previousValue != newValue else { return }
 
+    for view in currentAnimated {
+      UIView.animate(withDuration: 0.07) {
+        view.alpha = 0
+      }
+    }
+
     let diff = previousValue - newValue
 
     let distanceToMove: (Int) -> CGFloat
@@ -43,16 +54,22 @@ final class VerticalAxeView: UIView {
     let newViewsMove: (Int) -> CGFloat
 
     var hiddenStripViews = (0...(Constants.numberOfStrips))
-      .map { _ in HorizontalStripView(frame: .zero, number: "") }
+      .map { _ -> HorizontalStripView in
+        let stripView = HorizontalStripView(frame: .zero, number: "")
+        stripView.alpha = 0.3
+        return stripView
+    }
     let animatableStripViews = stripViews
     self.stripViews = hiddenStripViews
+
+    currentAnimated = stripViews + hiddenStripViews
 
     if diff > 0 {
       distanceToMove = { index in
         Constants.stripHeight * CGFloat(Constants.numberOfStrips - index + 1)
       }
-      newY = { _ in
-        Constants.stripHeight * CGFloat(Constants.numberOfStrips)
+      newY = { index in
+        Constants.stripHeight * CGFloat(index + 1)
       }
       newViewsMove = { index in
         CGFloat(index) * Constants.stripHeight
@@ -61,8 +78,8 @@ final class VerticalAxeView: UIView {
       distanceToMove = { index in
         return Constants.stripHeight * -CGFloat(Constants.numberOfStrips - index)
       }
-      newY = { _ in
-        -Constants.stripHeight
+      newY = { index in
+        CGFloat(index - 2) * Constants.stripHeight
       }
       newViewsMove = { index in
         CGFloat(index) * Constants.stripHeight
@@ -94,7 +111,7 @@ final class VerticalAxeView: UIView {
                    animations: {
                     for (index, view) in self.stripViews.enumerated() {
                       view.frame.origin.y = newViewsMove(index)
-                      view.alpha = 1
+                      view.alpha = 0.3
                     }
     })
   }
@@ -116,6 +133,7 @@ final class VerticalAxeView: UIView {
     let frame = CGRect(x: 0, y: CGFloat(index) * stripHeight, width: viewWidth, height: 18.5)
     let stripView = HorizontalStripView(frame: frame,
                                         number: lineNumber(index))
+    stripView.alpha = 0.3
     addSubview(stripView)
     return stripView
   }
