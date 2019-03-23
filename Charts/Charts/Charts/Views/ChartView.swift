@@ -10,7 +10,12 @@ import UIKit
 
 final class ChartView: UIView {
 
-  private let titleLabel = UILabel()
+  private let titleLabel = with(UILabel()) { titleLabel in
+    titleLabel.font = UIFont.systemFont(ofSize: 17)
+    titleLabel.textColor = UIColor.gray
+    titleLabel.text = "FOLLOWERS"
+  }
+
   let verticalAxeView = VerticalAxeView(
     width: UIScreen.main.bounds.width - 2 * Constants.padding
   )
@@ -23,6 +28,8 @@ final class ChartView: UIView {
     )
   )
   private let controlPanelView = ControlPanelView()
+
+  private let plotView = PlotView()
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
     get {
@@ -46,12 +53,16 @@ final class ChartView: UIView {
     backgroundColor = .white
 
     // configure title label
-    titleLabel.font = UIFont.systemFont(ofSize: 17)
-    titleLabel.textColor = UIColor.gray
-    titleLabel.text = "FOLLOWERS"
     addSubview(titleLabel, constraints: [
       titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
       titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
+    ])
+
+    addSubview(plotView, constraints: [
+      plotView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+      plotView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+      plotView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      plotView.heightAnchor.constraint(equalToConstant: 240)
     ])
 
     // configure vertical axes view
@@ -89,6 +100,8 @@ final class ChartView: UIView {
   }
 
   func updateupdateChartRange(_ chartRange: ChartRange) {
+    verticalAxeView.maxValue = chartRange.max
+    plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
     controlPanelView.updateChartRange(chartRange)
   }

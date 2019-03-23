@@ -16,7 +16,7 @@ final class VerticalAxeView: UIView {
   private var newStripViews: [HorizontalStripView] = []
   private let viewWidth: CGFloat
 
-  var maxValue = 250.0 {
+  var maxValue = 200.0 {
     didSet {
       updateMaxValue(from: oldValue, newValue: maxValue)
     }
@@ -37,6 +37,7 @@ final class VerticalAxeView: UIView {
   }
 
   func updateMaxValue(from previousValue: Double, newValue: Double) {
+    guard previousValue != newValue else { return }
     let diff = previousValue - newValue
 
     let animatableStripViews = Array(stripViews.dropLast())
@@ -114,10 +115,6 @@ final class VerticalAxeView: UIView {
       stripViews.append(stripView)
       addSubview(stripView)
     }
-
-    Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { _ in
-      self.maxValue = self.maxValue == 100 ? 200 : 100
-    })
   }
 
   enum Constants {

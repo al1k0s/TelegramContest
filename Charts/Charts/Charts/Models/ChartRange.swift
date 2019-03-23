@@ -12,6 +12,8 @@ class ChartRange {
   var chart: Chart
   var chosenRange: ClosedRange<Float>
 
+  var enabledValues: [YAxis] = []
+
   init(chart: Chart, chosenRange: ClosedRange<Float>) {
     self.chosenRange = chosenRange
     self.chart = chart
@@ -25,5 +27,16 @@ class ChartRange {
     let lowerBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.lowerBound)
     let upperBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.upperBound)
     return Date(timeIntervalSince1970: lowerBound)...Date(timeIntervalSince1970: upperBound)
+  }
+
+  var indicies: ClosedRange<Int> {
+    let coordinates = chart.x.coordinates
+    let lowerBound = coordinates.indices.first(where: { Float($0) / Float(coordinates.count) > chosenRange.lowerBound })!
+    let upperBound = coordinates.indices.last(where: { Float($0) / Float(coordinates.count) < chosenRange.upperBound })!
+    return lowerBound...upperBound
+  }
+
+  var max: Double {
+    return chart.yAxes.map({ $0.coordinates[indicies].max()! }).max()!
   }
 }
