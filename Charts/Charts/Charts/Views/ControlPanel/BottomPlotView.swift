@@ -1,14 +1,14 @@
 //
-//  ControlPanelPlotView.swift
+//  BottomPlotView.swift
 //  Charts
 //
-//  Created by Oleksii Andriushchenko on 3/11/19.
+//  Created by Oleksii Andriushchenko on 3/23/19.
 //  Copyright © 2019 Алексей Андрющенко. All rights reserved.
 //
 
 import UIKit
 
-final class PlotView: UIView {
+final class BottomPlotView: UIView {
 
   private var chartRange: ChartRange?
   private var boundForChange: (Double, Double) = (-1, -1)
@@ -119,5 +119,6 @@ final class PlotView: UIView {
     context.setFillColor(UIColor.clear.cgColor)
   }
 }
+
 
 

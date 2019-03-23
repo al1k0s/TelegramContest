@@ -32,8 +32,15 @@ final class Presenter {
   }
 
   /// - Parameter enabledAxes: Y axes names
-  func yAxesChanged(_ enabledAxes: Set<String>) {
-    chartRange.updateYAxes(enabledAxes)
+  func yAxesChanged(_ index: Int) {
+    let axeName = chartRange.allYAxes[index].name
+    var activeAxesNames = Set(chartRange.activeYAxes.map { $0.name })
+    if activeAxesNames.contains(axeName) && activeAxesNames.count > 1 {
+      activeAxesNames.remove(axeName)
+    } else {
+      activeAxesNames.insert(axeName)
+    }
+    chartRange.updateYAxes(activeAxesNames)
     viewController?.updateYAxes(chartRange)
   }
 

@@ -12,7 +12,11 @@ class ChartRange {
   private var chart: Chart
   var chosenRange: ClosedRange<Float>
 
-  private(set) var yAxes: [YAxis]
+  private(set) var activeYAxes: [YAxis]
+
+  var allYAxes: [YAxis] {
+    return chart.yAxes
+  }
 
   var yAxesNames: Set<String> {
     return Set(chart.yAxes.map({ $0.name }))
@@ -23,13 +27,13 @@ class ChartRange {
   }
 
   func updateYAxes(_ names: Set<String>) {
-    self.yAxes = chart.yAxes.filter({ names.contains($0.name) })
+    self.activeYAxes = chart.yAxes.filter({ names.contains($0.name) })
   }
 
   init(chart: Chart, chosenRange: ClosedRange<Float>) {
     self.chosenRange = chosenRange
     self.chart = chart
-    self.yAxes = chart.yAxes
+    self.activeYAxes = chart.yAxes
   }
 
   var range: ClosedRange<Date> {
@@ -48,10 +52,10 @@ class ChartRange {
   }
 
   var max: Double {
-    return chart.yAxes.map({ $0.coordinates[indicies].max()! }).max()!
+    return activeYAxes.map({ $0.coordinates[indicies].max()! }).max()!
   }
 
   var min: Double {
-    return chart.yAxes.map({ $0.coordinates[indicies].min()! }).min()!
+    return activeYAxes.map({ $0.coordinates[indicies].min()! }).min()!
   }
 }

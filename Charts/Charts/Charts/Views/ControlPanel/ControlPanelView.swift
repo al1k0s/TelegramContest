@@ -64,6 +64,8 @@ final class ControlPanelView: UIView {
     ])
 
     // configure center view
+    let centerPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleCenterPanGesture(_:)))
+    centerView.addGestureRecognizer(centerPanGesture)
     centerView.backgroundColor = .clear
     addSubview(centerView, constraints: [
       centerView.topAnchor.constraint(equalTo: topAnchor),
@@ -119,6 +121,30 @@ final class ControlPanelView: UIView {
       let width = self.bounds.width
       let boundedCoordinate = min(max(xCoordinate, leftControlLeadingConstraint.constant + 12), width - 12)
       rightControlLeadingConstraint.constant = boundedCoordinate
+
+      updateRange()
+    default:
+      break
+    }
+  }
+
+  private var centerStartPoint: CGFloat?
+  private var centerStartConstant: CGFloat?
+
+  @objc func handleCenterPanGesture(_ event: UIPanGestureRecognizer) {
+    switch event.state {
+    case .began:
+      centerStartPoint = event.location(in: self).x
+      centerStartConstant = leftControlLeadingConstraint.constant
+
+    case .changed:
+      let xCoordinate = event.location(in: self).x
+      let width = self.bounds.width
+      let diff = xCoordinate - centerStartPoint!
+      let newX = centerStartConstant! + diff
+      let boundedCoordinate = min(max(newX, 0), width - rightControlView.bounds.width - centerView.bounds.width)
+      leftControlLeadingConstraint.constant = boundedCoordinate
+      rightControlLeadingConstraint.constant = boundedCoordinate + leftControlView.bounds.width + centerView.bounds.width
 
       updateRange()
     default:

@@ -28,6 +28,7 @@ final class ChartView: UIView {
     )
   )
   private let controlPanelView = ControlPanelView()
+  private let buttonsView = ButtonsView()
 
   private let plotView = PlotView()
 
@@ -36,6 +37,14 @@ final class ChartView: UIView {
       return controlPanelView.rangeChanged
     } set {
       controlPanelView.rangeChanged = newValue
+    }
+  }
+
+  var yAxesChanged: ((Int) -> ())? {
+    get {
+      return buttonsView.yAxesChanged
+    } set {
+      buttonsView.yAxesChanged = newValue
     }
   }
 
@@ -92,10 +101,17 @@ final class ChartView: UIView {
       controlPanelView.heightAnchor.constraint(equalToConstant: 40)
     ])
 
+    // configure buttons view
+    addSubview(buttonsView, constraints: [
+      buttonsView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor),
+      buttonsView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+      buttonsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+    ])
+
     let emptyView = UIView()
     emptyView.backgroundColor = .red
     addSubview(emptyView, constraints: [
-      emptyView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor, constant: 8),
+      emptyView.topAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: 8),
       emptyView.leadingAnchor.constraint(equalTo: leadingAnchor),
       emptyView.trailingAnchor.constraint(equalTo: trailingAnchor),
       emptyView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -112,6 +128,14 @@ final class ChartView: UIView {
     verticalAxeView.maxValue = chartRange.max
     plotView.updateChart(chartRange)
     controlPanelView.updateChartRange(chartRange)
+    let props = chartRange.allYAxes.map { axe in
+      return ButtonCell.Props.init(
+        title: axe.name,
+        color: UIColor(hexString: axe.color),
+        isChecked: chartRange.activeYAxes.contains(axe)
+      )
+    }
+    buttonsView.render(props: props)
   }
 
   enum Constants {

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0238427B223C058B006CD66E /* DateAxeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0238427A223C058B006CD66E /* DateAxeView.swift */; };
+		024B9A3922468C9F0061022C /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3822468C9F0061022C /* ButtonsView.swift */; };
+		024B9A3B22468D380061022C /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3A22468D380061022C /* ButtonCell.swift */; };
+		024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3C22469DBB0061022C /* BottomPlotView.swift */; };
 		02AC85982235985E00D28977 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85972235985E00D28977 /* AppDelegate.swift */; };
 		02AC859A2235985E00D28977 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85992235985E00D28977 /* ViewController.swift */; };
 		02AC85A22235985F00D28977 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02AC85A02235985F00D28977 /* LaunchScreen.storyboard */; };
@@ -29,6 +32,9 @@
 
 /* Begin PBXFileReference section */
 		0238427A223C058B006CD66E /* DateAxeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAxeView.swift; sourceTree = "<group>"; };
+		024B9A3822468C9F0061022C /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
+		024B9A3A22468D380061022C /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
+		024B9A3C22469DBB0061022C /* BottomPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPlotView.swift; sourceTree = "<group>"; };
 		02AC85942235985E00D28977 /* Charts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Charts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02AC85972235985E00D28977 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02AC85992235985E00D28977 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				02B2BE1C223702B400317602 /* PlotView.swift */,
+				024B9A3C22469DBB0061022C /* BottomPlotView.swift */,
 				02B2BE2F2238489F00317602 /* ControlPanelView.swift */,
 			);
 			path = ControlPanel;
@@ -161,6 +168,8 @@
 		02AC85B522359EBA00D28977 /* ChartButtons */ = {
 			isa = PBXGroup;
 			children = (
+				024B9A3822468C9F0061022C /* ButtonsView.swift */,
+				024B9A3A22468D380061022C /* ButtonCell.swift */,
 			);
 			path = ChartButtons;
 			sourceTree = "<group>";
@@ -262,12 +271,15 @@
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
 				44E10A102246558F0037BE2C /* with.swift in Sources */,
+				024B9A3922468C9F0061022C /* ButtonsView.swift in Sources */,
 				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
+				024B9A3B22468D380061022C /* ButtonCell.swift in Sources */,
 				02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */,
 				02B2BE1D223702B400317602 /* PlotView.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
+				024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */,
 				02AC85B022359B7900D28977 /* ChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

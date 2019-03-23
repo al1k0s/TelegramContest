@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     self.presenter = presenter
 
     contentView.rangeChanged = presenter.rangeChanged
+    contentView.yAxesChanged = presenter.yAxesChanged
     
     super.init(nibName: nil, bundle: nil)
   }
