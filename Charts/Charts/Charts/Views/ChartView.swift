@@ -63,7 +63,6 @@ final class ChartView: UIView {
     ])
 
     // configure date axe view
-    dateAxeView.backgroundColor = .green
     addSubview(dateAxeView, constraints: [
       dateAxeView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
       dateAxeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
