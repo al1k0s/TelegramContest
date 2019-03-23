@@ -68,8 +68,8 @@ class InfoView: UIView {
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
     return InfoViewModel(date: .init(), charts: [
-      (color: .red, value: 123, location: CGPoint(x: 200, y: 200)),
-      (color: .green, value: 12, location: CGPoint(x: 100, y: 100))
+      (color: .red, value: 123, location: CGPoint(x: 0.3, y: 0.3)),
+      (color: .green, value: 12, location: CGPoint(x: 0.5, y: 0.5))
     ])
   }
 
@@ -131,7 +131,9 @@ class InfoView: UIView {
         label.font = UIFont.systemFont(ofSize: 12)
       })
 
-      let circle = with(UIView(frame: CGRect(origin: chart.location,
+      let locationInBounds = CGPoint(x: chart.location.x * self.bounds.width,
+                                     y: chart.location.y * self.bounds.height)
+      let circle = with(UIView(frame: CGRect(origin: locationInBounds,
                                              size: CGSize(width: 10, height: 10)))) {
                                               $0.layer.cornerRadius = 5
                                               $0.layer.borderWidth = 2
