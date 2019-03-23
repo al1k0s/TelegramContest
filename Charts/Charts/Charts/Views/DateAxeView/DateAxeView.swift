@@ -34,7 +34,7 @@ final class DateAxeView: UIView {
 
   private func addLabels(chartRange: ChartRange) {
     let width = Double(bounds.width)
-    var visibleDates = chartRange.chart.x.coordinates.filter(chartRange.range.contains)
+    var visibleDates = chartRange.xCoordinates.filter(chartRange.range.contains)
     let doubleCount = Double(visibleDates.count)
     var xCoordinates = (0..<visibleDates.count).map(Double.init).map { $0 / doubleCount * width }
     guard let datesInterval = findInterval(xCoord: xCoordinates) else {
@@ -100,7 +100,7 @@ final class DateAxeView: UIView {
   }
 
   private func addNewLabelsOnLeftIfNeeded(chartRange: ChartRange) {
-    let chartDates = chartRange.chart.x.coordinates
+    let chartDates = chartRange.xCoordinates
     guard let index = findIndexOf(date: dates.first, in: chartDates) else {
       return
     }
@@ -119,7 +119,7 @@ final class DateAxeView: UIView {
   }
 
   private func addNewLabelsOnRightIfNeeded(chartRange: ChartRange) {
-    let chartDates = chartRange.chart.x.coordinates
+    let chartDates = chartRange.xCoordinates
     guard let index = findIndexOf(date: dates.last, in: chartDates) else {
         return
     }
@@ -141,7 +141,7 @@ final class DateAxeView: UIView {
     guard labels.count > 1 else { return }
     let difference = labels[1].frame.minX - labels[0].frame.minX
     if difference > 95 {
-      let chartDates = chartRange.chart.x.coordinates
+      let chartDates = chartRange.xCoordinates
       guard let index = findIndexOf(date: dates[0], in: chartDates) else { return }
       interval /= 2
       var iter = index - interval < 0 ? index : index - interval
