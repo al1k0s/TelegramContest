@@ -14,11 +14,15 @@ public struct XAxis {
   public var coordinates: [Date]
 }
 
-public struct YAxis {
+public struct YAxis: Hashable {
   public var id: String
   public var coordinates: [Double]
   public var color: String
   public var name: String
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
 }
 
 public struct Chart: Decodable {

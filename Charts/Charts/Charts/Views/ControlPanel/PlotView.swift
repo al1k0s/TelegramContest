@@ -25,7 +25,7 @@ final class PlotView: UIView {
   }
 
   func updateChart(_ chartRange: ChartRange) {
-    let yAxes = chartRange.chart.yAxes
+    let yAxes = chartRange.yAxes
     let maxValues = yAxes
       .map { $0.coordinates }
       .compactMap { $0.max() }
@@ -40,7 +40,7 @@ final class PlotView: UIView {
     }
     self.max = max
     self.min = min
-    self.yAxes = yAxes
+    self.yAxes = Array(yAxes)
     layoutIfNeeded()
   }
 
