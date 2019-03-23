@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0238427B223C058B006CD66E /* DateAxeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0238427A223C058B006CD66E /* DateAxeView.swift */; };
 		02AC85982235985E00D28977 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85972235985E00D28977 /* AppDelegate.swift */; };
 		02AC859A2235985E00D28977 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85992235985E00D28977 /* ViewController.swift */; };
 		02AC85A22235985F00D28977 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02AC85A02235985F00D28977 /* LaunchScreen.storyboard */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0238427A223C058B006CD66E /* DateAxeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAxeView.swift; sourceTree = "<group>"; };
 		02AC85942235985E00D28977 /* Charts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Charts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02AC85972235985E00D28977 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02AC85992235985E00D28977 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		02AC85B222359E6000D28977 /* DateAxeView */ = {
 			isa = PBXGroup;
 			children = (
+				0238427A223C058B006CD66E /* DateAxeView.swift */,
 			);
 			path = DateAxeView;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			files = (
 				02AC85AD2235993A00D28977 /* UIViewExtension.swift in Sources */,
 				44C562992237A75300EE4F78 /* Charts.swift in Sources */,
+				0238427B223C058B006CD66E /* DateAxeView.swift in Sources */,
 				02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */,
 				446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */,
 				02AC85D32236F27500D28977 /* Presenter.swift in Sources */,

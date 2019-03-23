@@ -14,6 +14,14 @@ final class ChartView: UIView {
   let verticalAxeView = VerticalAxeView(
     width: UIScreen.main.bounds.width - 2 * Constants.padding
   )
+  private let dateAxeView = DateAxeView(frame:
+    CGRect(
+      x: 0.0,
+      y: 0.0,
+      width: UIScreen.main.bounds.width - 2 * Constants.padding,
+      height: 30.0
+    )
+  )
   private let controlPanelView = ControlPanelView()
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
@@ -54,9 +62,17 @@ final class ChartView: UIView {
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
     ])
 
+    // configure date axe view
+    addSubview(dateAxeView, constraints: [
+      dateAxeView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
+      dateAxeView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+      dateAxeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      dateAxeView.heightAnchor.constraint(equalToConstant: 30)
+    ])
+
     // configure control panel plot view
     addSubview(controlPanelView, constraints: [
-      controlPanelView.topAnchor.constraint(equalTo: verticalAxeView.bottomAnchor),
+      controlPanelView.topAnchor.constraint(equalTo: dateAxeView.bottomAnchor),
       controlPanelView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
       controlPanelView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
       controlPanelView.heightAnchor.constraint(equalToConstant: 40)
@@ -73,6 +89,7 @@ final class ChartView: UIView {
   }
 
   func updateupdateChartRange(_ chartRange: ChartRange) {
+    dateAxeView.updateDateAxe(chartRange: chartRange)
     controlPanelView.updateChartRange(chartRange)
   }
 
