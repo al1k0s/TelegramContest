@@ -20,9 +20,12 @@ struct InfoViewModel {
   var charts: [Chart]
 
   init(date: Date, charts: [(color: UIColor, value: Int, location: CGPoint)]) {
-    #warning("not implemented")
-    self.dayMonth = "23 Fabruary"
-    self.year = "2019"
+    self.dayMonth = with(DateFormatter()) {
+      $0.dateFormat = "dd MMM"
+    }.string(from: date)
+    self.year = with(DateFormatter()) {
+      $0.dateFormat = "yyyy"
+    }.string(from: date)
     self.charts = charts.map { .init(color: $0.color, value: String($0.value), location: $0.location) }
   }
 }
@@ -75,11 +78,23 @@ class InfoView: UIView {
 
   var circles: [UIView] = []
 
+  var lastViewModel: InfoViewModel?
+
+  var isLight = true {
+    didSet {
+      lastViewModel.map(render)
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOccured(sender:)))
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureOccured(sender:)))
     self.addGestureRecognizer(tapRecognizer)
+
+    let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(gestureOccured(sender:)))
+    self.addGestureRecognizer(panRecognizer)
+    tapRecognizer.require(toFail: panRecognizer)
 
     self.addSubview(container, constraints: [
       container.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
@@ -105,22 +120,27 @@ class InfoView: UIView {
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       line.centerXAnchor.constraint(equalTo: container.centerXAnchor)
     ])
-
-    subviews.forEach({ $0.alpha = 0 })
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  @objc private func tapOccured(sender: UITapGestureRecognizer) {
-    let location = sender.location(ofTouch: 0, in: self)
+  @objc private func gestureOccured(sender: UIGestureRecognizer) {
+    let location = sender.location(in: self)
+    logTap(at: location)
+  }
+
+  private func logTap(at location: CGPoint) {
+    resetCircles()
     let relative = location.x / bounds.width
     let data = tapOccured(relative)
+    lastViewModel = data
     self.render(the: data)
   }
 
   private func render(the data: InfoViewModel) {
+    resetCircles()
     dayMonthLabel.text = data.dayMonth
     yearLabel.text = data.year
     coordinatesStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
@@ -131,14 +151,17 @@ class InfoView: UIView {
         label.font = UIFont.systemFont(ofSize: 12)
       })
 
-      let locationInBounds = CGPoint(x: (1 - chart.location.x) * self.bounds.width,
-                                     y: (1 - chart.location.y) * self.bounds.height)
+      let locationInBounds = CGPoint(x: (chart.location.x * self.bounds.width) - 5,
+                                     y: ((1 - chart.location.y) * self.bounds.height) - 5)
       let circle = with(UIView(frame: CGRect(origin: locationInBounds,
                                              size: CGSize(width: 10, height: 10)))) {
                                               $0.layer.cornerRadius = 5
                                               $0.layer.borderWidth = 2
                                               $0.layer.borderColor = chart.color.cgColor
-                                              $0.backgroundColor = .white
+                                              $0.backgroundColor = isLight ? .white : UIColor(red: 239.0 / 255,
+                                                                                              green: 239.0 / 255,
+                                                                                              blue: 244.0 / 255,
+                                                                                              alpha: 1.0)
       }
       self.addSubview(circle)
       circles.append(circle)
@@ -147,9 +170,14 @@ class InfoView: UIView {
     subviews.forEach({ $0.alpha = 1 })
   }
 
-  func rangeChanged() {
-    subviews.forEach({ $0.alpha = 0 })
+  private func resetCircles() {
     circles.forEach({ $0.removeFromSuperview() })
     circles = []
+  }
+
+  func rangeChanged() {
+    subviews.forEach({ $0.alpha = 0 })
+    resetCircles()
+    lastViewModel = nil
   }
 }
