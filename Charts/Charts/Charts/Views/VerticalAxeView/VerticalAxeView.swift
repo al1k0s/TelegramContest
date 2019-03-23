@@ -10,7 +10,7 @@ import UIKit
 
 final class VerticalAxeView: UIView {
 
-  private var isLight: Bool = false
+  private var isLight: Bool = true
   private var stripViews: [HorizontalStripView] = []
   private var currentAnimated: [HorizontalStripView] = []
   private let viewWidth: CGFloat
@@ -41,7 +41,7 @@ final class VerticalAxeView: UIView {
 
   func toggleMode(isLight: Bool) {
     stripViews.forEach { $0.toggleMode(isLight: isLight) }
-    //currentAnimated.forEach { $0.toggleMode(isLight: isLight) }
+    currentAnimated.forEach { $0.toggleMode(isLight: isLight) }
     self.isLight = isLight
   }
 

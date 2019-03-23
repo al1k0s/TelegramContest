@@ -12,7 +12,28 @@ final class ChartView: UIView {
 
   private var isLight: Bool = true
 
-  private var chartRange: ChartRange!
+  private var chartRange: ChartRange! {
+    didSet {
+      infoView.tapOccured = { [chartRange] point in
+        let up = chartRange!.range.upperBound.timeIntervalSince1970
+        let down = chartRange!.range.lowerBound.timeIntervalSince1970
+        let diff = up - down
+        let time = down + diff * Double(point)
+        let (index, date) = chartRange!.xCoordinates.map { $0.timeIntervalSince1970 }
+          .map { abs($0 - time) }
+          .enumerated()
+          .min(by: { $0.1 < $1.1 })!
+        let dateX = (chartRange!.xCoordinates[index].timeIntervalSince1970 - down) / diff
+        let max = chartRange!.max
+        let charts = chartRange!.activeYAxes.map { axe -> (UIColor, Int, CGPoint) in
+          let value = Int(axe.coordinates[index])
+          return (color: UIColor(hexString: axe.color), value, CGPoint(x: dateX, y: Double(value) / max))
+        }
+        return InfoViewModel(date: chartRange!.xCoordinates[index], charts: charts)
+      }
+    }
+  }
+
   private let contentContainer = UIView()
   private let titleLabel = with(UILabel()) { titleLabel in
     titleLabel.font = UIFont.systemFont(ofSize: 17)
