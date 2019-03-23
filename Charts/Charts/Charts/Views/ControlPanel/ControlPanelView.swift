@@ -10,7 +10,7 @@ import UIKit
 
 final class ControlPanelView: UIView {
 
-  private let plotView = PlotView()
+  private let plotView = PlotView(isMainPlot: false)
   private let leftShadowView = UIView()
   private let leftControlView = UIView()
   private let centerView = UIView()
@@ -142,7 +142,7 @@ final class ControlPanelView: UIView {
       let width = self.bounds.width
       let diff = xCoordinate - centerStartPoint!
       let newX = centerStartConstant! + diff
-      let boundedCoordinate = min(max(newX, 0), width - rightControlView.bounds.width - centerView.bounds.width)
+      let boundedCoordinate = min(max(newX, 0), width - 2 * rightControlView.bounds.width - centerView.bounds.width)
       leftControlLeadingConstraint.constant = boundedCoordinate
       rightControlLeadingConstraint.constant = boundedCoordinate + leftControlView.bounds.width + centerView.bounds.width
 

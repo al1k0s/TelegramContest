@@ -55,7 +55,15 @@ class ChartRange {
     return activeYAxes.map({ $0.coordinates[indicies].max()! }).max()!
   }
 
+  var allMax: Double {
+    return activeYAxes.map({ $0.coordinates.max()! }).max()!
+  }
+
   var min: Double {
     return activeYAxes.map({ $0.coordinates[indicies].min()! }).min()!
+  }
+
+  var allMin: Double {
+    return activeYAxes.map({ $0.coordinates.min()! }).min()!
   }
 }

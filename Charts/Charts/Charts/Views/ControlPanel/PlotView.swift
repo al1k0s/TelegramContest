@@ -10,6 +10,7 @@ import UIKit
 
 final class PlotView: UIView {
 
+  private let isMainPlot: Bool
   private var chartRange: ChartRange?
   private var boundForChange: (Double, Double) = (-1, -1)
   private var boundForCheck: (Double, Double) = (-1, -1)
@@ -19,8 +20,9 @@ final class PlotView: UIView {
   private var displayLink: CADisplayLink?
   private var shapeLayers: [CAShapeLayer] = []
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(isMainPlot: Bool) {
+    self.isMainPlot = isMainPlot
+    super.init(frame: .zero)
     backgroundColor = .clear
   }
 
@@ -30,17 +32,25 @@ final class PlotView: UIView {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
-    if chartRange.min != boundForCheck.0 || chartRange.max != boundForCheck.1 {
+    if minFromChart() != boundForCheck.0 || maxFromChart() != boundForCheck.1 {
       updateMinMax(chartRange)
-      boundForCheck = (chartRange.min, chartRange.max)
+      boundForCheck = (minFromChart(), maxFromChart())
     } else if !isChanging {
       setNeedsDisplay()
     }
   }
 
+  private func minFromChart() -> Double {
+    return isMainPlot ? chartRange!.min : chartRange!.allMin
+  }
+
+  private func maxFromChart() -> Double {
+    return isMainPlot ? chartRange!.max : chartRange!.allMax
+  }
+
   private func updateMinMax(_ chartRange: ChartRange) {
     guard boundForCheck.0 != -1 else {
-      boundForChange = (chartRange.min, chartRange.max)
+      boundForChange = (minFromChart(), maxFromChart())
       return
     }
     isChanging = true
@@ -76,15 +86,15 @@ final class PlotView: UIView {
     guard let chartRange = chartRange else {
       return
     }
-    let startDate = chartRange.range.lowerBound.timeIntervalSince1970
-    let endDate = chartRange.range.upperBound.timeIntervalSince1970
+    let startDate = (isMainPlot ? chartRange.range.lowerBound : chartRange.xCoordinates.first!).timeIntervalSince1970
+    let endDate = (isMainPlot ? chartRange.range.upperBound : chartRange.xCoordinates.last!).timeIntervalSince1970
     let timeFrame = endDate - startDate
 
     for axe in chartRange.activeYAxes {
       let (width, height) = (UIScreen.main.bounds.width - 32, bounds.height)
       // normalize values to view coordinates
-      let min = Swift.max(0, chartRange.indicies.lowerBound - 1)
-      let max = Swift.min(chartRange.xCoordinates.count - 1, chartRange.indicies.upperBound + 1)
+      let min = isMainPlot ? Swift.max(0, chartRange.indicies.lowerBound - 1) : 0
+      let max = isMainPlot ? Swift.min(chartRange.xCoordinates.count - 1, chartRange.indicies.upperBound + 1) : chartRange.xCoordinates.count - 1
       let newValues = zip(
         chartRange.xCoordinates[min...max],
         axe.coordinates[min...max]
@@ -93,16 +103,16 @@ final class PlotView: UIView {
           let (date, value) = arg
           // get x value from 2 to view.width - 2
           let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width - 4)) + 2
-          let difference = Double(chartRange.max - chartRange.min)
+          let difference = Double(maxFromChart() - minFromChart())
           // get y value from 0 to view.height
           let y: Double
           if isChanging { //numberOfIterations > 0 {
             let oldDiff = boundForChange.1 - boundForChange.0
             let oldY = (1 - Double(value - boundForChange.0) / oldDiff) * Double(height)
-            let newY = (1 - Double(value - chartRange.min) / difference) * Double(height)
+            let newY = (1 - Double(value - minFromChart()) / difference) * Double(height)
             y = oldY + (newY - oldY) * (Double(numberOfIterations) / Double(maxNumber))
           } else {
-            y = (1 - Double(value - chartRange.min) / difference) * Double(height)
+            y = (1 - Double(value - minFromChart()) / difference) * Double(height)
           }
           return CGPoint(x: x, y: y)
       }
