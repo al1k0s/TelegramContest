@@ -28,10 +28,17 @@ final class Presenter {
 
   func rangeChanged(_ change: ClosedRange<Float>) {
     chartRange.chosenRange = change
-    viewController?.updateChart(chartRange)
+    viewController?.updateRange(chartRange)
+  }
+
+  /// - Parameter enabledAxes: Y axes names
+  func yAxesChanged(_ enabledAxes: Set<String>) {
+    chartRange.updateYAxes(enabledAxes)
+    viewController?.updateYAxes(chartRange)
   }
 
   func viewWillAppear() {
-    viewController?.updateChart(chartRange)
+    viewController?.updateRange(chartRange)
+    viewController?.updateYAxes(chartRange)
   }
 }
