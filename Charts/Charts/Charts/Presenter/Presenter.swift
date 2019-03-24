@@ -31,6 +31,16 @@ final class Presenter {
     viewController?.updateRange(chartRange)
   }
 
+  func changeChart(index: Int) {
+    if currentChartIndex != index {
+      currentChartIndex = index
+      chartRange = ChartRange(chart: charts[index],
+                              chosenRange: chartRange.chosenRange)
+      viewController?.updateRange(chartRange)
+      viewController?.updateYAxes(chartRange)
+    }
+  }
+
   /// - Parameter enabledAxes: Y axes names
   func yAxesChanged(_ index: Int) {
     let axeName = chartRange.allYAxes[index].name

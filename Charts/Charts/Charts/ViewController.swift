@@ -27,6 +27,7 @@ class ViewController: UIViewController {
   }
 
   override func loadView() {
+    //let container = ScrollContainerView(contentView: contentView)
     view = contentView
   }
 
@@ -41,9 +42,11 @@ class ViewController: UIViewController {
     contentView.changeBackground = { [weak self] isLight in
       let light = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
       let dark = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
-      //self?.navigationController?.navigationBar.tintColor = isLight ? .black : light
       self?.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: isLight ? .black : light]
       self?.navigationController?.navigationBar.barTintColor = isLight ? light : dark
+    }
+    contentView.chartChange = { [weak self] index in
+      self?.presenter.changeChart(index: index)
     }
   }
 

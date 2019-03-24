@@ -14,4 +14,13 @@ extension UIView {
     otherView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(constraints)
   }
+
+  func addSubview(_ otherView: UIView, withEdgeInsets insets: UIEdgeInsets) {
+    addSubview(otherView, constraints: [
+      otherView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
+      otherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
+      otherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: insets.right),
+      otherView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: insets.bottom)
+      ])
+  }
 }
