@@ -133,6 +133,7 @@ class InfoView: UIView {
 
   @objc private func gestureOccured(sender: UIGestureRecognizer) {
     let location = sender.location(in: self)
+    guard bounds.contains(location) else { return }
     logTap(at: location)
   }
 
