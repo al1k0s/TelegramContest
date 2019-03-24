@@ -20,9 +20,12 @@ struct InfoViewModel {
   var charts: [Chart]
 
   init(date: Date, charts: [(color: UIColor, value: Int, location: CGPoint)]) {
-    #warning("not implemented")
-    self.dayMonth = "23 Fabruary"
-    self.year = "2019"
+    self.dayMonth = with(DateFormatter()) {
+      $0.dateFormat = "MMM dd"
+    }.string(from: date)
+    self.year = with(DateFormatter()) {
+      $0.dateFormat = "yyyy"
+    }.string(from: date)
     self.charts = charts.map { .init(color: $0.color, value: String($0.value), location: $0.location) }
   }
 }
@@ -36,9 +39,10 @@ class InfoView: UIView {
     $0.font = UIFont.systemFont(ofSize: 12, weight: .light)
   }
 
+  var containerLeftConstraint: NSLayoutConstraint?
   let container = with(UIView()) {
     $0.layer.cornerRadius = 4
-    $0.backgroundColor = .gray
+    $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
   }
 
   let dateStackView = with(UIStackView()) {
@@ -62,8 +66,9 @@ class InfoView: UIView {
     $0.spacing = 4
   }
 
+  var lineLeftConstraint: NSLayoutConstraint?
   let line = with(UIView()) {
-    $0.backgroundColor = .gray
+    $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
   }
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
@@ -75,15 +80,28 @@ class InfoView: UIView {
 
   var circles: [UIView] = []
 
+  var lastViewModel: InfoViewModel?
+
+  var isLight = true {
+    didSet {
+      drawTheme()
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOccured(sender:)))
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(gestureOccured(sender:)))
     self.addGestureRecognizer(tapRecognizer)
 
+    let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(gestureOccured(sender:)))
+    self.addGestureRecognizer(panRecognizer)
+    tapRecognizer.require(toFail: panRecognizer)
+
+    containerLeftConstraint = container.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     self.addSubview(container, constraints: [
       container.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-      container.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+      containerLeftConstraint!
     ])
 
     dateStackView.addArrangedSubview(dayMonthLabel)
@@ -99,28 +117,36 @@ class InfoView: UIView {
       stackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
     ])
 
+    lineLeftConstraint = line.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     self.addSubview(line, constraints: [
       line.widthAnchor.constraint(equalToConstant: 1),
       line.topAnchor.constraint(equalTo: container.bottomAnchor),
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-      line.centerXAnchor.constraint(equalTo: container.centerXAnchor)
+      lineLeftConstraint!
     ])
-
-    subviews.forEach({ $0.alpha = 0 })
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  @objc private func tapOccured(sender: UITapGestureRecognizer) {
-    let location = sender.location(ofTouch: 0, in: self)
+  @objc private func gestureOccured(sender: UIGestureRecognizer) {
+    let location = sender.location(in: self)
+    logTap(at: location)
+  }
+
+  private func logTap(at location: CGPoint) {
+    resetCircles()
     let relative = location.x / bounds.width
     let data = tapOccured(relative)
+    lastViewModel = data
     self.render(the: data)
   }
 
   private func render(the data: InfoViewModel) {
+    containerLeftConstraint?.constant = min(max((data.charts[0].location.x * self.bounds.width) - container.bounds.width / 2, 0), self.bounds.width - container.bounds.width)
+    lineLeftConstraint?.constant = data.charts[0].location.x * self.bounds.width
+    resetCircles()
     dayMonthLabel.text = data.dayMonth
     yearLabel.text = data.year
     coordinatesStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
@@ -131,25 +157,49 @@ class InfoView: UIView {
         label.font = UIFont.systemFont(ofSize: 12)
       })
 
-      let locationInBounds = CGPoint(x: (1 - chart.location.x) * self.bounds.width,
-                                     y: (1 - chart.location.y) * self.bounds.height)
+      let locationInBounds = CGPoint(x: (chart.location.x * self.bounds.width) - 5,
+                                     y: ((1 - chart.location.y) * self.bounds.height) - 5)
       let circle = with(UIView(frame: CGRect(origin: locationInBounds,
                                              size: CGSize(width: 10, height: 10)))) {
                                               $0.layer.cornerRadius = 5
                                               $0.layer.borderWidth = 2
                                               $0.layer.borderColor = chart.color.cgColor
-                                              $0.backgroundColor = .white
+                                              $0.backgroundColor = isLight ?
+                                                UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
+                                               UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
       }
       self.addSubview(circle)
       circles.append(circle)
     }
 
+    drawTheme()
     subviews.forEach({ $0.alpha = 1 })
+  }
+
+  private func drawTheme() {
+    circles.forEach { circle in
+      circle.backgroundColor = isLight ? .white : UIColor(red: 34 / 255,
+                                                          green: 47 / 255,
+                                                          blue: 62 / 255,
+                                                          alpha: 1.0)
+      let color = isLight ? UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
+        UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
+      container.backgroundColor = color
+      line.backgroundColor = color
+      [dayMonthLabel, yearLabel].forEach {
+        $0.textColor = isLight ? .black : .white
+      }
+    }
+  }
+
+  private func resetCircles() {
+    circles.forEach({ $0.removeFromSuperview() })
+    circles = []
   }
 
   func rangeChanged() {
     subviews.forEach({ $0.alpha = 0 })
-    circles.forEach({ $0.removeFromSuperview() })
-    circles = []
+    resetCircles()
+    lastViewModel = nil
   }
 }

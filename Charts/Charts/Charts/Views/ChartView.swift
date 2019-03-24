@@ -228,6 +228,7 @@ final class ChartView: UIView {
     buttonsHeightConstraint.constant = CGFloat(props.count * 40)
     buttonsView.render(props: props)
     verticalAxeView.toggleMode(isLight: isLight)
+    infoView.isLight = isLight
     changeBackground?(isLight)
   }
 
