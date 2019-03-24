@@ -7,4 +7,4 @@
 * **Alik Vovkotrub** - [al1k0s](https://github.com/al1k0s)
 
 Result:
-<img src="https://github.com/al1k0s/TelegramContest/blob/master/record.gif" height="300">
+<img src="https://github.com/al1k0s/TelegramContest/blob/master/record.gif" height="500">
