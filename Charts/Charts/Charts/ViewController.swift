@@ -27,8 +27,8 @@ class ViewController: UIViewController {
   }
 
   override func loadView() {
-    //let container = ScrollContainerView(contentView: contentView)
-    view = contentView
+    let container = ScrollContainerView(contentView: contentView)
+    view = container
   }
 
   override func viewDidLoad() {

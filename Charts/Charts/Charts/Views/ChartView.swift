@@ -173,27 +173,25 @@ final class ChartView: UIView {
       buttonsHeightConstraint
     ])
 
-    // configure button
-    do {
-      let scrollView = ScrollContainerView(contentView: containerView)
-      addSubview(scrollView, constraints: [
-        scrollView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: Constants.padding),
-        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+    addSubview(containerView, constraints: [
+      containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: Constants.padding),
+      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor)
       ])
-      containerView.addSubview(switchButton, constraints: [
-        switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-        switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+
+    containerView.addSubview(switchButton, constraints: [
+      switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
+      switchButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
+      switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
       ])
-      // configure control
-      containerView.addSubview(chartControl, constraints: [
-        chartControl.topAnchor.constraint(equalTo: switchButton.bottomAnchor, constant: Constants.padding),
-        chartControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-        chartControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-        chartControl.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding)
-      ])
-    }
+
+    // configure control
+    addSubview(chartControl, constraints: [
+      chartControl.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.padding),
+      chartControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+      chartControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+      chartControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding)
+    ])
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {

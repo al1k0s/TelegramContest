@@ -22,10 +22,11 @@ final class ScrollContainerView: UIScrollView {
   }
 
   private func setupUI() {
-    contentInsetAdjustmentBehavior = .scrollableAxes
+    bounces = false
     addSubview(contentView, withEdgeInsets: .zero)
     NSLayoutConstraint.activate([
-      widthAnchor.constraint(equalTo: contentView.widthAnchor)
+      widthAnchor.constraint(equalTo: contentView.widthAnchor),
+      heightAnchor.constraint(equalTo: contentView.heightAnchor)
     ])
   }
 }
