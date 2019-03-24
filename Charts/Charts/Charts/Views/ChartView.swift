@@ -19,7 +19,7 @@ final class ChartView: UIView {
         let down = chartRange!.range.lowerBound.timeIntervalSince1970
         let diff = up - down
         let time = down + diff * Double(point)
-        let (index, date) = chartRange!.xCoordinates.map { $0.timeIntervalSince1970 }
+        let (index, _) = chartRange!.xCoordinates.map { $0.timeIntervalSince1970 }
           .map { abs($0 - time) }
           .enumerated()
           .min(by: { $0.1 < $1.1 })!

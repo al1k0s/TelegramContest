@@ -26,4 +26,8 @@ platform :ios do
    build_app
    upload_to_testflight
  end
+ 
+ lane :myMatch do
+  match(app_identifier: "com.andaleksei.telegramContest", type: "appstore", username: "ANDaleksei@gmail.com")
+ end
 end
