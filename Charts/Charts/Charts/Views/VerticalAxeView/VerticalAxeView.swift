@@ -115,7 +115,7 @@ final class VerticalAxeView: UIView {
       let frame = CGRect(x: 0,
                          y: newY(index),
                          width: self.viewWidth,
-                         height: 18.5)
+                         height: Constants.stripViewHeight)
       addSubview(stripView)
       stripView.frame = frame
       stripView.alpha = 0.2
@@ -132,7 +132,7 @@ final class VerticalAxeView: UIView {
   }
 
   private func lineNumber(_ index: Int) -> String {
-    return String(Int(step * Double(Constants.numberOfStrips - index)))
+    return String(Int(step * Double(Constants.numberOfStrips - index) * 0.93))
   }
 
   private func createStrips(index: Int) -> HorizontalStripView {
@@ -148,6 +148,7 @@ final class VerticalAxeView: UIView {
 
   enum Constants {
     static let numberOfStrips = 5
+    static let stripViewHeight: CGFloat = 18.5
     static let topPadding: CGFloat = 25
     static let stripHeight: CGFloat = 44
   }
