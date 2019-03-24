@@ -124,6 +124,7 @@ class InfoView: UIView {
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       lineLeftConstraint!
     ])
+    sendSubviewToBack(line)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -132,6 +133,7 @@ class InfoView: UIView {
 
   @objc private func gestureOccured(sender: UIGestureRecognizer) {
     let location = sender.location(in: self)
+    guard bounds.contains(location) else { return }
     logTap(at: location)
   }
 
@@ -168,7 +170,7 @@ class InfoView: UIView {
                                                 UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1) :
                                                UIColor(red: 27/255, green: 40/255, blue: 54/255, alpha: 1)
       }
-      self.addSubview(circle)
+      insertSubview(circle, aboveSubview: line)
       circles.append(circle)
     }
 
@@ -198,7 +200,9 @@ class InfoView: UIView {
   }
 
   func rangeChanged() {
-    subviews.forEach({ $0.alpha = 0 })
+    UIView.animate(withDuration: 0.1) {
+      self.subviews.forEach({ $0.alpha = 0 })
+    }
     resetCircles()
     lastViewModel = nil
   }

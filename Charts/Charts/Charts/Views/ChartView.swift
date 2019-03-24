@@ -109,8 +109,9 @@ final class ChartView: UIView {
 
     // configure vertical axes view
     verticalAxeView.clipsToBounds = true
+    let topInset = 8 as CGFloat
     contentContainer.addSubview(verticalAxeView, constraints: [
-      verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+      verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor, constant: topInset),
       verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
       verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
       verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
@@ -120,14 +121,14 @@ final class ChartView: UIView {
     contentContainer.addSubview(plotView)
 
     NSLayoutConstraint.activate([
-      plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
+      plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor, constant: topInset),
       plotView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
       plotView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       plotView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
 
     addSubview(infoView, constraints: [
-      infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
+      infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor, constant: topInset),
       infoView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
       infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       infoView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
