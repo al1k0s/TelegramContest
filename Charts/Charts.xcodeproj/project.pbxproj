@@ -12,6 +12,7 @@
 		024B9A3B22468D380061022C /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3A22468D380061022C /* ButtonCell.swift */; };
 		024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3C22469DBB0061022C /* BottomPlotView.swift */; };
 		024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3E2247D1300061022C /* ScrollContainerView.swift */; };
+		024B9A432247F2C90061022C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024B9A422247F2C90061022C /* Assets.xcassets */; };
 		02AC85982235985E00D28977 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85972235985E00D28977 /* AppDelegate.swift */; };
 		02AC859A2235985E00D28977 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85992235985E00D28977 /* ViewController.swift */; };
 		02AC85A22235985F00D28977 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02AC85A02235985F00D28977 /* LaunchScreen.storyboard */; };
@@ -38,6 +39,7 @@
 		024B9A3A22468D380061022C /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		024B9A3C22469DBB0061022C /* BottomPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPlotView.swift; sourceTree = "<group>"; };
 		024B9A3E2247D1300061022C /* ScrollContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollContainerView.swift; sourceTree = "<group>"; };
+		024B9A422247F2C90061022C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02AC85942235985E00D28977 /* Charts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Charts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02AC85972235985E00D28977 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02AC85992235985E00D28977 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				02AC85CC2236E2C000D28977 /* charts.json */,
+				024B9A422247F2C90061022C /* Assets.xcassets */,
 				02AC85A02235985F00D28977 /* LaunchScreen.storyboard */,
 				02AC85A32235985F00D28977 /* Info.plist */,
 			);
@@ -257,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02AC85A22235985F00D28977 /* LaunchScreen.storyboard in Resources */,
+				024B9A432247F2C90061022C /* Assets.xcassets in Resources */,
 				02AC85CD2236E2C000D28977 /* charts.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,6 +429,7 @@
 		02AC85A72235985F00D28977 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 7MHQRN2DXE;
 				INFOPLIST_FILE = Charts/AppResources/Info.plist;
@@ -443,6 +448,7 @@
 		02AC85A82235985F00D28977 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 7MHQRN2DXE;
