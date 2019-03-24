@@ -55,11 +55,24 @@ final class ChartView: UIView {
   private let controlPanelView = ControlPanelView()
   private let buttonsView = ButtonsView()
   private var buttonsHeightConstraint: NSLayoutConstraint!
-  private let containerView = UIView()
+  private let containerView = with(UIView()) {
+    $0.backgroundColor = .white
+  }
   private let infoView = InfoView()
-  private let switchButton = UIButton()
+  private let switchButton = with(UIButton()) { switchButton in
+    switchButton.setTitle("Switch to Night Mode", for: .normal)
+    switchButton.setTitleColor(UIColor(red: 36.0 / 255, green: 134.0 / 255, blue: 227.0 / 255, alpha: 1.0), for: .normal)
+    switchButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+  }
   private let plotView = PlotView(isMainPlot: true)
-  private let chartControl = UISegmentedControl()
+
+  private let chartControl = with(UISegmentedControl()) { chartControl in
+    ["First", "Second", "Third", "Fourth", "Fifth"]
+      .enumerated()
+      .forEach { chartControl.insertSegment(withTitle: $0.1, at: $0.0, animated: false) }
+    chartControl.selectedSegmentIndex = 0
+    chartControl.addTarget(self, action: #selector(handleChartControl), for: .valueChanged)
+  }
   var chartChange: ((Int) -> ())?
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
@@ -96,7 +109,7 @@ final class ChartView: UIView {
     // configure title label
     addSubview(titleLabel, constraints: [
       titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-      titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
+      titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
     ])
 
     contentContainer.backgroundColor = .white
@@ -161,34 +174,26 @@ final class ChartView: UIView {
     ])
 
     // configure button
-    containerView.backgroundColor = .white
-    switchButton.setTitle("Switch to Night Mode", for: .normal)
-    switchButton.setTitleColor(UIColor(red: 36.0 / 255, green: 134.0 / 255, blue: 227.0 / 255, alpha: 1.0), for: .normal)
-    switchButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-    addSubview(containerView, constraints: [
-      containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: 16),
-      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-    containerView.addSubview(switchButton, constraints: [
-      switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-      switchButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-      switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-      switchButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-    ])
-
-    // configure control
-    ["First", "Second", "Third", "Fourth", "Fifth"]
-      .enumerated()
-      .forEach { chartControl.insertSegment(withTitle: $0.1, at: $0.0, animated: false) }
-    chartControl.selectedSegmentIndex = 0
-    chartControl.addTarget(self, action: #selector(handleChartControl), for: .valueChanged)
-    addSubview(chartControl, constraints: [
-      chartControl.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
-      chartControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      chartControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-      chartControl.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+    do {
+      let scrollView = ScrollContainerView(contentView: containerView)
+      addSubview(scrollView, constraints: [
+        scrollView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: Constants.padding),
+        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
       ])
+      containerView.addSubview(switchButton, constraints: [
+        switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+        switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      ])
+      // configure control
+      containerView.addSubview(chartControl, constraints: [
+        chartControl.topAnchor.constraint(equalTo: switchButton.bottomAnchor, constant: Constants.padding),
+        chartControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+        chartControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+        chartControl.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding)
+      ])
+    }
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {
