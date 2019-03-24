@@ -17,6 +17,7 @@ final class PlotView: UIView {
   private var isChanging: Bool = false
   private var numberOfIterations: Int = 0
   private let maxNumber = 10
+  private var maxValue = 999.0
   private var displayLink: CADisplayLink?
   private var shapeLayers: [CAShapeLayer] = []
 
@@ -32,6 +33,7 @@ final class PlotView: UIView {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
+    self.maxValue = isMainPlot ? chartRange.max : chartRange.allMax
     if /*minFromChart() != boundForCheck.0 ||*/ maxFromChart() != boundForCheck.1 {
       updateMinMax(chartRange)
       boundForCheck = (minFromChart(), maxFromChart())
@@ -45,7 +47,7 @@ final class PlotView: UIView {
   }
 
   private func maxFromChart() -> Double {
-    return isMainPlot ? chartRange!.max : chartRange!.allMax
+    return maxValue
   }
 
   private func updateMinMax(_ chartRange: ChartRange) {
@@ -91,6 +93,7 @@ final class PlotView: UIView {
     let timeFrame = endDate - startDate
 
     for axe in chartRange.activeYAxes {
+      let color = UIColor(hexString: axe.color).cgColor
       let (width, height) = (UIScreen.main.bounds.width - 32, bounds.height)
       // normalize values to view coordinates
       let min = isMainPlot ? Swift.max(0, chartRange.indicies.lowerBound - 1) : 0
@@ -121,7 +124,7 @@ final class PlotView: UIView {
         context.drawLine(
           from: newValues[iter],
           to: newValues[iter + 1],
-          color: UIColor(hexString: axe.color).cgColor,
+          color: color,
           lineWidth: 1
         )
       }
