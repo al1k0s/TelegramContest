@@ -3,7 +3,7 @@
 
 ## Authors
 
-* **Oleksij Andruschenko** - [ANDaleksei](https://github.com/ANDaleksei)
+* **Oleksii Andruschenko** - [ANDaleksei](https://github.com/ANDaleksei)
 * **Alik Vovkotrub** - [al1k0s](https://github.com/al1k0s)
 
 Result:
