@@ -132,7 +132,7 @@ final class VerticalAxeView: UIView {
   }
 
   private func lineNumber(_ index: Int) -> String {
-    return String(Int(step * Double(Constants.numberOfStrips - index) * 0.93))
+    return String(Int(step * Double(Constants.numberOfStrips - index) * 0.96))
   }
 
   private func createStrips(index: Int) -> HorizontalStripView {
