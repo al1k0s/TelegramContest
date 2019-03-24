@@ -129,8 +129,8 @@ final class ChartView: UIView {
 
     addSubview(infoView, constraints: [
       infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor, constant: topInset),
-      infoView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor, constant: Constants.padding),
-      infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor, constant: -Constants.padding),
+      infoView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
+      infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       infoView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
 
