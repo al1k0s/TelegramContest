@@ -11,6 +11,8 @@ import UIKit
 final class VerticalAxeView: UIView {
 
   private var isLight: Bool = true
+
+  private var zeroLine: HorizontalStripView!
   private var stripViews: [HorizontalStripView] = []
   private var currentAnimated: [HorizontalStripView] = []
   private let viewWidth: CGFloat
@@ -32,7 +34,12 @@ final class VerticalAxeView: UIView {
   init(width: CGFloat) {
     self.viewWidth = width
     super.init(frame: .zero)
-    setup()
+
+    for index in 0..<Constants.numberOfStrips - 1 {
+      let stripView = createStrips(index: index)
+      self.stripViews.append(stripView)
+    }
+    zeroLine = createStrips(index: Constants.numberOfStrips)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -40,6 +47,7 @@ final class VerticalAxeView: UIView {
   }
 
   func toggleMode(isLight: Bool) {
+    zeroLine.toggleMode(isLight: isLight)
     stripViews.forEach { $0.toggleMode(isLight: isLight) }
     currentAnimated.forEach { $0.toggleMode(isLight: isLight) }
     self.isLight = isLight
@@ -60,7 +68,7 @@ final class VerticalAxeView: UIView {
     let newY: (Int) -> CGFloat
     let newViewsMove: (Int) -> CGFloat
 
-    var hiddenStripViews = (0...(Constants.numberOfStrips))
+    var hiddenStripViews = (0..<(Constants.numberOfStrips))
       .map { _ -> HorizontalStripView in
         let stripView = HorizontalStripView(frame: .zero, number: "", isLight: isLight)
         stripView.alpha = 1.0
@@ -110,7 +118,7 @@ final class VerticalAxeView: UIView {
                          height: 18.5)
       addSubview(stripView)
       stripView.frame = frame
-      stripView.alpha = 1.0
+      stripView.alpha = 0.2
       stripView.number = lineNumber(index)
     }
 
@@ -125,14 +133,6 @@ final class VerticalAxeView: UIView {
 
   private func lineNumber(_ index: Int) -> String {
     return String(Int(step * Double(Constants.numberOfStrips - index)))
-  }
-
-  private func setup() {
-    for index in 0..<Constants.numberOfStrips - 1 {
-      let stripView = createStrips(index: index)
-      self.stripViews.append(stripView)
-    }
-    _ = createStrips(index: Constants.numberOfStrips)
   }
 
   private func createStrips(index: Int) -> HorizontalStripView {
