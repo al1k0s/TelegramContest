@@ -62,15 +62,9 @@ final class ChartView: UIView {
     switchButton.setTitleColor(UIColor(red: 36.0 / 255, green: 134.0 / 255, blue: 227.0 / 255, alpha: 1.0), for: .normal)
     switchButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
   }
-  private let plotView = PlotView(isMainPlot: true)
 
-  private let chartControl = with(UISegmentedControl()) { chartControl in
-    ["First", "Second", "Third", "Fourth", "Fifth"]
-      .enumerated()
-      .forEach { chartControl.insertSegment(withTitle: $0.1, at: $0.0, animated: false) }
-    chartControl.selectedSegmentIndex = 0
-    chartControl.addTarget(self, action: #selector(handleChartControl), for: .valueChanged)
-  }
+  private let plotView: PlotViewProtocol
+
   var chartChange: ((Int) -> ())?
 
   var rangeChanged: ((ClosedRange<Float>) -> ())? {
@@ -91,14 +85,16 @@ final class ChartView: UIView {
 
   var changeBackground: ((Bool) -> ())?
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(plotView: PlotViewProtocol) {
+    self.plotView = plotView
+
+    super.init(frame: .zero)
+
     setup()
   }
 
   required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    setup()
+    fatalError("init(coder:) has not been implemented")
   }
 
   private func setup() {
@@ -181,14 +177,6 @@ final class ChartView: UIView {
       switchButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
       switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
       ])
-
-    // configure control
-    addSubview(chartControl, constraints: [
-      chartControl.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.padding),
-      chartControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-      chartControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-      chartControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding)
-    ])
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {
@@ -215,11 +203,6 @@ final class ChartView: UIView {
     buttonsView.render(props: props)
     infoView.rangeChanged()
     self.chartRange = chartRange
-  }
-
-  @objc
-  private func handleChartControl(_ segmentedControl: UISegmentedControl) {
-    chartChange?(chartControl.selectedSegmentIndex)
   }
 
   @objc

@@ -10,7 +10,7 @@ import UIKit
 
 final class ControlPanelView: UIView {
 
-  private let plotView = PlotView(isMainPlot: false)
+  private let plotView = Plot1View(isMainPlot: false)
   private let leftShadowView = UIView()
   private let leftControlView = SideView(isLeft: true)
   private let centerView = CenterView()
