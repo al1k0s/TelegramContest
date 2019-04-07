@@ -146,7 +146,7 @@ class InfoView: UIView {
   }
 
   private func render(the data: InfoViewModel) {
-    containerLeftConstraint?.constant = min(max((data.charts[0].location.x * self.bounds.width) - container.bounds.width / 2, 0), self.bounds.width - container.bounds.width)
+    containerLeftConstraint?.constant = calculateContainerLeadingConstant(data: data)
     lineLeftConstraint?.constant = data.charts[0].location.x * self.bounds.width
     resetCircles()
     dayMonthLabel.text = data.dayMonth
@@ -176,6 +176,14 @@ class InfoView: UIView {
 
     drawTheme()
     subviews.forEach({ $0.alpha = 1 })
+  }
+
+  private func calculateContainerLeadingConstant(data: InfoViewModel) -> CGFloat {
+    if data.charts[0].location.x < 0.5 {
+      return data.charts[0].location.x * self.bounds.width + 10
+    } else {
+      return data.charts[0].location.x * self.bounds.width - 10 - container.bounds.width
+    }
   }
 
   private func drawTheme() {
