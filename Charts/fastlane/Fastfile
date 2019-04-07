@@ -28,6 +28,7 @@ platform :ios do
  end
  
  lane :myMatch do
+match(app_identifier: "com.andaleksei.telegramContest", type: "development", username: "ANDaleksei@gmail.com")
   match(app_identifier: "com.andaleksei.telegramContest", type: "appstore", username: "ANDaleksei@gmail.com")
  end
 end

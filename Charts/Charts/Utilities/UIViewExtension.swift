@@ -19,8 +19,15 @@ extension UIView {
     addSubview(otherView, constraints: [
       otherView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
       otherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-      otherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: insets.right),
-      otherView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: insets.bottom)
+      otherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
+      otherView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
       ])
+  }
+
+  func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+    let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+    let mask = CAShapeLayer()
+    mask.path = path.cgPath
+    layer.mask = mask
   }
 }

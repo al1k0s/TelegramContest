@@ -108,7 +108,7 @@ final class ChartView: UIView {
 
     // configure title label
     addSubview(titleLabel, constraints: [
-      titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+      titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
       titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
     ])
 
@@ -251,6 +251,7 @@ final class ChartView: UIView {
     buttonsHeightConstraint.constant = CGFloat(props.count * 40)
     buttonsView.render(props: props)
     verticalAxeView.toggleMode(isLight: isLight)
+    controlPanelView.toggleLighMode(on: isLight)
     infoView.isLight = isLight
     changeBackground?(isLight)
   }
