@@ -16,10 +16,16 @@ final class VerticalAxeView: UIView {
   private var stripViews: [HorizontalStripView] = []
   private var currentAnimated: [HorizontalStripView] = []
   private let viewWidth: CGFloat
+  private var displayLink: CADisplayLink?
 
+  private var pendingMax: Double?
   var maxValue = 200.0 {
     didSet {
-      update(from: oldValue, newValue: maxValue)
+      if isAnimating {
+        pendingMax = maxValue
+      } else {
+        update(from: oldValue, newValue: maxValue)
+      }
     }
   }
 
@@ -53,7 +59,7 @@ final class VerticalAxeView: UIView {
     self.isLight = isLight
   }
 
-  func update(from previousValue: Double, newValue: Double) {
+  private func update(from previousValue: Double, newValue: Double) {
     guard previousValue != newValue else { return }
 
     for view in currentAnimated {
@@ -64,9 +70,13 @@ final class VerticalAxeView: UIView {
 
     let diff = previousValue - newValue
 
-    let distanceToMove: (Int) -> CGFloat
-    let newY: (Int) -> CGFloat
-    let newViewsMove: (Int) -> CGFloat
+    let distanceToMove: CGFloat = diff > 0 ? -20 : 20
+    let newY: (Int) -> CGFloat = { index in
+      CGFloat(index) * Constants.stripHeight - distanceToMove
+    }
+    let newViewsMove: (Int) -> CGFloat = { index in
+        CGFloat(index) * Constants.stripHeight
+    }
 
     var hiddenStripViews = (0..<(Constants.numberOfStrips))
       .map { _ -> HorizontalStripView in
@@ -79,31 +89,9 @@ final class VerticalAxeView: UIView {
 
     currentAnimated = stripViews + hiddenStripViews
 
-    if diff > 0 {
-      distanceToMove = { index in
-        Constants.stripHeight * CGFloat(Constants.numberOfStrips - index + 1)
-      }
-      newY = { index in
-        Constants.stripHeight * CGFloat(index + 1)
-      }
-      newViewsMove = { index in
-        CGFloat(index) * Constants.stripHeight
-      }
-    } else {
-      distanceToMove = { index in
-        return Constants.stripHeight * -CGFloat(Constants.numberOfStrips - index)
-      }
-      newY = { index in
-        CGFloat(index - 2) * Constants.stripHeight
-      }
-      newViewsMove = { index in
-        CGFloat(index) * Constants.stripHeight
-      }
-    }
-
-    UIView.animate(withDuration: 0.5, animations: {
-      for (index, view) in animatableStripViews.enumerated() {
-        view.frame.origin.y -= distanceToMove(index)
+    UIView.animate(withDuration: 0.2, animations: {
+      for view in animatableStripViews {
+        view.frame.origin.y += distanceToMove
         view.alpha = 0
       }
     }, completion: { _ in
@@ -122,13 +110,22 @@ final class VerticalAxeView: UIView {
       stripView.number = lineNumber(index)
     }
 
-    UIView.animate(withDuration: 0.5,
-                   animations: {
-                    for (index, view) in self.stripViews.enumerated() {
-                      view.frame.origin.y = newViewsMove(index)
-                      view.alpha = 1.0
-                    }
-    })
+    UIView.animate(
+      withDuration: 0.2,
+      animations: {
+        for (index, view) in self.stripViews.enumerated() {
+          view.frame.origin.y = newViewsMove(index)
+          view.alpha = 1.0
+        }
+      },
+      completion: { [weak self] wasInterrupted in
+        self?.currentAnimated = []
+        if let max = self?.pendingMax {
+          self?.pendingMax = nil
+          self?.update(from: newValue, newValue: max)
+        }
+      }
+    )
   }
 
   private func lineNumber(_ index: Int) -> String {

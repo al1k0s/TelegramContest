@@ -140,7 +140,7 @@ final class DateAxeView: UIView {
   private func decreaseDateIntervalIdNeeded(chartRange: ChartRange) {
     guard labels.count > 1 else { return }
     let difference = labels[1].frame.minX - labels[0].frame.minX
-    if difference > 95 {
+    if difference > 110 {
       let chartDates = chartRange.xCoordinates
       guard let index = findIndexOf(date: dates[0], in: chartDates) else { return }
       interval /= 2
