@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class PlotView: UIView {
+final class Plot1View: UIView, PlotViewProtocol {
   
   private let isMainPlot: Bool
   private var chartRange: ChartRange?
@@ -16,7 +16,7 @@ final class PlotView: UIView {
   private var boundForCheck: (minY: Double, maxY: Double) = (-1, -1)
   private var isChanging: Bool = false
   private var numberOfIterations: Int = 0
-  private let maxNumber = 10
+  private let maxNumberOfIterations = 10
   private var maxValue = 999.0
   private var displayLink: CADisplayLink?
   
@@ -33,7 +33,7 @@ final class PlotView: UIView {
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
     self.maxValue = isMainPlot ? chartRange.max : chartRange.allMax
-    if /*minFromChart() != boundForCheck.0 ||*/ maxY() != boundForCheck.1 {
+    if /*minFromChart() != boundForCheck.0 ||*/ maxY() != boundForCheck.maxY {
       updateMinMax(chartRange)
       boundForCheck = (minY(), maxY())
     } else if !isChanging {
@@ -65,17 +65,17 @@ final class PlotView: UIView {
   @objc func update() {
     numberOfIterations += 1
     setNeedsDisplay()
-    if numberOfIterations >= maxNumber {
+    if numberOfIterations >= maxNumberOfIterations {
       removeLink()
     }
   }
   
   private func removeLink() {
-    isChanging = numberOfIterations != maxNumber
+    isChanging = numberOfIterations != maxNumberOfIterations
     displayLink?.invalidate()
     displayLink = nil
     let newMin = 0.0//boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumber))
-    let newMax = boundForChange.1 + (boundForCheck.1 - boundForChange.1) * (Double(numberOfIterations) / Double(maxNumber))
+    let newMax = boundForChange.1 + (boundForCheck.1 - boundForChange.1) * (Double(numberOfIterations) / Double(maxNumberOfIterations))
     numberOfIterations = 0
     boundForChange = (newMin, newMax)
   }
@@ -117,7 +117,7 @@ final class PlotView: UIView {
             maxY: maxY(),
             size: bounds.size,
             currentIteration: numberOfIterations,
-            maxNumberIterations: maxNumber,
+            maxNumberIterations: maxNumberOfIterations,
             startDate: startDate.timeIntervalSince1970,
             endDate: endDate.timeIntervalSince1970,
             oldBounds: boundForChange).forEach { axis in

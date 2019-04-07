@@ -27,14 +27,16 @@
 		02AC85D32236F27500D28977 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D22236F27500D28977 /* Presenter.swift */; };
 		02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D42236F29D00D28977 /* ChartsSource.swift */; };
 		02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */; };
-		02B2BE1D223702B400317602 /* PlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* PlotView.swift */; };
+		02B2BE1D223702B400317602 /* Plot1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE1C223702B400317602 /* Plot1View.swift */; };
 		02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2B2238454700317602 /* UIColorExtension.swift */; };
 		02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2D2238468400317602 /* RendererProtocol.swift */; };
 		02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2F2238489F00317602 /* ControlPanelView.swift */; };
+		441520D1225A00EB005AE699 /* Plot4View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441520D0225A00EB005AE699 /* Plot4View.swift */; };
 		446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446BB753223BFDE800BDCE74 /* ChartRange.swift */; };
 		44C562992237A75300EE4F78 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C562982237A75300EE4F78 /* Charts.swift */; };
 		44E10A102246558F0037BE2C /* with.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A0F2246558E0037BE2C /* with.swift */; };
 		44E10A122246A9140037BE2C /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A112246A9140037BE2C /* InfoView.swift */; };
+		44F38F44225A571A00B6635D /* PlotViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F38F43225A571A00B6635D /* PlotViewProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,14 +62,16 @@
 		02AC85D22236F27500D28977 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		02AC85D42236F29D00D28977 /* ChartsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsSource.swift; sourceTree = "<group>"; };
 		02AC85D62236F6EC00D28977 /* HorizontalStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalStripView.swift; sourceTree = "<group>"; };
-		02B2BE1C223702B400317602 /* PlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotView.swift; sourceTree = "<group>"; };
+		02B2BE1C223702B400317602 /* Plot1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot1View.swift; sourceTree = "<group>"; };
 		02B2BE2B2238454700317602 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		02B2BE2D2238468400317602 /* RendererProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererProtocol.swift; sourceTree = "<group>"; };
 		02B2BE2F2238489F00317602 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
+		441520D0225A00EB005AE699 /* Plot4View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot4View.swift; sourceTree = "<group>"; };
 		446BB753223BFDE800BDCE74 /* ChartRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRange.swift; sourceTree = "<group>"; };
 		44C562982237A75300EE4F78 /* Charts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		44E10A0F2246558E0037BE2C /* with.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = with.swift; sourceTree = "<group>"; };
 		44E10A112246A9140037BE2C /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		44F38F43225A571A00B6635D /* PlotViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotViewProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,7 @@
 		02AC85AE22359B6F00D28977 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				441520CF2259FDC4005AE699 /* Chart4 */,
 				02AC85AF22359B7900D28977 /* ChartView.swift */,
 				0282F984225A1296009B3178 /* FilterButtons */,
 				02AC85B122359E4D00D28977 /* VerticalAxeView */,
@@ -162,6 +167,7 @@
 				02AC85B422359EB200D28977 /* ControlPanel */,
 				02AC85B522359EBA00D28977 /* ChartButtons */,
 				44E10A112246A9140037BE2C /* InfoView.swift */,
+				44F38F43225A571A00B6635D /* PlotViewProtocol.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -186,7 +192,7 @@
 		02AC85B422359EB200D28977 /* ControlPanel */ = {
 			isa = PBXGroup;
 			children = (
-				02B2BE1C223702B400317602 /* PlotView.swift */,
+				02B2BE1C223702B400317602 /* Plot1View.swift */,
 				024B9A3C22469DBB0061022C /* BottomPlotView.swift */,
 				02B2BE2F2238489F00317602 /* ControlPanelView.swift */,
 				0282F982225A0ACB009B3178 /* ControlsComponents.swift */,
@@ -219,6 +225,14 @@
 				02AC85D42236F29D00D28977 /* ChartsSource.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		441520CF2259FDC4005AE699 /* Chart4 */ = {
+			isa = PBXGroup;
+			children = (
+				441520D0225A00EB005AE699 /* Plot4View.swift */,
+			);
+			path = Chart4;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,12 +323,14 @@
 				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
 				024B9A3B22468D380061022C /* ButtonCell.swift in Sources */,
 				02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */,
-				02B2BE1D223702B400317602 /* PlotView.swift in Sources */,
+				44F38F44225A571A00B6635D /* PlotViewProtocol.swift in Sources */,
+				02B2BE1D223702B400317602 /* Plot1View.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
 				024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
 				0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */,
+				441520D1225A00EB005AE699 /* Plot4View.swift in Sources */,
 				024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */,
 				0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */,
 				02AC85B022359B7900D28977 /* ChartView.swift in Sources */,
@@ -386,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -441,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -454,9 +470,10 @@
 		02AC85A72235985F00D28977 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 7MHQRN2DXE;
 				INFOPLIST_FILE = Charts/AppResources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
@@ -466,7 +483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.andaleksei.telegramContest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.andaleksei.telegramContest";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -475,9 +492,10 @@
 		02AC85A82235985F00D28977 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 7MHQRN2DXE;
 				INFOPLIST_FILE = Charts/AppResources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
@@ -487,7 +505,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.andaleksei.telegramContest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.andaleksei.telegramContest";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
