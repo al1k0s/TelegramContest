@@ -92,7 +92,7 @@ final class BottomPlotView: UIView {
         .map { (arg) -> (CGPoint) in
           let (date, value) = arg
           // get x value from 2 to view.width - 2
-          let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width - 4)) + 2
+          let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width))
           let difference = Double(chartRange.max - chartRange.min)
           // get y value from 0 to view.height
           let y: Double

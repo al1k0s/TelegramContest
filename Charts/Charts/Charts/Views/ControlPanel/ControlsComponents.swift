@@ -17,7 +17,7 @@ final class SideView: UIView {
   init(isLeft: Bool) {
     self.isLeft = isLeft
     super.init(frame: .zero)
-    setup()
+    setup(isLeft: isLeft)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -29,13 +29,16 @@ final class SideView: UIView {
     setCornerRadius(isLeft: isLeft)
   }
 
-  private func setup() {
+  private func setup(isLeft: Bool) {
 
     visibleView.backgroundColor = Constants.lightBackground
-    addSubview(visibleView, withEdgeInsets: .init(top: 0, left: 13, bottom: 0, right: 13))
+    let leftInset: CGFloat = isLeft ? 13 : 0
+    let rightInset: CGFloat = isLeft ? 0 : 13
+    addSubview(visibleView, withEdgeInsets: .init(top: 0, left: leftInset, bottom: 0, right: rightInset))
 
+    let centerOffset: CGFloat = isLeft ? 6.5 : -6.5
     addSubview(imageView, constraints: [
-      imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      imageView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: centerOffset),
       imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
       imageView.widthAnchor.constraint(equalToConstant: 5),
       imageView.heightAnchor.constraint(equalToConstant: 10)

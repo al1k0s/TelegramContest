@@ -31,4 +31,21 @@ platform :ios do
 match(app_identifier: "com.andaleksei.telegramContest", type: "development", username: "ANDaleksei@gmail.com")
   match(app_identifier: "com.andaleksei.telegramContest", type: "appstore", username: "ANDaleksei@gmail.com")
  end
+
+  lane :add_device do
+    device_name = prompt(text: "Enter the device name: ")
+    device_udid = prompt(text: "Enter the device UDID: ")
+    device_hash = {}
+    device_hash[device_name] = device_udid
+    register_devices(devices: device_hash)
+    match(
+      type: "development",
+      force_for_new_devices: true
+    )
+    match(
+      type: "adhoc",
+      force_for_new_devices: true
+    )
+  end
+
 end

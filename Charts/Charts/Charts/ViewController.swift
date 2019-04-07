@@ -11,8 +11,8 @@ import UIKit
 class ViewController: UIViewController {
 
   private let presenter: Presenter
-//  private let plot1View = ChartView(plotView: Plot1View(isMainPlot: true))
-  private let plot1View = ChartView(plotView: Plot4View(isMainPlot: true))
+  private let plot1View = ChartView(plotView: Plot1View(isMainPlot: true))
+  //private let plot1View = ChartView(plotView: Plot4View(isMainPlot: true))
 
   init(presenter: Presenter) {
     self.presenter = presenter

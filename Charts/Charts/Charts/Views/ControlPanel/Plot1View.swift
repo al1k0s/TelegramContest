@@ -161,9 +161,6 @@ func compute(isChanging: Bool,
             let oldY = (1 - Double(value - oldBounds.minY) / oldDiff) * Double(height)
             let newY = (1 - Double(value - minY) / difference) * Double(height)
             y = oldY + (newY - oldY) * (Double(currentIteration) / Double(maxNumberIterations))
-            if value == 1130400 {
-              print(y)
-            }
           } else {
             y = (1 - Double(value - minY) / difference) * Double(height)
           }

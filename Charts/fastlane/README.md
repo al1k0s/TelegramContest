@@ -31,6 +31,11 @@ fastlane ios beta
 fastlane ios myMatch
 ```
 
+### ios add_device
+```
+fastlane ios add_device
+```
+
 
 ----
 

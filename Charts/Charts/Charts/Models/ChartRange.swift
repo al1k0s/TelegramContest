@@ -56,12 +56,12 @@ class ChartRange {
 
   var max: Double {
     let max = activeYAxes.map({ $0.coordinates[indicies].max()! }).max()!
-    return max * 1.1
+    return max
   }
 
   var allMax: Double {
     let max = activeYAxes.map({ $0.coordinates.max()! }).max()!
-    return max * 1.1
+    return max
   }
 
   var min: Double {

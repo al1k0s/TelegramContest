@@ -73,12 +73,9 @@ final class ControlPanelView: UIView {
         constant: -(Constants.unvisibleControlViewWidth + Constants.controlViewRadius)
       ),
       leftControlLeadingConstraint,
-      leftControlView.trailingAnchor.constraint(
-        equalTo: centerView.leadingAnchor,
-        constant: Constants.unvisibleControlViewWidth
-      ),
+      leftControlView.trailingAnchor.constraint(equalTo: centerView.leadingAnchor),
       leftControlView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      leftControlView.widthAnchor.constraint(equalToConstant: Constants.unvisibleControlViewWidth * 3)
+      leftControlView.widthAnchor.constraint(equalToConstant: Constants.unvisibleControlViewWidth * 2)
     ])
 
     // configure right shadow view
@@ -102,12 +99,9 @@ final class ControlPanelView: UIView {
         equalTo: rightShadowView.leadingAnchor,
         constant: Constants.unvisibleControlViewWidth + Constants.controlViewRadius
       ),
-      rightControlView.leadingAnchor.constraint(
-        equalTo: centerView.trailingAnchor,
-        constant: -Constants.unvisibleControlViewWidth
-      ),
+      rightControlView.leadingAnchor.constraint(equalTo: centerView.trailingAnchor),
       rightControlView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      rightControlView.widthAnchor.constraint(equalToConstant: Constants.unvisibleControlViewWidth * 3)
+      rightControlView.widthAnchor.constraint(equalToConstant: Constants.unvisibleControlViewWidth * 2)
     ])
   }
 
@@ -155,7 +149,7 @@ extension ControlPanelView {
       let diff = xCoordinate - handler.startXCoordinate
       let newConstant = handler.constraintConstant + diff
       let minValue = max(newConstant, -Constants.unvisibleControlViewWidth)
-      let boundedCoordinate = min(minValue, rightControlLeadingConstraint.constant - Constants.unvisibleControlViewWidth)
+      let boundedCoordinate = min(minValue, rightControlLeadingConstraint.constant - 2 * Constants.unvisibleControlViewWidth)
       leftControlLeadingConstraint.constant = boundedCoordinate
 
       updateRange()
@@ -179,8 +173,8 @@ extension ControlPanelView {
       let width = self.bounds.width
       let diff = xCoordinate - handler.startXCoordinate
       let newConstant = handler.constraintConstant + diff
-      let minValue = max(newConstant, leftControlLeadingConstraint.constant + Constants.unvisibleControlViewWidth)
-      let boundedCoordinate = min(minValue, width - 2 * Constants.unvisibleControlViewWidth)
+      let minValue = max(newConstant, leftControlLeadingConstraint.constant + 2 * Constants.unvisibleControlViewWidth)
+      let boundedCoordinate = min(minValue, width - Constants.unvisibleControlViewWidth)
       rightControlLeadingConstraint.constant = boundedCoordinate
 
       updateRange()
@@ -207,7 +201,7 @@ extension ControlPanelView {
       let minValue = max(newX, -Constants.unvisibleControlViewWidth)
       let boundedCoordinate = min(minValue, width - 3 * Constants.unvisibleControlViewWidth - centerView.bounds.width)
       leftControlLeadingConstraint.constant = boundedCoordinate
-      rightControlLeadingConstraint.constant = boundedCoordinate + centerView.bounds.width + Constants.unvisibleControlViewWidth
+      rightControlLeadingConstraint.constant = boundedCoordinate + centerView.bounds.width + 2 * Constants.unvisibleControlViewWidth
 
       updateRange()
     default:

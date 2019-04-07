@@ -41,9 +41,7 @@ final class ChartView: UIView {
     titleLabel.text = "FOLLOWERS"
   }
 
-  let verticalAxeView = VerticalAxeView(
-    width: UIScreen.main.bounds.width - 2 * Constants.padding
-  )
+  let verticalAxeView = VerticalAxeView()
   private let dateAxeView = DateAxeView(frame:
     CGRect(
       x: 0.0,
@@ -115,7 +113,6 @@ final class ChartView: UIView {
       contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
 
-
     // configure vertical axes view
     verticalAxeView.clipsToBounds = true
     let topInset = 8 as CGFloat
@@ -123,21 +120,21 @@ final class ChartView: UIView {
       verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor, constant: topInset),
       verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
       verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
-      verticalAxeView.heightAnchor.constraint(equalToConstant: 240)
+      verticalAxeView.heightAnchor.constraint(equalToConstant: VerticalAxeView.Constants.stripHeight * 5.5)
     ])
 
     plotView.translatesAutoresizingMaskIntoConstraints = false
     contentContainer.addSubview(plotView)
 
     NSLayoutConstraint.activate([
-      plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor, constant: topInset),
+      plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
       plotView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
       plotView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       plotView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
 
     addSubview(infoView, constraints: [
-      infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor, constant: topInset),
+      infoView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
       infoView.leadingAnchor.constraint(equalTo: verticalAxeView.leadingAnchor),
       infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       infoView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)

@@ -144,7 +144,7 @@ final class DateAxeView: UIView {
       let chartDates = chartRange.xCoordinates
       guard let index = findIndexOf(date: dates[0], in: chartDates) else { return }
       interval /= 2
-      var iter = index - interval < 0 ? index : index - interval
+      var iter = index - interval < 0 ? index + interval : index - interval
       var normalizedCoord = findNormalizedXCoordinates(date: chartDates[iter], range: chartRange.range)
       var xCoord = normalizedCoord * Double(bounds.width)
       repeat {
