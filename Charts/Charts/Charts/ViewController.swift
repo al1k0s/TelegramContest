@@ -35,6 +35,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Statistics"
+    navigationController?.navigationBar.isTranslucent = false
   }
 
   override func viewWillAppear(_ animated: Bool) {

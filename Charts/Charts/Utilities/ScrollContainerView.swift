@@ -25,8 +25,7 @@ final class ScrollContainerView: UIScrollView {
     bounces = false
     addSubview(contentView, withEdgeInsets: .zero)
     NSLayoutConstraint.activate([
-      widthAnchor.constraint(equalTo: contentView.widthAnchor),
-      heightAnchor.constraint(equalTo: contentView.heightAnchor)
+      widthAnchor.constraint(equalTo: contentView.widthAnchor)
     ])
   }
 }

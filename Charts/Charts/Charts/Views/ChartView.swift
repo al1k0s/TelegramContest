@@ -169,7 +169,8 @@ final class ChartView: UIView {
     addSubview(containerView, constraints: [
       containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: Constants.padding),
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: trailingAnchor)
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
       ])
 
     containerView.addSubview(switchButton, constraints: [
