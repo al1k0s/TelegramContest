@@ -15,8 +15,8 @@
 		024B9A432247F2C90061022C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024B9A422247F2C90061022C /* Assets.xcassets */; };
 		0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F982225A0ACB009B3178 /* ControlsComponents.swift */; };
 		0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F985225A12AF009B3178 /* FilterButtonsView.swift */; };
-		0282F988225A12BB009B3178 /* FilterButtonsFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F987225A12BB009B3178 /* FilterButtonsFlowLayout.swift */; };
 		0282F98C225A12D7009B3178 /* FilterButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F98B225A12D7009B3178 /* FilterButtonCell.swift */; };
+		0282F98E225A19C7009B3178 /* FilterButtonsFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F98D225A19C7009B3178 /* FilterButtonsFlowLayout.swift */; };
 		02AC85982235985E00D28977 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85972235985E00D28977 /* AppDelegate.swift */; };
 		02AC859A2235985E00D28977 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC85992235985E00D28977 /* ViewController.swift */; };
 		02AC85A22235985F00D28977 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02AC85A02235985F00D28977 /* LaunchScreen.storyboard */; };
@@ -46,8 +46,8 @@
 		024B9A422247F2C90061022C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0282F982225A0ACB009B3178 /* ControlsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsComponents.swift; sourceTree = "<group>"; };
 		0282F985225A12AF009B3178 /* FilterButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonsView.swift; sourceTree = "<group>"; };
-		0282F987225A12BB009B3178 /* FilterButtonsFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonsFlowLayout.swift; sourceTree = "<group>"; };
 		0282F98B225A12D7009B3178 /* FilterButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonCell.swift; sourceTree = "<group>"; };
+		0282F98D225A19C7009B3178 /* FilterButtonsFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonsFlowLayout.swift; sourceTree = "<group>"; };
 		02AC85942235985E00D28977 /* Charts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Charts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02AC85972235985E00D28977 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02AC85992235985E00D28977 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				0282F985225A12AF009B3178 /* FilterButtonsView.swift */,
-				0282F987225A12BB009B3178 /* FilterButtonsFlowLayout.swift */,
+				0282F98D225A19C7009B3178 /* FilterButtonsFlowLayout.swift */,
 				0282F98B225A12D7009B3178 /* FilterButtonCell.swift */,
 			);
 			path = FilterButtons;
@@ -298,6 +298,7 @@
 				44C562992237A75300EE4F78 /* Charts.swift in Sources */,
 				0238427B223C058B006CD66E /* DateAxeView.swift in Sources */,
 				02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */,
+				0282F98E225A19C7009B3178 /* FilterButtonsFlowLayout.swift in Sources */,
 				446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */,
 				02AC85D32236F27500D28977 /* Presenter.swift in Sources */,
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
@@ -313,7 +314,6 @@
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
 				024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
-				0282F988225A12BB009B3178 /* FilterButtonsFlowLayout.swift in Sources */,
 				0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */,
 				024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */,
 				0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */,
