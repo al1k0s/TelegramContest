@@ -1,5 +1,5 @@
 //
-//  InfoView.swift
+//  Info1View.swift
 //  Charts
 //
 //  Created by Alik Vovkotrub on 3/23/19.
@@ -8,29 +8,7 @@
 
 import UIKit
 
-struct InfoViewModel {
-  struct Chart {
-    var color: UIColor
-    var value: String
-    var location: CGPoint
-  }
-
-  var dayMonth: String
-  var year: String
-  var charts: [Chart]
-
-  init(date: Date, charts: [(color: UIColor, value: Int, location: CGPoint)]) {
-    self.dayMonth = with(DateFormatter()) {
-      $0.dateFormat = "MMM dd"
-    }.string(from: date)
-    self.year = with(DateFormatter()) {
-      $0.dateFormat = "yyyy"
-    }.string(from: date)
-    self.charts = charts.map { .init(color: $0.color, value: String($0.value), location: $0.location) }
-  }
-}
-
-class InfoView: UIView {
+class Chart1InfoView: UIView, InfoViewProtocol {
 
   let dayMonthLabel = with(UILabel()) {
     $0.font = UIFont.systemFont(ofSize: 12)
@@ -72,7 +50,8 @@ class InfoView: UIView {
   }
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
-    return InfoViewModel(date: .init(), charts: [
+    return InfoViewModel(date: .init(),
+                         xCount: 1, charts: [
       (color: .red, value: 123, location: CGPoint(x: 0.3, y: 0.3)),
       (color: .green, value: 12, location: CGPoint(x: 0.5, y: 0.5))
     ])
@@ -81,6 +60,8 @@ class InfoView: UIView {
   var circles: [UIView] = []
 
   var lastViewModel: InfoViewModel?
+
+  var onZoom: (() -> Void)?
 
   var isLight = true {
     didSet {
@@ -120,11 +101,18 @@ class InfoView: UIView {
     lineLeftConstraint = line.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     self.addSubview(line, constraints: [
       line.widthAnchor.constraint(equalToConstant: 1),
-      line.topAnchor.constraint(equalTo: container.bottomAnchor),
+      line.topAnchor.constraint(equalTo: self.topAnchor),
       line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       lineLeftConstraint!
     ])
     sendSubviewToBack(line)
+
+    let clickGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(zoomed))
+    container.addGestureRecognizer(clickGestureRecognizer)
+  }
+
+  @objc private func zoomed() {
+    onZoom?()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -207,7 +195,7 @@ class InfoView: UIView {
     circles = []
   }
 
-  func rangeChanged() {
+  func hide() {
     UIView.animate(withDuration: 0.1) {
       self.subviews.forEach({ $0.alpha = 0 })
     }

@@ -81,13 +81,7 @@ final class VerticalAxeView: UIView {
   private func lineNumber(_ index: Int) -> String {
     let step = maxValue / 5.5
     let number = Int(step * Double(Constants.numberOfStrips - index - 1))
-    if number < 1000 {
-      return "\(number)"
-    } else if number < 1000000 {
-      return "\(number / 1000).\((number % 1000) / 100)K"
-    } else {
-      return "\(number / 1000000).\((number % 1000000) / 100000)M"
-    }
+    return formatNumber(number)
   }
 
   private func createStrips(index: Int) -> HorizontalStripView {
@@ -112,5 +106,15 @@ final class VerticalAxeView: UIView {
     static let stripHeight: CGFloat = 50
     static let lightNumber = UIColor(red: 173.0 / 255, green: 178.0 / 255, blue: 182.0 / 255, alpha: 1.0)
     static let darkNumber = UIColor(red: 80.0 / 255, green: 95.0 / 255, blue: 111.0 / 255, alpha: 1.0)
+  }
+}
+
+func formatNumber(_ number: Int) -> String {
+  if number < 1000 {
+    return "\(number)"
+  } else if number < 1000000 {
+    return "\(number / 1000).\((number % 1000) / 100)K"
+  } else {
+    return "\(number / 1000000).\((number % 1000000) / 100000)M"
   }
 }

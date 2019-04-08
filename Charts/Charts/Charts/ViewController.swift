@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     let chartViews = (1...5).map { index -> ChartView in
       let chartView =  ChartView(
         plotView: createPlotView(index: index, isMainPlot: true),
+        infoView: createInfoView(index: index),
         bottomPlotView: createPlotView(index: index, isMainPlot: false)
       )
       chartView.rangeChanged = { presenter.rangeChanged($0, index: index - 1) }
@@ -80,6 +81,24 @@ class ViewController: UIViewController {
 private enum Constants {
   static let light = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
   static let dark = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
+}
+
+private func createInfoView(index: Int) -> InfoViewProtocol {
+  switch index {
+  case 1:
+    return Chart1InfoView()
+  case 2:
+    return Chart1InfoView()
+  case 3:
+    return Chart1InfoView()
+  case 4:
+    return Chart4InfoView()
+  case 5:
+    return Chart1InfoView()
+  default:
+    print("Error")
+    return Chart1InfoView()
+  }
 }
 
 private func createPlotView(index: Int, isMainPlot: Bool) -> PlotViewProtocol {

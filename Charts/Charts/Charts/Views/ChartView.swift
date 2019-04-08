@@ -14,22 +14,25 @@ final class ChartView: UIView {
 
   private var chartRange: ChartRange! {
     didSet {
-      infoView.tapOccured = { [chartRange] point in
-        let up = chartRange!.range.upperBound.timeIntervalSince1970
-        let down = chartRange!.range.lowerBound.timeIntervalSince1970
+      infoView.tapOccured = { point in
+        let chartRange = self.chartRange!
+        let up = chartRange.range.upperBound.timeIntervalSince1970
+        let down = chartRange.range.lowerBound.timeIntervalSince1970
         let diff = up - down
         let time = down + diff * Double(point)
-        let (index, _) = chartRange!.xCoordinates.map { $0.timeIntervalSince1970 }
+        let (index, _) = chartRange.xCoordinates.map { $0.timeIntervalSince1970 }
           .map { abs($0 - time) }
           .enumerated()
           .min(by: { $0.1 < $1.1 })!
-        let dateX = (chartRange!.xCoordinates[index].timeIntervalSince1970 - down) / diff
-        let max = chartRange!.max
-        let charts = chartRange!.activeYAxes.map { axe -> (UIColor, Int, CGPoint) in
+        let dateX = (chartRange.xCoordinates[index].timeIntervalSince1970 - down) / diff
+        let max = chartRange.max
+        let charts = chartRange.activeYAxes.map { axe -> (UIColor, Int, CGPoint) in
           let value = Int(axe.coordinates[index])
           return (color: UIColor(hexString: axe.color), value, CGPoint(x: dateX, y: Double(value) / max))
         }
-        return InfoViewModel(date: chartRange!.xCoordinates[index], charts: charts)
+        return InfoViewModel(date: chartRange.xCoordinates[index],
+                             xCount: chartRange.indicies.count,
+                             charts: charts)
       }
     }
   }
@@ -52,7 +55,7 @@ final class ChartView: UIView {
   )
   private let controlPanelView: ControlPanelView
   private let filterButtonsView = FilterButtonsView()
-  private let infoView = InfoView()
+  private let infoView: InfoViewProtocol
 
   private let plotView: PlotViewProtocol
 
@@ -74,10 +77,14 @@ final class ChartView: UIView {
     }
   }
 
-  init(plotView: PlotViewProtocol, bottomPlotView: PlotViewProtocol) {
+  init(plotView: PlotViewProtocol,
+       infoView: InfoViewProtocol,
+       bottomPlotView: PlotViewProtocol) {
     self.plotView = plotView
     self.controlPanelView = ControlPanelView(plotView: bottomPlotView)
+    self.infoView = infoView
     super.init(frame: .zero)
+
     setup()
   }
 
@@ -128,6 +135,7 @@ final class ChartView: UIView {
       infoView.trailingAnchor.constraint(equalTo: verticalAxeView.trailingAnchor),
       infoView.bottomAnchor.constraint(equalTo: verticalAxeView.bottomAnchor)
     ])
+    infoView.onZoom = zoom
 
     // configure date axe view
     contentContainer.addSubview(dateAxeView, constraints: [
@@ -154,11 +162,15 @@ final class ChartView: UIView {
     ])
   }
 
+  func zoom() {
+    
+  }
+
   func rangeUpdated(_ chartRange: ChartRange) {
     verticalAxeView.maxValue = chartRange.max
     plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
-    infoView.rangeChanged()
+    infoView.hide()
   }
 
   func yAxesUpdated(_ chartRange: ChartRange) {
@@ -173,7 +185,7 @@ final class ChartView: UIView {
       )
     }
     filterButtonsView.render(cellProps: cellProps)
-    infoView.rangeChanged()
+    infoView.hide()
     self.chartRange = chartRange
   }
 

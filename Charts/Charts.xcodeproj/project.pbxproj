@@ -34,9 +34,12 @@
 		02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2F2238489F00317602 /* ControlPanelView.swift */; };
 		441520D1225A00EB005AE699 /* Plot4View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441520D0225A00EB005AE699 /* Plot4View.swift */; };
 		446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446BB753223BFDE800BDCE74 /* ChartRange.swift */; };
+		44AAB4E8225BE14600885B14 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB4E7225BE14600885B14 /* InfoViewModel.swift */; };
+		44AAB4EA225BE97C00885B14 /* Chart4InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB4E9225BE97C00885B14 /* Chart4InfoView.swift */; };
+		44AAB4EC225BF90C00885B14 /* InfoViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB4EB225BF90C00885B14 /* InfoViewProtocol.swift */; };
 		44C562992237A75300EE4F78 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C562982237A75300EE4F78 /* Charts.swift */; };
 		44E10A102246558F0037BE2C /* with.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A0F2246558E0037BE2C /* with.swift */; };
-		44E10A122246A9140037BE2C /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A112246A9140037BE2C /* InfoView.swift */; };
+		44E10A122246A9140037BE2C /* ChartInfo1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A112246A9140037BE2C /* ChartInfo1View.swift */; };
 		44F38F44225A571A00B6635D /* PlotViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F38F43225A571A00B6635D /* PlotViewProtocol.swift */; };
 		44F39AF2225AA2F900B6635D /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 44F39AF1225AA2F900B6635D /* 5.json */; };
 		44F39AF5225AA3B400B6635D /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 44F39AF4225AA3B400B6635D /* 4.json */; };
@@ -75,9 +78,12 @@
 		02B2BE2F2238489F00317602 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
 		441520D0225A00EB005AE699 /* Plot4View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot4View.swift; sourceTree = "<group>"; };
 		446BB753223BFDE800BDCE74 /* ChartRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRange.swift; sourceTree = "<group>"; };
+		44AAB4E7225BE14600885B14 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
+		44AAB4E9225BE97C00885B14 /* Chart4InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart4InfoView.swift; sourceTree = "<group>"; };
+		44AAB4EB225BF90C00885B14 /* InfoViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewProtocol.swift; sourceTree = "<group>"; };
 		44C562982237A75300EE4F78 /* Charts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		44E10A0F2246558E0037BE2C /* with.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = with.swift; sourceTree = "<group>"; };
-		44E10A112246A9140037BE2C /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		44E10A112246A9140037BE2C /* ChartInfo1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartInfo1View.swift; sourceTree = "<group>"; };
 		44F38F43225A571A00B6635D /* PlotViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotViewProtocol.swift; sourceTree = "<group>"; };
 		44F39AF1225AA2F900B6635D /* 5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5.json; sourceTree = "<group>"; };
 		44F39AF4225AA3B400B6635D /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 		02AC85AA2235990A00D28977 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
+				44AAB4E6225BE13700885B14 /* InfoView */,
 				02AC85992235985E00D28977 /* ViewController.swift */,
 				02AC85D12236F26900D28977 /* Presenter */,
 				02AC85CE2236E4D500D28977 /* Models */,
@@ -179,7 +186,6 @@
 				02AC85B222359E6000D28977 /* DateAxeView */,
 				02AC85B422359EB200D28977 /* ControlPanel */,
 				02AC85B522359EBA00D28977 /* ChartButtons */,
-				44E10A112246A9140037BE2C /* InfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -247,6 +253,17 @@
 				02766A80225B974D006EF1F0 /* Plot5View.swift */,
 			);
 			path = PlotViews;
+			sourceTree = "<group>";
+		};
+		44AAB4E6225BE13700885B14 /* InfoView */ = {
+			isa = PBXGroup;
+			children = (
+				44E10A112246A9140037BE2C /* ChartInfo1View.swift */,
+				44AAB4E7225BE14600885B14 /* InfoViewModel.swift */,
+				44AAB4E9225BE97C00885B14 /* Chart4InfoView.swift */,
+				44AAB4EB225BF90C00885B14 /* InfoViewProtocol.swift */,
+			);
+			path = InfoView;
 			sourceTree = "<group>";
 		};
 		44F39AF3225AA2FD00B6635D /* Data */ = {
@@ -342,13 +359,14 @@
 				0282F98C225A12D7009B3178 /* FilterButtonCell.swift in Sources */,
 				44C562992237A75300EE4F78 /* Charts.swift in Sources */,
 				0238427B223C058B006CD66E /* DateAxeView.swift in Sources */,
+				44AAB4EC225BF90C00885B14 /* InfoViewProtocol.swift in Sources */,
 				02AC85D72236F6EC00D28977 /* HorizontalStripView.swift in Sources */,
 				0282F98E225A19C7009B3178 /* FilterButtonsFlowLayout.swift in Sources */,
 				446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */,
 				02AC85D32236F27500D28977 /* Presenter.swift in Sources */,
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
-				44E10A122246A9140037BE2C /* InfoView.swift in Sources */,
+				44E10A122246A9140037BE2C /* ChartInfo1View.swift in Sources */,
 				44E10A102246558F0037BE2C /* with.swift in Sources */,
 				024B9A3922468C9F0061022C /* ButtonsView.swift in Sources */,
 				02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */,
@@ -362,6 +380,8 @@
 				02766A81225B974D006EF1F0 /* Plot5View.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
 				0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */,
+				44AAB4EA225BE97C00885B14 /* Chart4InfoView.swift in Sources */,
+				44AAB4E8225BE14600885B14 /* InfoViewModel.swift in Sources */,
 				441520D1225A00EB005AE699 /* Plot4View.swift in Sources */,
 				024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */,
 				0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */,
