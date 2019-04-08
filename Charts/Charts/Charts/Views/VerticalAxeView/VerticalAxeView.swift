@@ -8,25 +8,30 @@
 
 import UIKit
 
+struct Extremum: Equatable {
+  let topLeft: Double
+  let bottomLeft: Double
+  let topRight: Double?
+  let bottomRight: Double?
+}
+
 final class VerticalAxeView: UIView {
 
   private var isLight: Bool = true
   private var isAnimating: Bool = false
   private var stripViews: [HorizontalStripView] = []
-  private var pendingMax: Double?
-  var maxValue = -1.0 {
+  private var pendingExtremum: Extremum?
+  private var completedAnimations = 0
+  private var leftColor: UIColor?
+  private var rightColor: UIColor?
+  var extremum: Extremum = .init(topLeft: 100.0, bottomLeft: 100.0, topRight: nil, bottomRight: nil) {
     didSet {
       if isAnimating {
-        pendingMax = maxValue
-      } else {
-        update(from: oldValue, newValue: maxValue)
+        pendingExtremum = extremum
+      } else if !stripViews.isEmpty {
+        update(from: oldValue, newValue: extremum)
       }
     }
-  }
-
-
-  private var step: Double {
-    return maxValue / Double(Constants.numberOfStrips)
   }
 
   override init(frame: CGRect) {
@@ -44,7 +49,11 @@ final class VerticalAxeView: UIView {
       let stripView = createStrips(index: index)
       self.stripViews.append(stripView)
     }
-    update(from: -1, newValue: maxValue)
+    if isAnimating {
+      pendingExtremum = extremum
+    } else {
+      update(from: .init(topLeft: -1.0, bottomLeft: -1.0, topRight: nil, bottomRight: nil), newValue: extremum)
+    }
   }
 
   func toggleMode(isLight: Bool) {
@@ -52,35 +61,93 @@ final class VerticalAxeView: UIView {
     self.isLight = isLight
   }
 
-  private func update(from previousValue: Double, newValue: Double) {
+  func setColors(left: UIColor, right: UIColor) {
+    leftColor = left
+    rightColor = right
+  }
+
+  private func update(from previousValue: Extremum, newValue: Extremum) {
     guard previousValue != newValue else { return }
     isAnimating = true
-    let count = stripViews.count
-    var completedAnimations = 0
+    let count = stripViews.count + (newValue.topRight != nil ? stripViews.count : 0)
     for (index, strip) in stripViews.enumerated() {
-      let isTopDirection = newValue < previousValue
+      let isTopDirection = calculateIsTopDirection(
+        index: index,
+        prev: (bottom: previousValue.bottomLeft, top: previousValue.topLeft),
+        new: (bottom: newValue.bottomLeft, top: newValue.topLeft)
+      )
       strip.updateLabel(
         isLeft: true,
         isTopDirection: isTopDirection,
-        newText: lineNumber(index),
-        color: isLight ? Constants.lightNumber : Constants.darkNumber,
+        newText: lineNumber(index, isLeft: true),
+        color: leftColor ?? (isLight ? Constants.lightNumber : Constants.darkNumber),
         completion: { [weak self] () in
-          completedAnimations += 1
-          guard completedAnimations == count else { return }
-          if let newMax = self?.pendingMax, newMax != newValue {
-            self?.pendingMax = nil
-            self?.update(from: newValue, newValue: newMax)
+          guard let `self` = self else { return }
+          self.completedAnimations += 1
+          guard self.completedAnimations == count else { return }
+          self.completedAnimations = 0
+          if let newMax = self.pendingExtremum, newMax != newValue {
+            self.pendingExtremum = nil
+            self.update(from: newValue, newValue: newMax)
           } else {
-            self?.isAnimating = false
+            self.isAnimating = false
+          }
+        }
+      )
+      guard
+        let newBottom = newValue.bottomRight,
+        let newTop = newValue.topRight
+      else { continue }
+      let prevBottom = previousValue.bottomRight ?? 0.0
+      let prevTop = previousValue.topRight ?? 0.0
+      let isTop = calculateIsTopDirection(
+        index: index,
+        prev: (bottom: prevBottom, top: prevTop),
+        new: (bottom: newBottom, top: newTop)
+      )
+      strip.updateLabel(
+        isLeft: false,
+        isTopDirection: isTop,
+        newText: lineNumber(index, isLeft: false),
+        color: rightColor ?? (isLight ? Constants.lightNumber : Constants.darkNumber),
+        completion: { [weak self] () in
+          guard let `self` = self else { return }
+          self.completedAnimations += 1
+          guard self.completedAnimations == count else { return }
+          self.completedAnimations = 0
+          if let newMax = self.pendingExtremum, newMax != newValue {
+            self.pendingExtremum = nil
+            self.update(from: newValue, newValue: newMax)
+          } else {
+            self.isAnimating = false
           }
         }
       )
     }
   }
 
-  private func lineNumber(_ index: Int) -> String {
-    let step = maxValue / 5.5
-    let number = Int(step * Double(Constants.numberOfStrips - index - 1))
+  func calculateIsTopDirection(
+    index: Int,
+    prev: (bottom: Double, top: Double),
+    new: (bottom: Double, top: Double)
+  ) -> Bool {
+
+    let normalize = 1.0 - Double(index) / 5.5
+    let prevY = (prev.top - prev.bottom) * normalize
+    let newY = (new.top - new.bottom) * normalize
+    return newY < prevY
+  }
+
+  private func lineNumber(_ index: Int, isLeft: Bool) -> String {
+    let step: Double
+    let number: Int
+    if isLeft {
+      step = (extremum.topLeft - extremum.bottomLeft) / Double(Constants.numberOfStrips)
+      number = Int(step * Double(Constants.numberOfStrips - index - 1)) + Int(extremum.bottomLeft)
+    } else {
+      step = ((extremum.topRight ?? 0.0) - (extremum.bottomRight ?? 0.0)) / Double(Constants.numberOfStrips)
+      number = Int(step * Double(Constants.numberOfStrips - index - 1)) + Int(extremum.bottomRight ?? 0.0)
+    }
     if number < 1000 {
       return "\(number)"
     } else if number < 1000000 {
