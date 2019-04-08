@@ -13,13 +13,24 @@ class ViewController: UIViewController {
   private let presenter: Presenter
   //private let plot1View = ChartView(plotView: Plot1View(isMainPlot: true))
   //private let plot1View = ChartView(plotView: Plot4View(isMainPlot: true))
-  private let plot1View = ChartView(plotView: Plot5View(isMainPlot: true), bottomPlotView: Plot5View(isMainPlot: false))
+  //private let plot1View = ChartView(plotView: Plot5View(isMainPlot: true), bottomPlotView: Plot5View(isMainPlot: false))
+  private let stackView: UIStackView
+  private var isLightMode = true
 
   init(presenter: Presenter) {
     self.presenter = presenter
 
-    plot1View.rangeChanged = presenter.rangeChanged
-    plot1View.yAxesChanged = presenter.yAxesChanged
+    let chartViews = (1...5).map { index -> ChartView in
+      let chartView =  ChartView(
+        plotView: createPlotView(index: index, isMainPlot: true),
+        bottomPlotView: createPlotView(index: index, isMainPlot: false)
+      )
+      chartView.rangeChanged = { presenter.rangeChanged($0, index: index - 1) }
+      chartView.yAxesChanged = { presenter.yAxesChanged(chartIndex: index - 1, $0) }
+      return chartView
+    }
+    stackView = UIStackView(arrangedSubviews: chartViews)
+    stackView.axis = .vertical
     
     super.init(nibName: nil, bundle: nil)
   }
@@ -29,7 +40,7 @@ class ViewController: UIViewController {
   }
 
   override func loadView() {
-    let container = ScrollContainerView(contentView: plot1View)
+    let container = ScrollContainerView(contentView: stackView)
     view = container
   }
 
@@ -37,27 +48,57 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     title = "Statistics"
     navigationController?.navigationBar.isTranslucent = false
+    navigationItem.rightBarButtonItem = UIBarButtonItem(
+      title: "Night mode",
+      style: .plain,
+      target: self,
+      action: #selector(changeMode)
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     presenter.viewWillAppear()
-    plot1View.changeBackground = { [weak self] isLight in
-      let light = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
-      let dark = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
-      self?.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: isLight ? .black : light]
-      self?.navigationController?.navigationBar.barTintColor = isLight ? light : dark
-    }
-    plot1View.chartChange = { [weak self] index in
-      self?.presenter.changeChart(index: index)
-    }
   }
 
-  func updateRange(_ chartRange: ChartRange) {
-    plot1View.rangeUpdated(chartRange)
+  func updateRange(_ chartRange: ChartRange, index: Int) {
+    (stackView.arrangedSubviews[index] as? ChartView)?.rangeUpdated(chartRange)
   }
 
-  func updateYAxes(_ chartRange: ChartRange) {
-    plot1View.yAxesUpdated(chartRange)
+  func updateYAxes(_ chartRange: ChartRange, index: Int) {
+    (stackView.arrangedSubviews[index] as? ChartView)?.yAxesUpdated(chartRange)
+  }
+
+  @objc private func changeMode() {
+    isLightMode.toggle()
+    navigationItem.rightBarButtonItem?.title = isLightMode ? "Night mode" : "Day mode"
+    let light = Constants.light
+    let dark = Constants.dark
+    navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: isLightMode ? .black : light]
+    navigationController?.navigationBar.barTintColor = isLightMode ? light : dark
+    stackView.arrangedSubviews.forEach { ($0 as? ChartView)?.toggleLightMode(on: isLightMode) }
+  }
+}
+
+private enum Constants {
+  static let light = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
+  static let dark = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
+}
+
+private func createPlotView(index: Int, isMainPlot: Bool) -> PlotViewProtocol {
+  switch index {
+  case 1:
+    return Plot1View(isMainPlot: isMainPlot)
+  case 2:
+    return Plot5View(isMainPlot: isMainPlot)
+  case 3:
+    return Plot4View(isMainPlot: isMainPlot)
+  case 4:
+    return Plot4View(isMainPlot: isMainPlot)
+  case 5:
+    return Plot5View(isMainPlot: isMainPlot)
+  default:
+    print("Error")
+    return Plot5View(isMainPlot: isMainPlot)
   }
 }

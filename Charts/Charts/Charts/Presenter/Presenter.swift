@@ -15,47 +15,28 @@ final class Presenter {
 
   weak var viewController: ViewController?
 
-  private var currentChartIndex: Int
+  private var chartRanges: [ChartRange]
 
-  private var chartRange: ChartRange
-
-  init(chartIndex: Int = 0) {
-    currentChartIndex = chartIndex
+  init() {
     charts = chartsSource.getCharts()
-    chartRange = ChartRange(chart: charts[4],
-                            chosenRange: 0.3...0.7)
+    chartRanges = charts.map { ChartRange(chart: $0, chosenRange: 0.3...0.7) }
   }
 
-  func rangeChanged(_ change: ClosedRange<Float>) {
-    chartRange.chosenRange = change
-    viewController?.updateRange(chartRange)
-  }
-
-  func changeChart(index: Int) {
-    if currentChartIndex != index {
-      currentChartIndex = index
-      chartRange = ChartRange(chart: charts[index],
-                              chosenRange: chartRange.chosenRange)
-      viewController?.updateRange(chartRange)
-      viewController?.updateYAxes(chartRange)
-    }
+  func rangeChanged(_ change: ClosedRange<Float>, index: Int) {
+    chartRanges[index].chosenRange = change
+    viewController?.updateRange(chartRanges[index], index: index)
   }
 
   /// - Parameter enabledAxes: Y axes names
-  func yAxesChanged(_ index: Int) {
-    let axeName = chartRange.allYAxes[index].name
-    var activeAxesNames = Set(chartRange.activeYAxes.map { $0.name })
-    if activeAxesNames.contains(axeName) && activeAxesNames.count > 1 {
-      activeAxesNames.remove(axeName)
-    } else {
-      activeAxesNames.insert(axeName)
-    }
-    chartRange.updateYAxes(activeAxesNames)
-    viewController?.updateYAxes(chartRange)
+  func yAxesChanged(chartIndex: Int, _ parameterIndex: Int) {
+    chartRanges[chartIndex].updateYAxes(parameterIndex)
+    viewController?.updateYAxes(chartRanges[chartIndex], index: chartIndex)
   }
 
   func viewWillAppear() {
-    viewController?.updateRange(chartRange)
-    viewController?.updateYAxes(chartRange)
+    chartRanges.enumerated().forEach { (index, chartRange) in
+      viewController?.updateRange(chartRange, index: index)
+      viewController?.updateYAxes(chartRange, index: index)
+    }
   }
 }

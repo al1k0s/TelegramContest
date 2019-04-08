@@ -12,28 +12,33 @@ class ChartRange {
   private var chart: Chart
   var chosenRange: ClosedRange<Float>
 
-  private(set) var activeYAxes: [YAxis]
+  var activeYAxes: [YAxis] {
+    return allYAxes.filter { selectedYAxes.contains($0) }
+  }
 
   var allYAxes: [YAxis] {
     return chart.yAxes
   }
 
-  var yAxesNames: Set<String> {
-    return Set(chart.yAxes.map({ $0.name }))
-  }
+  private var selectedYAxes = Set<YAxis>()
 
   var xCoordinates: [Date] {
     return chart.x.coordinates
   }
 
-  func updateYAxes(_ names: Set<String>) {
-    self.activeYAxes = chart.yAxes.filter({ names.contains($0.name) })
+  func updateYAxes(_ index: Int) {
+    let yAxis = allYAxes[index]
+    if selectedYAxes.contains(yAxis) && selectedYAxes.count > 1 {
+      selectedYAxes.remove(yAxis)
+    } else if !selectedYAxes.contains(yAxis) {
+      selectedYAxes.insert(yAxis)
+    }
   }
 
   init(chart: Chart, chosenRange: ClosedRange<Float>) {
     self.chosenRange = chosenRange
     self.chart = chart
-    self.activeYAxes = chart.yAxes
+    self.selectedYAxes = Set(chart.yAxes)
   }
 
   var range: ClosedRange<Date> {

@@ -14,7 +14,6 @@
 		024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3E2247D1300061022C /* ScrollContainerView.swift */; };
 		024B9A432247F2C90061022C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024B9A422247F2C90061022C /* Assets.xcassets */; };
 		02766A81225B974D006EF1F0 /* Plot5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02766A80225B974D006EF1F0 /* Plot5View.swift */; };
-		02766A83225BA429006EF1F0 /* ChartRange5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02766A82225BA429006EF1F0 /* ChartRange5.swift */; };
 		0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F982225A0ACB009B3178 /* ControlsComponents.swift */; };
 		0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F985225A12AF009B3178 /* FilterButtonsView.swift */; };
 		0282F98C225A12D7009B3178 /* FilterButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F98B225A12D7009B3178 /* FilterButtonCell.swift */; };
@@ -54,7 +53,6 @@
 		024B9A3E2247D1300061022C /* ScrollContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollContainerView.swift; sourceTree = "<group>"; };
 		024B9A422247F2C90061022C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02766A80225B974D006EF1F0 /* Plot5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot5View.swift; sourceTree = "<group>"; };
-		02766A82225BA429006EF1F0 /* ChartRange5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRange5.swift; sourceTree = "<group>"; };
 		0282F982225A0ACB009B3178 /* ControlsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsComponents.swift; sourceTree = "<group>"; };
 		0282F985225A12AF009B3178 /* FilterButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonsView.swift; sourceTree = "<group>"; };
 		0282F98B225A12D7009B3178 /* FilterButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonCell.swift; sourceTree = "<group>"; };
@@ -227,7 +225,6 @@
 			children = (
 				44C562982237A75300EE4F78 /* Charts.swift */,
 				446BB753223BFDE800BDCE74 /* ChartRange.swift */,
-				02766A82225BA429006EF1F0 /* ChartRange5.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -361,7 +358,6 @@
 				02B2BE1D223702B400317602 /* Plot1View.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
-				02766A83225BA429006EF1F0 /* ChartRange5.swift in Sources */,
 				024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */,
 				02766A81225B974D006EF1F0 /* Plot5View.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,

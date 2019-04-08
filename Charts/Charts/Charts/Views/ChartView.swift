@@ -47,22 +47,12 @@ final class ChartView: UIView {
       x: 0.0,
       y: 0.0,
       width: UIScreen.main.bounds.width - 2 * Constants.padding,
-      height: 30.0
+      height: 42.0
     )
   )
   private let controlPanelView: ControlPanelView
-  private let buttonsView = ButtonsView()
   private let filterButtonsView = FilterButtonsView()
-  private var buttonsHeightConstraint: NSLayoutConstraint!
-  private let containerView = with(UIView()) {
-    $0.backgroundColor = .white
-  }
   private let infoView = InfoView()
-  private let switchButton = with(UIButton()) { switchButton in
-    switchButton.setTitle("Switch to Night Mode", for: .normal)
-    switchButton.setTitleColor(UIColor(red: 36.0 / 255, green: 134.0 / 255, blue: 227.0 / 255, alpha: 1.0), for: .normal)
-    switchButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-  }
 
   private let plotView: PlotViewProtocol
 
@@ -84,13 +74,10 @@ final class ChartView: UIView {
     }
   }
 
-  var changeBackground: ((Bool) -> ())?
-
   init(plotView: PlotViewProtocol, bottomPlotView: PlotViewProtocol) {
     self.plotView = plotView
     self.controlPanelView = ControlPanelView(plotView: bottomPlotView)
     super.init(frame: .zero)
-
     setup()
   }
 
@@ -111,7 +98,8 @@ final class ChartView: UIView {
     addSubview(contentContainer, constraints: [
       contentContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
       contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-      contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
+      contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+      contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
     ])
 
     // configure vertical axes view
@@ -164,19 +152,6 @@ final class ChartView: UIView {
         filterButtonsView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
         filterButtonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -16)
     ])
-
-    addSubview(containerView, constraints: [
-      containerView.topAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: Constants.padding),
-      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
-      ])
-
-    containerView.addSubview(switchButton, constraints: [
-      switchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
-      switchButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
-      switchButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-      ])
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {
@@ -202,24 +177,19 @@ final class ChartView: UIView {
     self.chartRange = chartRange
   }
 
-  @objc
-  private func handleTap(_ button: UIButton) {
-    isLight.toggle()
-    if isLight {
+  func toggleLightMode(on: Bool) {
+    if on {
       backgroundColor = UIColor(red: 239.0 / 255, green: 239.0 / 255, blue: 244.0 / 255, alpha: 1.0)
       titleLabel.textColor = UIColor(red: 137.0 / 255, green: 137.0 / 255, blue: 142.0 / 255, alpha: 1.0)
       contentContainer.backgroundColor = .white
-      containerView.backgroundColor = .white
     } else {
       backgroundColor = UIColor(red: 24.0 / 255, green: 34.0 / 255, blue: 44.0 / 255, alpha: 1.0)
       titleLabel.textColor = UIColor(red: 91.0 / 255, green: 106.0 / 255, blue: 125.0 / 255, alpha: 1.0)
       contentContainer.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
-      containerView.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
     }
-    verticalAxeView.toggleMode(isLight: isLight)
-    controlPanelView.toggleLighMode(on: isLight)
-    infoView.isLight = isLight
-    changeBackground?(isLight)
+    verticalAxeView.toggleMode(isLight: on)
+    controlPanelView.toggleLighMode(on: on)
+    infoView.isLight = on
   }
 
   enum Constants {
