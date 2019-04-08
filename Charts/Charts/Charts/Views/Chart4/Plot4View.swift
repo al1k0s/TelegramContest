@@ -104,14 +104,15 @@ class Plot4View: UIView, PlotViewProtocol {
             endDate: endDate.timeIntervalSince1970,
             oldBounds: oldBounds).forEach { axis in
               let columnWidth = axis.points[0].x - axis.points[1].x
-              axis.points.forEach { point in
-                let columnHeight = point.y
-                context.drawColumn(CGRect(x: point.x - columnWidth / 2,
-                                          y: point.y,
-                                          width: columnWidth,
-                                          height: columnHeight),
-                                   color: axis.color)
+              context.beginPath()
+              context.move(to: CGPoint(x: frame.minX, y: frame.maxY))
+              axis.points.forEach {
+                context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
+                context.addLine(to: CGPoint(x: $0.x - columnWidth / 2, y: $0.y))
               }
+              context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
+              context.setFillColor(axis.color)
+              context.fillPath()
     }
   }
 }
@@ -123,7 +124,6 @@ extension CGContext {
     addLine(to: .init(x: rect.minX, y: rect.maxY))
     addLine(to: .init(x: rect.maxX, y: rect.maxY))
     addLine(to: .init(x: rect.maxX, y: rect.minY))
-    setFillColor(color)
-    fillPath()
+
   }
 }

@@ -22,7 +22,7 @@ final class Presenter {
   init(chartIndex: Int = 0) {
     currentChartIndex = chartIndex
     charts = chartsSource.getCharts()
-    chartRange = ChartRange(chart: charts[4],
+    chartRange = ChartRange(chart: charts[2],
                             chosenRange: 0.3...0.7)
   }
 

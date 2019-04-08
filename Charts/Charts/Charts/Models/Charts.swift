@@ -7,27 +7,38 @@
 //
 
 import struct Foundation.Date
-
-public typealias Charts = [Chart]
+import class Foundation.DateFormatter
 
 public struct XAxis {
   public var coordinates: [Date]
 }
 
-public struct YAxis: Hashable {
-  public var id: String
-  public var coordinates: [Double]
-  public var color: String
-  public var name: String
+struct YAxis: Hashable {
+  var id: String
+  var coordinates: [Double]
+  var color: String
+  var name: String
+  var type: AxisType
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
+
+  enum AxisType: String, Hashable {
+    case line
+    case area
+    case bar
+    // x axis values for each of the charts at the corresponding positions
+    case x
+  }
 }
 
-public struct Chart: Decodable {
-  public var x: XAxis
-  public var yAxes: [YAxis]
+struct Chart: Decodable {
+  var x: XAxis
+  var yAxes: [YAxis]
+  var isTwoYAxes: Bool
+  var isStacked: Bool
+  var isPercentageYValues: Bool
 
   private struct Either<One: Decodable, Other: Decodable>: Decodable {
     init(from decoder: Decoder) throws {
@@ -50,15 +61,24 @@ public struct Chart: Decodable {
     case columns
     case names
     case colors
+    case types
+    case percentage
+    case stacked
+    case yScaled = "y_scaled"
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
+    isTwoYAxes = try container.decodeIfPresent(Bool.self, forKey: .yScaled) ?? false
+    isStacked = try container.decodeIfPresent(Bool.self, forKey: .stacked) ?? false
+    isPercentageYValues = try container.decodeIfPresent(Bool.self, forKey: .percentage) ?? false
+
     let columns = try container.decode([[Either<String, Double>]].self, forKey: .columns)
 
     let colors = try container.decode([String: String].self, forKey: .colors)
     let names = try container.decode([String: String].self, forKey: .names)
+    let types = try container.decode([String: String].self, forKey: .types)
 
     let xColumn = columns[0]
     let rest = Array(columns.dropFirst())
@@ -75,7 +95,8 @@ public struct Chart: Decodable {
       let coordinates = Array(column.dropFirst().map({ $0.other! }))
       let color = colors[id]!
       let name = names[id]!
-      return YAxis(id: id, coordinates: coordinates, color: color, name: name)
+      let type = YAxis.AxisType(rawValue: types[id]!)!
+      return YAxis(id: id, coordinates: coordinates, color: color, name: name, type: type)
     })
   }
 }
