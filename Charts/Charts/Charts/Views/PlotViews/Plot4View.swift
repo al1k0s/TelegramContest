@@ -105,7 +105,7 @@ class Plot4View: UIView, PlotViewProtocol {
             oldBounds: oldBounds).forEach { axis in
               let columnWidth = axis.points[0].x - axis.points[1].x
               context.beginPath()
-              context.move(to: CGPoint(x: frame.minX, y: frame.maxY))
+              context.move(to: CGPoint(x: axis.points[0].x - columnWidth / 2, y: frame.maxY))
               axis.points.forEach {
                 context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
                 context.addLine(to: CGPoint(x: $0.x - columnWidth / 2, y: $0.y))
