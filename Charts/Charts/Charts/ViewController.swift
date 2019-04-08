@@ -106,7 +106,7 @@ private func createPlotView(index: Int, isMainPlot: Bool) -> PlotViewProtocol {
   case 1:
     return Plot1View(isMainPlot: isMainPlot)
   case 2:
-    return Plot5View(isMainPlot: isMainPlot)
+    return Plot2View(isMainPlot: isMainPlot)
   case 3:
     return Plot4View(isMainPlot: isMainPlot)
   case 4:

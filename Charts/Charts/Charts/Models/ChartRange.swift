@@ -12,6 +12,10 @@ class ChartRange {
   private var chart: Chart
   var chosenRange: ClosedRange<Float>
 
+  var isTwoYAxes: Bool {
+    return chart.isTwoYAxes
+  }
+
   var activeYAxes: [YAxis] {
     return allYAxes.filter { selectedYAxes.contains($0) }
   }

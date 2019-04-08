@@ -14,6 +14,12 @@ final class ChartView: UIView {
 
   private var chartRange: ChartRange! {
     didSet {
+      if chartRange.isTwoYAxes {
+        verticalAxeView.setColors(
+          left: UIColor(hexString: chartRange.allYAxes[0].color),
+          right: UIColor(hexString: chartRange.allYAxes[1].color)
+        )
+      }
       infoView.tapOccured = { point in
         let chartRange = self.chartRange!
         let up = chartRange.range.upperBound.timeIntervalSince1970
@@ -167,14 +173,23 @@ final class ChartView: UIView {
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {
-    verticalAxeView.maxValue = chartRange.max
+    if chartRange.isTwoYAxes {
+      verticalAxeView.extremum = .init(
+        topLeft: chartRange.allYAxes[0].coordinates[chartRange.indicies].max()!,
+        bottomLeft: chartRange.allYAxes[0].coordinates[chartRange.indicies].min()!,
+        topRight: chartRange.allYAxes[1].coordinates[chartRange.indicies].max()!,
+        bottomRight: chartRange.allYAxes[1].coordinates[chartRange.indicies].min()!
+      )
+    } else {
+      verticalAxeView.extremum = .init(topLeft: chartRange.max, bottomLeft: chartRange.min, topRight: nil, bottomRight: nil)
+    }
     plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
     infoView.hide()
   }
 
   func yAxesUpdated(_ chartRange: ChartRange) {
-    verticalAxeView.maxValue = chartRange.max
+    verticalAxeView.extremum = .init(topLeft: chartRange.max, bottomLeft: chartRange.min, topRight: nil, bottomRight: nil)
     plotView.updateChart(chartRange)
     controlPanelView.updateChartRange(chartRange)
     let cellProps = chartRange.allYAxes.map { axe in
