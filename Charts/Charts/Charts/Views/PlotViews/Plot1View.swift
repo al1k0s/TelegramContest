@@ -110,9 +110,9 @@ final class Plot1View: UIView, PlotViewProtocol {
       (0, chartRange.xCoordinates.count - 1)
 
     compute(isChanging: isChanging,
-            chartRange: chartRange,
-            minX: minX,
-            maxX: maxX,
+            yAxes: chartRange.activeYAxes,
+            visibleDates: Array(chartRange.xCoordinates[minX...maxX]),
+            visibleRange: (minX...maxX),
             minY: minY(),
             maxY: maxY(),
             size: bounds.size,
@@ -130,13 +130,13 @@ final class Plot1View: UIView, PlotViewProtocol {
   }
 }
 
-func compute(isChanging: Bool,
-             chartRange: ChartRange,
-             minX: Int,
-             maxX: Int,
-             minY: Double,
-             maxY: Double,
-             size: CGSize,
+func compute(isChanging: Bool, // if animations is going
+             yAxes: [YAxis], // will remove
+             visibleDates: [Date],
+             visibleRange: ClosedRange<Int>,
+             minY: Double, // minimum plot value
+             maxY: Double, // maximum plot value
+             size: CGSize, // view size
              currentIteration: Int,
              maxNumberIterations: Int,
              startDate: TimeInterval,
@@ -144,19 +144,17 @@ func compute(isChanging: Bool,
              oldBounds: (minY: Double, maxY: Double)) -> [(color: CGColor,
                                                           points: [CGPoint])] {
     let timeFrame = endDate - startDate
-    return chartRange.activeYAxes.map { axis in
-      let color = UIColor(hexString: axis.color).cgColor
+    return yAxes.map { axis in
       let (width, height) = (size.width, size.height)
       // normalize values to view coordinates
-      let newValues = zip(chartRange.xCoordinates[minX...maxX], axis.coordinates[minX...maxX])
-        .map { (arg) -> (CGPoint) in
-          let (date, value) = arg
-          // get x value from 2 to view.width - 2
+      let newValues = zip(visibleDates, axis.coordinates[visibleRange])
+        .map { (date, value) -> (CGPoint) in
+          // get x value from 0 to view.width
           let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width - 4)) + 2
           let difference = Double(maxY - minY)
           // get y value from 0 to view.height
           let y: Double
-          if isChanging { //numberOfIterations > 0 {
+          if isChanging {
             let oldDiff = oldBounds.maxY - oldBounds.minY
             let oldY = (1 - Double(value - oldBounds.minY) / oldDiff) * Double(height)
             let newY = (1 - Double(value - minY) / difference) * Double(height)
@@ -166,6 +164,6 @@ func compute(isChanging: Bool,
           }
           return CGPoint(x: x, y: y)
       }
-      return (color, newValues)
+      return (UIColor(hexString: axis.color).cgColor, newValues)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 final class ControlPanelView: UIView {
 
-  private let plotView = Plot1View(isMainPlot: false)
+  private let plotView: PlotViewProtocol
   private let leftShadowView = UIView()
   private let leftControlView = SideView(isLeft: true)
   private let centerView = CenterView()
@@ -21,8 +21,9 @@ final class ControlPanelView: UIView {
 
   var rangeChanged: ((ClosedRange<Float>) -> ())?
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(plotView: PlotViewProtocol) {
+    self.plotView = plotView
+    super.init(frame: .zero)
     setup()
   }
 

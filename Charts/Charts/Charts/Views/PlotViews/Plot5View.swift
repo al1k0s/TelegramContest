@@ -1,8 +1,8 @@
 //
-//  Plot4View.swift
+//  Plot5View.swift
 //  Charts
 //
-//  Created by Alik Vovkotrub on 4/7/19.
+//  Created by Oleksii Andriushchenko on 4/8/19.
 //  Copyright © 2019 Алексей Андрющенко. All rights reserved.
 //
 
@@ -10,16 +10,16 @@ import UIKit.UIView
 
 private let maxNumberIterations = 10
 
-class Plot4View: UIView, PlotViewProtocol {
+class Plot5View: UIView, PlotViewProtocol {
 
   private var oldBounds: (minY: Double, maxY: Double) = (-1, -1)
   private var newBounds: (minY: Double, maxY: Double) = (-1, -1)
 
   private var minY: Double {
-    return isMainPlot ? chartRange.min : chartRange.allMin
+    return 0.0//isMainPlot ? chartRange.min : chartRange.allMin
   }
   private var maxY: Double {
-    return isMainPlot ? chartRange.max : chartRange.allMax
+    return 100.0//isMainPlot ? chartRange.max : chartRange.allMax
   }
 
   private var chartRange: ChartRange!
@@ -91,39 +91,55 @@ class Plot4View: UIView, PlotViewProtocol {
 
     let (minX, maxX) = calculateX()
 
-    compute(isChanging: isAnimating,
-            chartRange: chartRange,
-            minX: minX,
-            maxX: maxX,
-            minY: minY,
-            maxY: maxY,
-            size: bounds.size,
-            currentIteration: currentIteration,
-            maxNumberIterations: maxNumberIterations,
-            startDate: startDate.timeIntervalSince1970,
-            endDate: endDate.timeIntervalSince1970,
-            oldBounds: oldBounds).forEach { axis in
-              let columnWidth = axis.points[0].x - axis.points[1].x
-              context.beginPath()
-              context.move(to: CGPoint(x: frame.minX, y: frame.maxY))
-              axis.points.forEach {
-                context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
-                context.addLine(to: CGPoint(x: $0.x - columnWidth / 2, y: $0.y))
-              }
-              context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
-              context.setFillColor(axis.color)
-              context.fillPath()
+    let resultAxis = compute(
+      isChanging: isAnimating,
+      yAxes: calculateAxes(chartRange: chartRange, visibleRange: (minX...maxX)),
+      visibleDates: Array(chartRange.xCoordinates[minX...maxX]),
+      visibleRange: (0...(maxX - minX)),
+      minY: minY,
+      maxY: maxY,
+      size: bounds.size,
+      currentIteration: currentIteration,
+      maxNumberIterations: maxNumberIterations,
+      startDate: startDate.timeIntervalSince1970,
+      endDate: endDate.timeIntervalSince1970,
+      oldBounds: oldBounds
+    )
+    resultAxis.enumerated().forEach { (index, axis) in
+      context.beginPath()
+      axis.points.enumerated().forEach {
+        if $0.offset == 0 {
+          context.move(to: CGPoint(x: $0.element.x, y: $0.element.y))
+        } else {
+          context.addLine(to: CGPoint(x: $0.element.x, y: $0.element.y))
+        }
+      }
+      if index == 0 {
+        context.addLine(to: CGPoint(x: axis.points.last!.x, y: bounds.height))
+        context.addLine(to: CGPoint(x: axis.points.first!.x, y: bounds.height))
+      } else {
+        resultAxis[index - 1].points.reversed().forEach {
+          context.addLine(to: CGPoint(x: $0.x, y: $0.y))
+        }
+      }
+      //context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
+      context.setFillColor(axis.color)
+      context.fillPath()
     }
   }
-}
 
-extension CGContext {
-  func drawColumn(_ rect: CGRect, color: CGColor) {
-    beginPath()
-    move(to: .init(x: rect.minX, y: rect.minY))
-    addLine(to: .init(x: rect.minX, y: rect.maxY))
-    addLine(to: .init(x: rect.maxX, y: rect.maxY))
-    addLine(to: .init(x: rect.maxX, y: rect.minY))
-
+  private func calculateAxes(chartRange: ChartRange, visibleRange: ClosedRange<Int>) -> [YAxis] {
+    let count = visibleRange.count
+    let max = chartRange.activeYAxes.reduce([Double](repeating: 0, count: count), { result, axe in
+      return zip(result, axe.coordinates[visibleRange]).map(+)
+    })
+    var lastX = [Double](repeatElement(0, count: count))
+    return chartRange.activeYAxes.map { axe in
+      var axe = axe
+      let coords = zip(axe.coordinates[visibleRange], lastX).map(+)
+      axe.coordinates = zip(coords, max).map(/).map { $0 * 100.0 }
+      lastX = coords
+      return axe
+    }
   }
 }

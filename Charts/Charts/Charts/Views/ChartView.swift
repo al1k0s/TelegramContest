@@ -50,8 +50,9 @@ final class ChartView: UIView {
       height: 30.0
     )
   )
-  private let controlPanelView = ControlPanelView()
+  private let controlPanelView: ControlPanelView
   private let buttonsView = ButtonsView()
+  private let filterButtonsView = FilterButtonsView()
   private var buttonsHeightConstraint: NSLayoutConstraint!
   private let containerView = with(UIView()) {
     $0.backgroundColor = .white
@@ -77,17 +78,17 @@ final class ChartView: UIView {
 
   var yAxesChanged: ((Int) -> ())? {
     get {
-      return buttonsView.yAxesChanged
+      return filterButtonsView.yAxesChanged
     } set {
-      buttonsView.yAxesChanged = newValue
+      filterButtonsView.yAxesChanged = newValue
     }
   }
 
   var changeBackground: ((Bool) -> ())?
 
-  init(plotView: PlotViewProtocol) {
+  init(plotView: PlotViewProtocol, bottomPlotView: PlotViewProtocol) {
     self.plotView = plotView
-
+    self.controlPanelView = ControlPanelView(plotView: bottomPlotView)
     super.init(frame: .zero)
 
     setup()
@@ -156,14 +157,12 @@ final class ChartView: UIView {
       controlPanelView.heightAnchor.constraint(equalToConstant: 40)
     ])
 
-    // configure buttons view
-    buttonsHeightConstraint = buttonsView.heightAnchor.constraint(equalToConstant: 0)
-    contentContainer.addSubview(buttonsView, constraints: [
-      buttonsView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor),
-      buttonsView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
-      buttonsView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
-      buttonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor),
-      buttonsHeightConstraint
+    // configure filter buttons
+    addSubview(filterButtonsView, constraints: [
+      filterButtonsView.topAnchor.constraint(equalTo: controlPanelView.bottomAnchor, constant: 16),
+        filterButtonsView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+        filterButtonsView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+        filterButtonsView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor, constant: -16)
     ])
 
     addSubview(containerView, constraints: [
@@ -191,17 +190,14 @@ final class ChartView: UIView {
     verticalAxeView.maxValue = chartRange.max
     plotView.updateChart(chartRange)
     controlPanelView.updateChartRange(chartRange)
-    let props = chartRange.allYAxes.map { axe in
-      return ButtonCell.Props.init(
-        title: axe.name,
+    let cellProps = chartRange.allYAxes.map { axe in
+      return FilterButtonCell.Props(
         color: UIColor(hexString: axe.color),
-        isChecked: chartRange.activeYAxes.contains(axe),
-        isLight: isLight,
-        isLast: chartRange.allYAxes.last == axe
+        text: axe.name,
+        isChecked: chartRange.activeYAxes.contains(axe)
       )
     }
-    buttonsHeightConstraint.constant = CGFloat(props.count * 40)
-    buttonsView.render(props: props)
+    filterButtonsView.render(cellProps: cellProps)
     infoView.rangeChanged()
     self.chartRange = chartRange
   }
@@ -220,17 +216,6 @@ final class ChartView: UIView {
       contentContainer.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
       containerView.backgroundColor = UIColor(red: 34.0 / 255, green: 47.0 / 255, blue: 62.0 / 255, alpha: 1.0)
     }
-    let props = chartRange!.allYAxes.map { axe in
-      return ButtonCell.Props.init(
-        title: axe.name,
-        color: UIColor(hexString: axe.color),
-        isChecked: chartRange.activeYAxes.contains(axe),
-        isLight: isLight,
-        isLast: chartRange!.allYAxes.last == axe
-      )
-    }
-    buttonsHeightConstraint.constant = CGFloat(props.count * 40)
-    buttonsView.render(props: props)
     verticalAxeView.toggleMode(isLight: isLight)
     controlPanelView.toggleLighMode(on: isLight)
     infoView.isLight = isLight

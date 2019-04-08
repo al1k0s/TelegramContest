@@ -14,14 +14,9 @@ final class FilterButtonsView: UIView {
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
   private var collectionViewHeight: NSLayoutConstraint!
 
-  private var items: [FilterButtonCell.Props] = [
-    FilterButtonCell.Props(color: .green, text: "Android", isChecked: true),
-    FilterButtonCell.Props(color: .blue, text: "iPhone", isChecked: false),
-    FilterButtonCell.Props(color: .blue, text: "OSX", isChecked: true),
-    FilterButtonCell.Props(color: .red, text: "Web", isChecked: false),
-    FilterButtonCell.Props(color: .orange, text: "TDescktop", isChecked: false),
-    FilterButtonCell.Props(color: .blue, text: "Other", isChecked: true)
-  ]
+  private var items: [FilterButtonCell.Props] = []
+
+  var yAxesChanged: ((Int) -> ())?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -49,6 +44,13 @@ final class FilterButtonsView: UIView {
     addSubview(collectionView, withEdgeInsets: .zero)
     NSLayoutConstraint.activate([collectionViewHeight])
   }
+
+  func render(cellProps: [FilterButtonCell.Props]) {
+    if items != cellProps {
+      items = cellProps
+      collectionView.reloadData()
+    }
+  }
 }
 
 extension FilterButtonsView: UICollectionViewDataSource {
@@ -65,9 +67,6 @@ extension FilterButtonsView: UICollectionViewDataSource {
 
 extension FilterButtonsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let props = items[indexPath.row]
-    let newProps = FilterButtonCell.Props(color: props.color, text: props.text, isChecked: !props.isChecked)
-    items[indexPath.row] = newProps
-    collectionView.reloadData()
+    yAxesChanged?(indexPath.row)
   }
 }

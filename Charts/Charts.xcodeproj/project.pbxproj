@@ -13,6 +13,8 @@
 		024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3C22469DBB0061022C /* BottomPlotView.swift */; };
 		024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B9A3E2247D1300061022C /* ScrollContainerView.swift */; };
 		024B9A432247F2C90061022C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 024B9A422247F2C90061022C /* Assets.xcassets */; };
+		02766A81225B974D006EF1F0 /* Plot5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02766A80225B974D006EF1F0 /* Plot5View.swift */; };
+		02766A83225BA429006EF1F0 /* ChartRange5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02766A82225BA429006EF1F0 /* ChartRange5.swift */; };
 		0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F982225A0ACB009B3178 /* ControlsComponents.swift */; };
 		0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F985225A12AF009B3178 /* FilterButtonsView.swift */; };
 		0282F98C225A12D7009B3178 /* FilterButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282F98B225A12D7009B3178 /* FilterButtonCell.swift */; };
@@ -51,6 +53,8 @@
 		024B9A3C22469DBB0061022C /* BottomPlotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPlotView.swift; sourceTree = "<group>"; };
 		024B9A3E2247D1300061022C /* ScrollContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollContainerView.swift; sourceTree = "<group>"; };
 		024B9A422247F2C90061022C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		02766A80225B974D006EF1F0 /* Plot5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot5View.swift; sourceTree = "<group>"; };
+		02766A82225BA429006EF1F0 /* ChartRange5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRange5.swift; sourceTree = "<group>"; };
 		0282F982225A0ACB009B3178 /* ControlsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsComponents.swift; sourceTree = "<group>"; };
 		0282F985225A12AF009B3178 /* FilterButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonsView.swift; sourceTree = "<group>"; };
 		0282F98B225A12D7009B3178 /* FilterButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonCell.swift; sourceTree = "<group>"; };
@@ -170,7 +174,7 @@
 		02AC85AE22359B6F00D28977 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				441520CF2259FDC4005AE699 /* Chart4 */,
+				441520CF2259FDC4005AE699 /* PlotViews */,
 				02AC85AF22359B7900D28977 /* ChartView.swift */,
 				0282F984225A1296009B3178 /* FilterButtons */,
 				02AC85B122359E4D00D28977 /* VerticalAxeView */,
@@ -178,7 +182,6 @@
 				02AC85B422359EB200D28977 /* ControlPanel */,
 				02AC85B522359EBA00D28977 /* ChartButtons */,
 				44E10A112246A9140037BE2C /* InfoView.swift */,
-				44F38F43225A571A00B6635D /* PlotViewProtocol.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -203,7 +206,6 @@
 		02AC85B422359EB200D28977 /* ControlPanel */ = {
 			isa = PBXGroup;
 			children = (
-				02B2BE1C223702B400317602 /* Plot1View.swift */,
 				024B9A3C22469DBB0061022C /* BottomPlotView.swift */,
 				02B2BE2F2238489F00317602 /* ControlPanelView.swift */,
 				0282F982225A0ACB009B3178 /* ControlsComponents.swift */,
@@ -225,6 +227,7 @@
 			children = (
 				44C562982237A75300EE4F78 /* Charts.swift */,
 				446BB753223BFDE800BDCE74 /* ChartRange.swift */,
+				02766A82225BA429006EF1F0 /* ChartRange5.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,12 +241,15 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		441520CF2259FDC4005AE699 /* Chart4 */ = {
+		441520CF2259FDC4005AE699 /* PlotViews */ = {
 			isa = PBXGroup;
 			children = (
+				44F38F43225A571A00B6635D /* PlotViewProtocol.swift */,
 				441520D0225A00EB005AE699 /* Plot4View.swift */,
+				02B2BE1C223702B400317602 /* Plot1View.swift */,
+				02766A80225B974D006EF1F0 /* Plot5View.swift */,
 			);
-			path = Chart4;
+			path = PlotViews;
 			sourceTree = "<group>";
 		};
 		44F39AF3225AA2FD00B6635D /* Data */ = {
@@ -355,7 +361,9 @@
 				02B2BE1D223702B400317602 /* Plot1View.swift in Sources */,
 				02AC85B722359EE700D28977 /* VerticalAxeView.swift in Sources */,
 				02B2BE2C2238454700317602 /* UIColorExtension.swift in Sources */,
+				02766A83225BA429006EF1F0 /* ChartRange5.swift in Sources */,
 				024B9A3F2247D1300061022C /* ScrollContainerView.swift in Sources */,
+				02766A81225B974D006EF1F0 /* Plot5View.swift in Sources */,
 				02AC85982235985E00D28977 /* AppDelegate.swift in Sources */,
 				0282F983225A0ACB009B3178 /* ControlsComponents.swift in Sources */,
 				441520D1225A00EB005AE699 /* Plot4View.swift in Sources */,
