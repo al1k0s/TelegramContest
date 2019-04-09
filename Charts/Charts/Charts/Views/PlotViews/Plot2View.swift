@@ -160,13 +160,4 @@ final class Plot2View: UIView, PlotViewProtocol {
                        color: axis.color)
     }
   }
-
-//  private func calculateAxes(chartRange: ChartRange, visibleRange: ClosedRange<Int>) -> [YAxis] {
-//    guard chartRange.allYAxes.count > 1 else { return chartRange.activeYAxes }
-//    var secondAxis = chartRange.allYAxes[1]
-//    let secondMax = secondAxis.coordinates[visibleRange].max()!
-//    let secondMin = secondAxis.coordinates[visibleRange].min()!
-//    secondAxis.coordinates = secondAxis.coordinates.map { ($0 - secondMin) / (secondMax - secondMin) * (maxValue - minY()) + minY() }
-//    return [chartRange.allYAxes[0], secondAxis]
-//  }
 }
