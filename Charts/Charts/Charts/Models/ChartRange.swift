@@ -16,6 +16,10 @@ class ChartRange {
     return chart.isTwoYAxes
   }
 
+  var isPercentageYValues: Bool {
+    return chart.isPercentageYValues
+  }
+
   var activeYAxes: [YAxis] {
     return allYAxes.filter { selectedYAxes.contains($0) }
   }
@@ -31,6 +35,7 @@ class ChartRange {
   }
 
   func updateYAxes(_ index: Int) {
+    guard !isTwoYAxes else { return }
     let yAxis = allYAxes[index]
     if selectedYAxes.contains(yAxis) && selectedYAxes.count > 1 {
       selectedYAxes.remove(yAxis)
@@ -47,9 +52,9 @@ class ChartRange {
 
   var range: ClosedRange<Date> {
     let coordinates = chart.x.coordinates
-    let difference = coordinates.last!.timeIntervalSince1970 - coordinates.first!.timeIntervalSince1970
-    let lowerBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.lowerBound)
-    let upperBound = coordinates.first!.timeIntervalSince1970 + difference * Double(chosenRange.upperBound)
+    let difference = coordinates.last!.timeIntervalSince1970 - coordinates.first!.timeIntervalSince1970 + 2.0 * 86400.0
+    let lowerBound = (coordinates.first!.timeIntervalSince1970 - 86400.0) + difference * Double(chosenRange.lowerBound)
+    let upperBound = (coordinates.first!.timeIntervalSince1970 - 86400.0) + difference * Double(chosenRange.upperBound)
     return Date(timeIntervalSince1970: lowerBound)...Date(timeIntervalSince1970: upperBound)
   }
 
@@ -79,5 +84,30 @@ class ChartRange {
 
   var allMin: Double {
     return activeYAxes.map({ $0.coordinates.min()! }).min()!
+  }
+
+  func leftIndex() -> Int {
+    let lowerBound = range.lowerBound.timeIntervalSince1970
+    return xCoordinates.lastIndex(where: { lowerBound > $0.timeIntervalSince1970 }) ?? 0
+  }
+
+  func rightIndex() -> Int {
+    let upperBound = range.upperBound.timeIntervalSince1970
+    return xCoordinates.firstIndex(where: { $0.timeIntervalSince1970 > upperBound }) ?? xCoordinates.count - 1
+  }
+
+  func extremum() -> Extremum {
+    if isTwoYAxes {
+      return .init(
+        topLeft: allYAxes[0].coordinates[indicies].max()!,
+        bottomLeft: allYAxes[0].coordinates[indicies].min()!,
+        topRight: allYAxes[1].coordinates[indicies].max()!,
+        bottomRight: allYAxes[1].coordinates[indicies].min()!
+      )
+    } else if isPercentageYValues {
+      return .init(topLeft: 110, bottomLeft: 0, topRight: nil, bottomRight: nil)
+    } else {
+      return .init(topLeft: max, bottomLeft: min, topRight: nil, bottomRight: nil)
+    }
   }
 }

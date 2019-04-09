@@ -16,10 +16,10 @@ class Plot5View: UIView, PlotViewProtocol {
   private var newBounds: (minY: Double, maxY: Double) = (-1, -1)
 
   private var minY: Double {
-    return 0.0//isMainPlot ? chartRange.min : chartRange.allMin
+    return 0.0
   }
   private var maxY: Double {
-    return 100.0//isMainPlot ? chartRange.max : chartRange.allMax
+    return 110.0
   }
 
   private var chartRange: ChartRange!
@@ -105,6 +105,8 @@ class Plot5View: UIView, PlotViewProtocol {
       endDate: endDate.timeIntervalSince1970,
       oldBounds: oldBounds
     )
+    let isEnd = maxX == chartRange.xCoordinates.count - 1
+    let isStart = minX == 0
     resultAxis.enumerated().forEach { (index, axis) in
       context.beginPath()
       axis.points.enumerated().forEach {
@@ -114,13 +116,24 @@ class Plot5View: UIView, PlotViewProtocol {
           context.addLine(to: CGPoint(x: $0.element.x, y: $0.element.y))
         }
       }
-      if index == 0 {
+      if !isEnd {
+        context.addLine(to: CGPoint(x: bounds.width, y: axis.points.last!.y))
+        let y = index == 0 ? bounds.height : resultAxis[index - 1].points.last!.y
+        context.addLine(to: CGPoint(x: bounds.width, y: y))
+      } else if index == 0 {
         context.addLine(to: CGPoint(x: axis.points.last!.x, y: bounds.height))
-        context.addLine(to: CGPoint(x: axis.points.first!.x, y: bounds.height))
-      } else {
+      }
+      if index != 0 {
         resultAxis[index - 1].points.reversed().forEach {
           context.addLine(to: CGPoint(x: $0.x, y: $0.y))
         }
+      }
+      if !isStart {
+        let y = index == 0 ? bounds.height : resultAxis[index - 1].points.first!.y
+        context.addLine(to: CGPoint(x: 0, y: y))
+        context.addLine(to: CGPoint(x: 0, y: axis.points.first!.y))
+      } else if index == 0 {
+        context.addLine(to: CGPoint(x: axis.points.first!.x, y: bounds.height))
       }
       //context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
       context.setFillColor(axis.color)

@@ -11,26 +11,40 @@ import Foundation.NSDate
 
 struct InfoViewModel {
   struct Chart {
+    var name: String
     var color: UIColor
-    var value: String
+    var intValue: Int
     var location: CGPoint
+
+    var value: String {
+      return formatNumber(intValue)
+    }
   }
 
-  var dayMonth: String
-  var year: String
+  var date: Date
+  var dayMonth: String {
+    return with(DateFormatter()) {
+      $0.dateFormat = "MMM dd"
+    }.string(from: date)
+  }
+  var year: String {
+    return with(DateFormatter()) {
+      $0.dateFormat = "yyyy"
+    }.string(from: date)
+  }
+  var fullDate: String {
+    return with(DateFormatter()) {
+      $0.dateFormat = "E, d MMM yyyy"
+    }.string(from: date)
+  }
   var charts: [Chart]
   var xCount: Int
 
   init(date: Date,
        xCount: Int,
-       charts: [(color: UIColor, value: Int, location: CGPoint)]) {
-    self.dayMonth = with(DateFormatter()) {
-      $0.dateFormat = "MMM dd"
-    }.string(from: date)
-    self.year = with(DateFormatter()) {
-      $0.dateFormat = "yyyy"
-    }.string(from: date)
+       charts: [(name: String, color: UIColor, value: Int, location: CGPoint)]) {
+    self.date = date
     self.xCount = xCount
-    self.charts = charts.map { .init(color: $0.color, value: formatNumber($0.value), location: $0.location) }
+    self.charts = charts.map { .init(name: $0.name, color: $0.color, intValue: $0.value, location: $0.location) }
   }
 }

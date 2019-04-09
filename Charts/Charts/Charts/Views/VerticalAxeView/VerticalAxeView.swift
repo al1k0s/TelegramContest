@@ -142,10 +142,10 @@ final class VerticalAxeView: UIView {
     let step: Double
     let number: Int
     if isLeft {
-      step = (extremum.topLeft - extremum.bottomLeft) / Double(Constants.numberOfStrips)
+      step = (extremum.topLeft - extremum.bottomLeft) / (Double(Constants.numberOfStrips) - 0.5)
       number = Int(step * Double(Constants.numberOfStrips - index - 1)) + Int(extremum.bottomLeft)
     } else {
-      step = ((extremum.topRight ?? 0.0) - (extremum.bottomRight ?? 0.0)) / Double(Constants.numberOfStrips)
+      step = ((extremum.topRight ?? 0.0) - (extremum.bottomRight ?? 0.0)) / (Double(Constants.numberOfStrips) - 0.5)
       number = Int(step * Double(Constants.numberOfStrips - index - 1)) + Int(extremum.bottomRight ?? 0.0)
     }
     if number < 1000 {
@@ -160,9 +160,9 @@ final class VerticalAxeView: UIView {
   private func createStrips(index: Int) -> HorizontalStripView {
     let stripHeight = Constants.stripHeight
     let frame = CGRect(
-      x: 0,
+      x: 16,
       y: CGFloat(index) * stripHeight - 0.5 * stripHeight,
-      width: bounds.width,
+      width: bounds.width - 2 * 16,
       height: stripHeight
     )
     let stripView = HorizontalStripView(

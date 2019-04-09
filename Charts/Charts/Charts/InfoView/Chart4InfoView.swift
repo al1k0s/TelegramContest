@@ -55,8 +55,8 @@ class Chart4InfoView: UIView, InfoViewProtocol {
     return InfoViewModel(date: .init(),
                          xCount: 1,
                          charts: [
-      (color: .red, value: 123, location: CGPoint(x: 0.3, y: 0.3)),
-      (color: .green, value: 12, location: CGPoint(x: 0.5, y: 0.5))
+        (name: "Name1", color: .red, value: 123, location: CGPoint(x: 0.3, y: 0.3)),
+        (name: "Name1", color: .green, value: 12, location: CGPoint(x: 0.5, y: 0.5))
       ])
   }
 

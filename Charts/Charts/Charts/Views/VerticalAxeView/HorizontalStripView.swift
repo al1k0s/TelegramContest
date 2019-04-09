@@ -31,10 +31,14 @@ final class HorizontalStripView: UIView {
 
   private func setup(isLight: Bool) {
 
+    leftNumberLabel.alpha = 0.8
+    rightNumberLabel.alpha = 0.8
+
     // configure line view
     let lightLine = UIColor(red: 248.0 / 255, green: 248.0 / 255, blue: 248.0 / 255, alpha: 1.0)
     let darkLine = UIColor(red: 30.0 / 255, green: 42.0 / 255, blue: 55.0 / 255, alpha: 1.0)
     lineView.backgroundColor = isLight ? lightLine : darkLine
+    lineView.alpha = 0.3
     addSubview(lineView, constraints: [
       lineView.leadingAnchor.constraint(equalTo: leadingAnchor),
       lineView.trailingAnchor.constraint(equalTo: trailingAnchor),

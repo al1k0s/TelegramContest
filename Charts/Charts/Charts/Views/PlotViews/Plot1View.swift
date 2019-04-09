@@ -17,6 +17,7 @@ final class Plot1View: UIView, PlotViewProtocol {
   private var isChanging: Bool = false
   private var numberOfIterations: Int = 0
   private let maxNumberOfIterations = 10
+  private var minValue = 999.0
   private var maxValue = 999.0
   private var displayLink: CADisplayLink?
   
@@ -33,25 +34,18 @@ final class Plot1View: UIView, PlotViewProtocol {
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
     self.maxValue = isMainPlot ? chartRange.max : chartRange.allMax
-    if /*minFromChart() != boundForCheck.0 ||*/ maxY() != boundForCheck.maxY {
+    self.minValue = isMainPlot ? chartRange.min : chartRange.allMin
+    if minValue != boundForCheck.0 || maxValue != boundForCheck.maxY {
       updateMinMax(chartRange)
-      boundForCheck = (minY(), maxY())
+      boundForCheck = (minValue, maxValue)
     } else if !isChanging {
       setNeedsDisplay()
     }
   }
   
-  private func minY() -> Double {
-    return 0.0//isMainPlot ? chartRange!.min : chartRange!.allMin
-  }
-  
-  private func maxY() -> Double {
-    return maxValue
-  }
-  
   private func updateMinMax(_ chartRange: ChartRange) {
     guard boundForCheck.1 != -1 else {
-      boundForChange = (minY(), maxY())
+      boundForChange = (minValue, maxValue)
       return
     }
     isChanging = true
@@ -74,7 +68,7 @@ final class Plot1View: UIView, PlotViewProtocol {
     isChanging = numberOfIterations != maxNumberOfIterations
     displayLink?.invalidate()
     displayLink = nil
-    let newMin = 0.0//boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumber))
+    let newMin = boundForChange.0 + (boundForCheck.0 - boundForChange.0) * (Double(numberOfIterations) / Double(maxNumberOfIterations))
     let newMax = boundForChange.1 + (boundForCheck.1 - boundForChange.1) * (Double(numberOfIterations) / Double(maxNumberOfIterations))
     numberOfIterations = 0
     boundForChange = (newMin, newMax)
@@ -105,16 +99,15 @@ final class Plot1View: UIView, PlotViewProtocol {
       (chartRange.xCoordinates.first!, chartRange.xCoordinates.last!)
 
     let (minX, maxX) = isMainPlot ?
-      (max(0, chartRange.indicies.lowerBound - 1),
-       min(chartRange.xCoordinates.count - 1, chartRange.indicies.upperBound + 1)) :
+      (chartRange.leftIndex(), chartRange.rightIndex()) :
       (0, chartRange.xCoordinates.count - 1)
 
     compute(isChanging: isChanging,
             yAxes: chartRange.activeYAxes,
             visibleDates: Array(chartRange.xCoordinates[minX...maxX]),
             visibleRange: (minX...maxX),
-            minY: minY(),
-            maxY: maxY(),
+            minY: minValue,
+            maxY: maxValue,
             size: bounds.size,
             currentIteration: numberOfIterations,
             maxNumberIterations: maxNumberOfIterations,
@@ -150,7 +143,7 @@ func compute(isChanging: Bool, // if animations is going
       let newValues = zip(visibleDates, axis.coordinates[visibleRange])
         .map { (date, value) -> (CGPoint) in
           // get x value from 0 to view.width
-          let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width - 4)) + 2
+          let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width))
           let difference = Double(maxY - minY)
           // get y value from 0 to view.height
           let y: Double

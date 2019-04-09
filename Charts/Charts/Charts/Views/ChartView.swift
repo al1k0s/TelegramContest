@@ -20,25 +20,10 @@ final class ChartView: UIView {
           right: UIColor(hexString: chartRange.allYAxes[1].color)
         )
       }
-      infoView.tapOccured = { point in
-        let chartRange = self.chartRange!
-        let up = chartRange.range.upperBound.timeIntervalSince1970
-        let down = chartRange.range.lowerBound.timeIntervalSince1970
-        let diff = up - down
-        let time = down + diff * Double(point)
-        let (index, _) = chartRange.xCoordinates.map { $0.timeIntervalSince1970 }
-          .map { abs($0 - time) }
-          .enumerated()
-          .min(by: { $0.1 < $1.1 })!
-        let dateX = (chartRange.xCoordinates[index].timeIntervalSince1970 - down) / diff
-        let max = chartRange.max
-        let charts = chartRange.activeYAxes.map { axe -> (UIColor, Int, CGPoint) in
-          let value = Int(axe.coordinates[index])
-          return (color: UIColor(hexString: axe.color), value, CGPoint(x: dateX, y: Double(value) / max))
-        }
-        return InfoViewModel(date: chartRange.xCoordinates[index],
-                             xCount: chartRange.indicies.count,
-                             charts: charts)
+      if chartRange.isTwoYAxes {
+        infoView.tapOccured = makeModelForInfoView2(chartRange: chartRange!)
+      } else {
+        infoView.tapOccured = makeModelForInfoView1(chartRange: chartRange!)
       }
     }
   }
@@ -116,17 +101,18 @@ final class ChartView: UIView {
     ])
 
     // configure vertical axes view
+
+    plotView.translatesAutoresizingMaskIntoConstraints = false
+    contentContainer.addSubview(plotView)
+
     verticalAxeView.clipsToBounds = true
     let topInset = 8 as CGFloat
     contentContainer.addSubview(verticalAxeView, constraints: [
       verticalAxeView.topAnchor.constraint(equalTo: contentContainer.topAnchor, constant: topInset),
-      verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor, constant: Constants.padding),
-      verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor, constant: -Constants.padding),
+      verticalAxeView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+      verticalAxeView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
       verticalAxeView.heightAnchor.constraint(equalToConstant: VerticalAxeView.Constants.stripHeight * 5.5)
     ])
-
-    plotView.translatesAutoresizingMaskIntoConstraints = false
-    contentContainer.addSubview(plotView)
 
     NSLayoutConstraint.activate([
       plotView.topAnchor.constraint(equalTo: verticalAxeView.topAnchor),
@@ -173,23 +159,14 @@ final class ChartView: UIView {
   }
 
   func rangeUpdated(_ chartRange: ChartRange) {
-    if chartRange.isTwoYAxes {
-      verticalAxeView.extremum = .init(
-        topLeft: chartRange.allYAxes[0].coordinates[chartRange.indicies].max()!,
-        bottomLeft: chartRange.allYAxes[0].coordinates[chartRange.indicies].min()!,
-        topRight: chartRange.allYAxes[1].coordinates[chartRange.indicies].max()!,
-        bottomRight: chartRange.allYAxes[1].coordinates[chartRange.indicies].min()!
-      )
-    } else {
-      verticalAxeView.extremum = .init(topLeft: chartRange.max, bottomLeft: chartRange.min, topRight: nil, bottomRight: nil)
-    }
+    verticalAxeView.extremum = chartRange.extremum()
     plotView.updateChart(chartRange)
     dateAxeView.updateDateAxe(chartRange: chartRange)
     infoView.hide()
   }
 
   func yAxesUpdated(_ chartRange: ChartRange) {
-    verticalAxeView.extremum = .init(topLeft: chartRange.max, bottomLeft: chartRange.min, topRight: nil, bottomRight: nil)
+    verticalAxeView.extremum = chartRange.extremum()
     plotView.updateChart(chartRange)
     controlPanelView.updateChartRange(chartRange)
     let cellProps = chartRange.allYAxes.map { axe in

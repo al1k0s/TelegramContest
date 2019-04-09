@@ -94,7 +94,7 @@ private func createInfoView(index: Int) -> InfoViewProtocol {
   case 4:
     return Chart4InfoView()
   case 5:
-    return Chart1InfoView()
+    return Chart5InfoView()
   default:
     print("Error")
     return Chart1InfoView()
