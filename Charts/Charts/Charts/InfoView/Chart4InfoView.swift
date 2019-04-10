@@ -48,7 +48,7 @@ class Chart4InfoView: UIView, InfoViewProtocol {
   private var lineHeightConstraint: NSLayoutConstraint!
   private var lineWidthConstraint: NSLayoutConstraint!
   let line = with(UIView()) {
-    $0.backgroundColor = UIColor(red: 245/255, green: 250/255, blue: 245/255, alpha: 1)
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.3)
   }
 
   var tapOccured: (CGFloat) -> InfoViewModel = { _ in
@@ -140,8 +140,6 @@ class Chart4InfoView: UIView, InfoViewProtocol {
 
   private func render(the data: InfoViewModel) {
     containerLeftConstraint?.constant = calculateContainerLeadingConstant(data: data)
-    lineLeftConstraint?.constant = data.charts[0].location.x * self.bounds.width
-    lineWidthConstraint?.constant = self.bounds.width / CGFloat(data.xCount)
     resetCircles()
     dayMonthLabel.text = data.dayMonth
     yearLabel.text = data.year
@@ -152,11 +150,12 @@ class Chart4InfoView: UIView, InfoViewProtocol {
         label.text = chart.value
         label.font = UIFont.systemFont(ofSize: 12)
       })
-
-      lineWidthConstraint.constant = bounds.width / CGFloat(data.xCount)
-      lineHeightConstraint.constant = chart.location.y * self.bounds.height
-      lineLeftConstraint.constant = chart.location.x * self.bounds.width
     }
+    let location = data.charts[0].location
+    let width = bounds.width / CGFloat(data.xCount)
+    lineWidthConstraint.constant = bounds.width / CGFloat(data.xCount)
+    lineHeightConstraint.constant = location.y * bounds.height
+    lineLeftConstraint.constant = location.x * bounds.width - width / 2
 
     drawTheme()
     subviews.forEach({ $0.alpha = 1 })
