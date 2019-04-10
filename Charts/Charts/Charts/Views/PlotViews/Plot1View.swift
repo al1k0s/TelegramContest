@@ -144,11 +144,11 @@ func compute(isChanging: Bool, // if animations is going
         .map { (date, value) -> (CGPoint) in
           // get x value from 0 to view.width
           let x = ((date.timeIntervalSince1970 - startDate) / timeFrame * Double(width))
-          let difference = Double(maxY - minY)
+          let difference = maxY == minY ? 1 : Double(maxY - minY)
+          let oldDiff = oldBounds.maxY - oldBounds.minY
           // get y value from 0 to view.height
           let y: Double
           if isChanging {
-            let oldDiff = oldBounds.maxY - oldBounds.minY
             let oldY = (1 - Double(value - oldBounds.minY) / oldDiff) * Double(height)
             let newY = (1 - Double(value - minY) / difference) * Double(height)
             y = oldY + (newY - oldY) * (Double(currentIteration) / Double(maxNumberIterations))

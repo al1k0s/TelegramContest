@@ -31,7 +31,7 @@ class Plot4View: UIView, PlotViewProtocol {
     return currentIteration > 0
   }
 
-  private let displayLink = CADisplayLink(target: self, selector: #selector(redraw))
+  private var displayLink: CADisplayLink?
 
   init(isMainPlot: Bool) {
     self.isMainPlot = isMainPlot
@@ -43,7 +43,8 @@ class Plot4View: UIView, PlotViewProtocol {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
-    if minY != newBounds.minY || maxY != newBounds.maxY {
+    if newBounds != (minY, maxY) {
+      rangeUpdated()
       newBounds = (minY, maxY)
     } else if !isAnimating {
       setNeedsDisplay()
@@ -55,7 +56,8 @@ class Plot4View: UIView, PlotViewProtocol {
       oldBounds = (minY, maxY)
       return
     }
-    displayLink.add(to: .main, forMode: .common)
+    displayLink = CADisplayLink(target: self, selector: #selector(redraw))
+    displayLink?.add(to: .main, forMode: .common)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -66,7 +68,8 @@ class Plot4View: UIView, PlotViewProtocol {
     currentIteration += 1
     setNeedsDisplay()
     if currentIteration >= maxNumberIterations {
-      displayLink.invalidate()
+      displayLink?.invalidate()
+      displayLink = nil
 
       let animationDone = (Double(currentIteration) / Double(maxNumberIterations))
       let newMin = oldBounds.minY + (newBounds.minY - oldBounds.minY) * animationDone
@@ -103,12 +106,12 @@ class Plot4View: UIView, PlotViewProtocol {
             startDate: startDate.timeIntervalSince1970,
             endDate: endDate.timeIntervalSince1970,
             oldBounds: oldBounds).forEach { axis in
-              let columnWidth = axis.points[0].x - axis.points[1].x
+              let columnWidth = axis.points[2].x - axis.points[1].x
               context.beginPath()
-              context.move(to: CGPoint(x: axis.points[0].x - columnWidth / 2, y: frame.maxY))
+              context.move(to: CGPoint(x: 0, y: frame.maxY))
               axis.points.forEach {
-                context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
                 context.addLine(to: CGPoint(x: $0.x - columnWidth / 2, y: $0.y))
+                context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
               }
               context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
               context.setFillColor(axis.color)

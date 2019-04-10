@@ -106,6 +106,8 @@ class ChartRange {
       )
     } else if isPercentageYValues {
       return .init(topLeft: 110, bottomLeft: 0, topRight: nil, bottomRight: nil)
+    } else if chart.isStacked {
+      return .init(topLeft: max, bottomLeft: 0, topRight: nil, bottomRight: nil)
     } else {
       return .init(topLeft: max, bottomLeft: min, topRight: nil, bottomRight: nil)
     }
