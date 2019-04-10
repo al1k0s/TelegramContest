@@ -8,7 +8,15 @@
 
 import struct Foundation.Date
 
+private let maxLenght = 3
+
 class ZoomedChartRange {
+  let fullChart: ChartRange
+  var chart: ZoomedChart
+  let index: Int
+  private let date: Date
+  private var chosenRange = 0...0
+
   init(chart: ZoomedChart, index: Int, date: Date, fullChart: ChartRange) {
     self.chart = chart
     self.index = index
@@ -16,40 +24,34 @@ class ZoomedChartRange {
     self.fullChart = fullChart
   }
 
-  var chart: ZoomedChart
-  let index: Int
-  private let date: Date
-
   var range: ClosedRange<Date> {
-    return date.addingTimeInterval(-60 * 60 * 24 * Double(chosenRange.lowerBound))...date.addingTimeInterval(60 * 60 * 24 * Double(chosenRange.upperBound))
+    let day = 60 * 60 * 24.0
+    return date.addingTimeInterval(-day * Double(chosenRange.lowerBound))...date.addingTimeInterval(day * Double(chosenRange.upperBound))
   }
-  private var chosenRange: ClosedRange<Int> = 0...0
-
-  let fullChart: ChartRange
 
   func moveLeftBound(by moveLeftCount: Int = 1) {
     let newLowerBound = chosenRange.lowerBound - moveLeftCount
-    guard newLowerBound > -3, chosenRange.count < 3 else { return }
-    self.chosenRange = ClosedRange<Int>(uncheckedBounds: (lower: newLowerBound, upper: chosenRange.upperBound))
+    guard newLowerBound > -maxLenght, chosenRange.count < maxLenght else { return }
+    self.chosenRange = newLowerBound...chosenRange.upperBound
   }
 
   func moveRightBound(by moveRightCount: Int = 1) {
     let newUpperBound = chosenRange.upperBound + moveRightCount
-    guard newUpperBound < 3, chosenRange.count < 3 else { return }
-    self.chosenRange = ClosedRange<Int>(uncheckedBounds: (lower: chosenRange.lowerBound, upper: newUpperBound))
+    guard newUpperBound < maxLenght, chosenRange.count < maxLenght else { return }
+    self.chosenRange = chosenRange.lowerBound...newUpperBound
   }
 
   func moveWholeRangeLeft(by moveCount: Int = 1) {
     let newUpperBound = chosenRange.upperBound - moveCount
     let newLowerBound = chosenRange.lowerBound - moveCount
-    guard newUpperBound < 3, newLowerBound > -3 else { return }
+    guard newUpperBound < maxLenght, newLowerBound > -maxLenght else { return }
     self.chosenRange = newLowerBound...newUpperBound
   }
 
   func moveWholeRangeRight(by moveCount: Int = 1) {
     let newUpperBound = chosenRange.upperBound + moveCount
     let newLowerBound = chosenRange.lowerBound + moveCount
-    guard newUpperBound < 3, newLowerBound > -3 else { return }
+    guard newUpperBound < maxLenght, newLowerBound > -maxLenght else { return }
     self.chosenRange = newLowerBound...newUpperBound
   }
 }
