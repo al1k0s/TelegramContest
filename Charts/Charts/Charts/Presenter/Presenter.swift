@@ -19,7 +19,9 @@ final class Presenter {
 
   init() {
     charts = chartsSource.getCharts()
-    chartRanges = charts.map { ChartRange(chart: $0, chosenRange: 0.3...0.7) }
+    chartRanges = charts.enumerated().map { index, chart in
+      ChartRange(chart: chart, index: index + 1, chosenRange: 0.3...0.7)
+    }
   }
 
   func rangeChanged(_ change: ClosedRange<Float>, index: Int) {

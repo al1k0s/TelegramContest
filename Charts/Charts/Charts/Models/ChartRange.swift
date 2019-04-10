@@ -6,10 +6,12 @@
 //  Copyright © 2019 Алексей Андрющенко. All rights reserved.
 //
 
-import struct Foundation.Date
+import Foundation.NSDate
+import class UIKit.NSDataAsset
 
 class ChartRange {
   private var chart: Chart
+  var index: Int
   var chosenRange: ClosedRange<Float>
 
   var isTwoYAxes: Bool {
@@ -44,10 +46,11 @@ class ChartRange {
     }
   }
 
-  init(chart: Chart, chosenRange: ClosedRange<Float>) {
+  init(chart: Chart, index: Int, chosenRange: ClosedRange<Float>) {
     self.chosenRange = chosenRange
     self.chart = chart
     self.selectedYAxes = Set(chart.yAxes)
+    self.index = index
   }
 
   var range: ClosedRange<Date> {
@@ -111,5 +114,19 @@ class ChartRange {
     } else {
       return .init(topLeft: max, bottomLeft: min, topRight: nil, bottomRight: nil)
     }
+  }
+
+  func zoom(_ date: Date) -> ZoomedChartRange {
+    precondition(index != 5)
+    let formattedDate = with(DateFormatter()) { formatter in
+      formatter.dateFormat = "yyyy-M/dd"
+    }.string(from: date)
+    let name = "\(index)/\(formattedDate)"
+    let dataset = NSDataAsset(name: name)!
+    let chart = try! JSONDecoder().decode(ZoomedChart.self, from: dataset.data)
+    return ZoomedChartRange(chart: chart,
+                       index: index,
+                       choosenRange: date...date,
+                       fullChart: self)
   }
 }
