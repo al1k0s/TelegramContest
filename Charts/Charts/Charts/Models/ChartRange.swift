@@ -126,7 +126,7 @@ class ChartRange {
     let chart = try! JSONDecoder().decode(ZoomedChart.self, from: dataset.data)
     return ZoomedChartRange(chart: chart,
                        index: index,
-                       choosenRange: date...date,
+                       date: date,
                        fullChart: self)
   }
 }
