@@ -27,6 +27,7 @@ class Plot4View: UIView, PlotViewProtocol {
 
   private var currentIteration = 0
 
+  private var isDrawn = false
   private var isAnimating: Bool {
     return currentIteration > 0
   }
@@ -43,9 +44,10 @@ class Plot4View: UIView, PlotViewProtocol {
 
   func updateChart(_ chartRange: ChartRange) {
     self.chartRange = chartRange
-    if newBounds != (minY, maxY) {
-      rangeUpdated()
+    if newBounds != (minY, maxY) && isDrawn {
       newBounds = (minY, maxY)
+      rangeUpdated()
+      isDrawn = true
     } else if !isAnimating {
       setNeedsDisplay()
     }
