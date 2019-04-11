@@ -117,16 +117,6 @@ class ChartRange {
   }
 
   func zoom(_ date: Date) -> ZoomedChartRange {
-    precondition(index != 5)
-    let formattedDate = with(DateFormatter()) { formatter in
-      formatter.dateFormat = "yyyy-M/dd"
-    }.string(from: date)
-    let name = "\(index)/\(formattedDate)"
-    let dataset = NSDataAsset(name: name)!
-    let chart = try! JSONDecoder().decode(ZoomedChart.self, from: dataset.data)
-    return ZoomedChartRange(chart: chart,
-                       index: index,
-                       date: date,
-                       fullChart: self)
+    return ZoomedChartRange(index: index, date: date, fullChart: self)
   }
 }

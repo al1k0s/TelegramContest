@@ -43,7 +43,6 @@
 		44E10A102246558F0037BE2C /* with.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A0F2246558E0037BE2C /* with.swift */; };
 		44E10A122246A9140037BE2C /* ChartInfo1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E10A112246A9140037BE2C /* ChartInfo1View.swift */; };
 		44E530C8225E8F55000B60F6 /* zoom_data.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44E530C7225E8F55000B60F6 /* zoom_data.xcassets */; };
-		44E530CA225E9A68000B60F6 /* ZoomedChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E530C9225E9A68000B60F6 /* ZoomedChart.swift */; };
 		44E530CC225E9A91000B60F6 /* ZoomedChartRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E530CB225E9A91000B60F6 /* ZoomedChartRange.swift */; };
 		44F38F44225A571A00B6635D /* PlotViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F38F43225A571A00B6635D /* PlotViewProtocol.swift */; };
 		44F39AF2225AA2F900B6635D /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 44F39AF1225AA2F900B6635D /* 5.json */; };
@@ -92,7 +91,6 @@
 		44E10A0F2246558E0037BE2C /* with.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = with.swift; sourceTree = "<group>"; };
 		44E10A112246A9140037BE2C /* ChartInfo1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartInfo1View.swift; sourceTree = "<group>"; };
 		44E530C7225E8F55000B60F6 /* zoom_data.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = zoom_data.xcassets; sourceTree = "<group>"; };
-		44E530C9225E9A68000B60F6 /* ZoomedChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomedChart.swift; sourceTree = "<group>"; };
 		44E530CB225E9A91000B60F6 /* ZoomedChartRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomedChartRange.swift; sourceTree = "<group>"; };
 		44F38F43225A571A00B6635D /* PlotViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotViewProtocol.swift; sourceTree = "<group>"; };
 		44F39AF1225AA2F900B6635D /* 5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5.json; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 			children = (
 				44C562982237A75300EE4F78 /* Charts.swift */,
 				446BB753223BFDE800BDCE74 /* ChartRange.swift */,
-				44E530C9225E9A68000B60F6 /* ZoomedChart.swift */,
 				44E530CB225E9A91000B60F6 /* ZoomedChartRange.swift */,
 			);
 			path = Models;
@@ -402,7 +399,6 @@
 				44AAB4EA225BE97C00885B14 /* Chart4InfoView.swift in Sources */,
 				44AAB4E8225BE14600885B14 /* InfoViewModel.swift in Sources */,
 				441520D1225A00EB005AE699 /* Plot4View.swift in Sources */,
-				44E530CA225E9A68000B60F6 /* ZoomedChart.swift in Sources */,
 				024B9A3D22469DBB0061022C /* BottomPlotView.swift in Sources */,
 				0282F986225A12AF009B3178 /* FilterButtonsView.swift in Sources */,
 				02AC85B022359B7900D28977 /* ChartView.swift in Sources */,
