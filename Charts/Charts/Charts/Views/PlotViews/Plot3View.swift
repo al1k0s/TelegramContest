@@ -1,8 +1,8 @@
 //
-//  Plot4View.swift
+//  Plot3View.swift
 //  Charts
 //
-//  Created by Alik Vovkotrub on 4/7/19.
+//  Created by Alik Vovkotrub on 4/11/19.
 //  Copyright © 2019 Алексей Андрющенко. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit.UIView
 
 private let maxNumberIterations = 10
 
-class Plot4View: UIView, PlotViewProtocol {
+class Plot3View: UIView, PlotViewProtocol {
 
   private var oldBounds: (minY: Double, maxY: Double) = (-1, -1)
   private var newBounds: (minY: Double, maxY: Double) = (-1, -1)
@@ -96,28 +96,51 @@ class Plot4View: UIView, PlotViewProtocol {
 
     let (minX, maxX) = calculateX()
 
-    compute(isChanging: isAnimating,
-            yAxes: chartRange.activeYAxes,
-            visibleDates: Array(chartRange.xCoordinates[minX...maxX]),
-            visibleRange: (minX...maxX),
-            minY: minY,
-            maxY: maxY,
-            size: bounds.size,
-            currentIteration: currentIteration,
-            maxNumberIterations: maxNumberIterations,
-            startDate: startDate.timeIntervalSince1970,
-            endDate: endDate.timeIntervalSince1970,
-            oldBounds: oldBounds).forEach { axis in
-              let columnWidth = axis.points[2].x - axis.points[1].x
-              context.beginPath()
-              context.move(to: CGPoint(x: 0, y: frame.maxY))
-              axis.points.forEach {
-                context.addLine(to: CGPoint(x: $0.x - columnWidth / 2, y: $0.y))
-                context.addLine(to: CGPoint(x: $0.x + columnWidth / 2, y: $0.y))
-              }
-              context.addLine(to: CGPoint(x: frame.maxX, y: frame.maxY))
-              context.setFillColor(axis.color)
-              context.fillPath()
+    let axes = compute(isChanging: isAnimating,
+                       yAxes: chartRange.activeYAxes,
+                       visibleDates: Array(chartRange.xCoordinates[minX...maxX]),
+                       visibleRange: minX...maxX,
+                       minY: 0,
+                       maxY: maxY,
+                       size: bounds.size,
+                       currentIteration: currentIteration,
+                       maxNumberIterations: maxNumberIterations,
+                       startDate: startDate.timeIntervalSince1970,
+                       endDate: endDate.timeIntervalSince1970,
+                       oldBounds: oldBounds)
+    let columnWidth = axes[0].points[2].x - axes[0].points[1].x
+    let dotsCount = axes[0].points.count
+
+    for index in 0..<dotsCount {
+      let axes = axes
+        .map({ (point: $0.points[index], color: $0.color) })
+        .sorted(by: { $0.point.y < $1.point.y })
+
+      var previousY: CGFloat?
+
+      for (point, color) in axes {
+        let halfColumn = columnWidth / 2
+
+        let leftX = point.x - halfColumn
+        let rightX = point.x + halfColumn
+
+        let bottomY = previousY ?? bounds.maxY
+
+        let topY = previousY == nil ? point.y : previousY! + (bounds.maxY - point.y)
+        print(bottomY, topY)
+
+        context.beginPath()
+        context.move(to: CGPoint(x: leftX, y: bottomY))
+        context.addLine(to: CGPoint(x: leftX, y: topY))
+        context.addLine(to: CGPoint(x: rightX, y: topY))
+        context.addLine(to: CGPoint(x: rightX, y: bottomY))
+        context.closePath()
+
+        context.setFillColor(color)
+        context.fillPath()
+
+        previousY = topY
+      }
     }
   }
 }

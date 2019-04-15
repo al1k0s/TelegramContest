@@ -89,6 +89,12 @@ class ChartRange {
     return activeYAxes.map({ $0.coordinates.min()! }).min()!
   }
 
+  var maxSum: Double {
+    return (0..<indicies.count).map({ index in
+      activeYAxes.map({ $0.coordinates[index] }).reduce(0, +)
+    }).max()!
+  }
+
   func leftIndex() -> Int {
     let lowerBound = range.lowerBound.timeIntervalSince1970
     return xCoordinates.lastIndex(where: { lowerBound > $0.timeIntervalSince1970 }) ?? 0

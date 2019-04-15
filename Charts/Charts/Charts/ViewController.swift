@@ -90,7 +90,7 @@ private func createInfoView(index: Int) -> InfoViewProtocol {
   case 2:
     return Chart1InfoView()
   case 3:
-    return Chart1InfoView()
+    return Chart4InfoView()
   case 4:
     return Chart4InfoView()
   case 5:
@@ -108,7 +108,7 @@ private func createPlotView(index: Int, isMainPlot: Bool) -> PlotViewProtocol {
   case 2:
     return Plot2View(isMainPlot: isMainPlot)
   case 3:
-    return Plot4View(isMainPlot: isMainPlot)
+    return Plot3View(isMainPlot: isMainPlot)
   case 4:
     return Plot4View(isMainPlot: isMainPlot)
   case 5:

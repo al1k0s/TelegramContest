@@ -35,6 +35,7 @@
 		02B2BE2E2238468400317602 /* RendererProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2D2238468400317602 /* RendererProtocol.swift */; };
 		02B2BE302238489F00317602 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2BE2F2238489F00317602 /* ControlPanelView.swift */; };
 		441520D1225A00EB005AE699 /* Plot4View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441520D0225A00EB005AE699 /* Plot4View.swift */; };
+		444441F0225FCFB5000464AA /* Plot3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444441EF225FCFB5000464AA /* Plot3View.swift */; };
 		446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446BB753223BFDE800BDCE74 /* ChartRange.swift */; };
 		44AAB4E8225BE14600885B14 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB4E7225BE14600885B14 /* InfoViewModel.swift */; };
 		44AAB4EA225BE97C00885B14 /* Chart4InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB4E9225BE97C00885B14 /* Chart4InfoView.swift */; };
@@ -83,6 +84,7 @@
 		02B2BE2D2238468400317602 /* RendererProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererProtocol.swift; sourceTree = "<group>"; };
 		02B2BE2F2238489F00317602 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
 		441520D0225A00EB005AE699 /* Plot4View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot4View.swift; sourceTree = "<group>"; };
+		444441EF225FCFB5000464AA /* Plot3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plot3View.swift; sourceTree = "<group>"; };
 		446BB753223BFDE800BDCE74 /* ChartRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRange.swift; sourceTree = "<group>"; };
 		44AAB4E7225BE14600885B14 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
 		44AAB4E9225BE97C00885B14 /* Chart4InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart4InfoView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				02B2BE1C223702B400317602 /* Plot1View.swift */,
 				02766A84225BCB82006EF1F0 /* Plot2View.swift */,
 				02766A80225B974D006EF1F0 /* Plot5View.swift */,
+				444441EF225FCFB5000464AA /* Plot3View.swift */,
 			);
 			path = PlotViews;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				0282F98E225A19C7009B3178 /* FilterButtonsFlowLayout.swift in Sources */,
 				446BB754223BFDE800BDCE74 /* ChartRange.swift in Sources */,
 				02AC85D32236F27500D28977 /* Presenter.swift in Sources */,
+				444441F0225FCFB5000464AA /* Plot3View.swift in Sources */,
 				02AC859A2235985E00D28977 /* ViewController.swift in Sources */,
 				02AC85D52236F29D00D28977 /* ChartsSource.swift in Sources */,
 				44E530CC225E9A91000B60F6 /* ZoomedChartRange.swift in Sources */,
